@@ -49,7 +49,7 @@
                     <span class="badge-new">NEW</span>
                 @endif
                 @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                 @else
                     <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                 @endif
@@ -77,7 +77,7 @@
 @endif
 
 <!-- PlayStation Section -->
-<div class="category-banner" style="background: linear-gradient(135deg, #0077ED 0%, #00A0DF 100%);">
+<div class="category-banner" style="background: url('{{ asset('images/banners/banner7.jpg') }}') center/cover no-repeat;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -107,7 +107,7 @@
                     <span class="badge-new">NEW</span>
                 @endif
                 @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                 @else
                     <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                 @endif
@@ -135,7 +135,7 @@
 @endif
 
 <!-- Nintendo Switch Section -->
-<div class="category-banner" style="background: linear-gradient(135deg, #E60012 0%, #FF6B6B 100%);">
+<div class="category-banner" style="background: url('{{ asset('images/banners/banner8.jpg') }}') center/cover no-repeat;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -161,7 +161,7 @@
             <div class="card product-card position-relative">
                 <span class="badge-preorder">PRE-ORDER</span>
                 @if($product->image)
-                    <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                 @else
                     <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                 @endif
@@ -194,7 +194,7 @@
 @endif
 
 <!-- Apple Section -->
-<div class="category-banner" style="background: linear-gradient(135deg, #000000 0%, #434343 100%);">
+<div class="category-banner" style="background: url('{{ asset('images/banners/banner9.jpg') }}') center/cover no-repeat;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -207,6 +207,36 @@
         </div>
     </div>
 </div>
+
+<!-- News Section -->
+@if(isset($posts) && $posts->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <i class="far fa-newspaper text-info me-2"></i> Tin tức mới
+    </h2>
+    <div class="row g-4">
+        @foreach($posts as $post)
+        <div class="col-md-4">
+            <div class="card product-card h-100 d-flex flex-column">
+                @if($post->image)
+                    <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
+                @else
+                    <img src="https://via.placeholder.com/400x200?text={{ urlencode($post->title) }}" class="card-img-top" alt="{{ $post->title }}">
+                @endif
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ Str::limit($post->title, 60) }}</h5>
+                    <p class="card-text text-muted small mb-2">
+                        <i class="far fa-calendar me-1"></i> {{ $post->published_at->format('d/m/Y') }}
+                    </p>
+                    <p class="card-text flex-grow-1">{{ Str::limit($post->excerpt, 100) }}</p>
+                    <a href="{{ route('news.show', $post->slug) }}" class="btn btn-outline-primary btn-sm mt-auto">Đọc thêm <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</section>
+@endif
 
 <!-- Collections -->
 @if($collections->count() > 0)

@@ -61,4 +61,25 @@ class Product extends Model
     {
         return $this->sale_price ?? $this->price;
     }
+    
+    // Query Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+    
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+    
+    public function scopeNew($query)
+    {
+        return $query->where('is_new', true);
+    }
+    
+    public function scopePreorder($query)
+    {
+        return $query->where('is_preorder', true);
+    }
 }

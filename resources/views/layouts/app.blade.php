@@ -57,12 +57,33 @@
             background-clip: text;
         }
         
+        /* Navbar Menu */
+        .navbar-expand-lg .navbar-collapse {
+            display: flex !important;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        
+        .navbar-nav {
+            flex-direction: row !important;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        
+        .navbar-nav .nav-item {
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        
         .nav-link {
             color: #333 !important;
             font-weight: 500;
-            margin: 0 10px;
+            font-size: 15px;
+            padding: 0.5rem 0.75rem !important;
             transition: all 0.3s;
             position: relative;
+            white-space: nowrap;
+            display: inline-block;
         }
         
         .nav-link:hover {
@@ -72,8 +93,9 @@
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: -5px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 0;
             height: 2px;
             background: var(--primary-color);
@@ -81,7 +103,15 @@
         }
         
         .nav-link:hover::after {
-            width: 100%;
+            width: 80%;
+        }
+        
+        .navbar-nav.ms-auto {
+            margin-left: auto !important;
+        }
+        
+        .navbar-nav.me-auto {
+            margin-right: auto !important;
         }
         
         /* Category Card Styles */
@@ -506,13 +536,13 @@
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ route('home') }}">
-                <i class="fas fa-gamepad me-2"></i>HaloShop
+                <img src="{{ asset('images/logo/logohalo.png') }}" alt="HaloShop" style="height: 40px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex flex-row">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">Trang chủ</a>
                     </li>
@@ -531,11 +561,11 @@
                 </ul>
                 
                 <!-- Form tìm kiếm -->
-                <form action="{{ route('products.index') }}" method="GET" class="ms-3 me-3">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm sản phẩm..." value="{{ request('search') }}" style="width: 220px; border-radius: 20px;">
+                <form action="{{ route('products.index') }}" method="GET" class="d-none d-lg-flex mx-3">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm sản phẩm..." value="{{ request('search') }}" style="width: 200px; border-radius: 20px;">
                 </form>
                 
-                <ul class="navbar-nav align-items-center ms-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart fa-lg"></i>
@@ -568,7 +598,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-primary btn-sm" href="{{ route('register') }}">
+                            <a class="btn btn-primary btn-sm ms-2" href="{{ route('register') }}" style="white-space: nowrap;">
                                 <i class="fas fa-user-plus"></i> Đăng ký
                             </a>
                         </li>

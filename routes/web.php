@@ -20,7 +20,7 @@ use App\Http\Controllers\AccountController;
 |
 */
 
-// Trang chủ
+// Trang chủ và các trang công khai - Admin có thể sử dụng
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Sản phẩm
@@ -42,9 +42,8 @@ Route::post('/thanh-toan/xu-ly', [CheckoutController::class, 'process'])->name('
 Route::get('/thanh-toan/thanh-cong/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Tin tức
-Route::get('/tin-tuc', function () {
-    return view('pages.news');
-})->name('news.index');
+Route::get('/tin-tuc', [App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
+Route::get('/tin-tuc/{slug}', [App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
 
 // Liên hệ
 Route::get('/lien-he', function () {
@@ -56,13 +55,6 @@ Route::get('/ve-chung-toi', function () {
     return view('pages.about');
 })->name('about');
 
-// Authentication routes
-Route::get('/dang-nhap', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/dang-nhap', [AuthController::class, 'login']);
-Route::get('/dang-ky', [AuthController::class, 'showRegisterForm'])->name('register');
-Route::post('/dang-ky', [AuthController::class, 'register']);
-Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
-
 // Account routes (yêu cầu đăng nhập)
 Route::middleware('auth')->group(function () {
     Route::get('/tai-khoan', [AccountController::class, 'profile'])->name('account.profile');
@@ -72,3 +64,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/don-hang/{id}', [AccountController::class, 'orderDetail'])->name('account.order-detail');
 });
 
+// Authentication routes
+Route::get('/dang-nhap', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/dang-nhap', [AuthController::class, 'login']);
+Route::get('/dang-ky', [AuthController::class, 'showRegisterForm'])->name('register');
+Route::post('/dang-ky', [AuthController::class, 'register']);
+Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
+
+// Admin Routes
+require __DIR__.'/admin.php';

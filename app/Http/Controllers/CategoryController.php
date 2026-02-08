@@ -14,7 +14,7 @@ class CategoryController extends Controller
             ->firstOrFail();
             
         $products = $category->products()
-            ->where('status', 'active')
+            ->active()
             ->latest()
             ->paginate(20);
             

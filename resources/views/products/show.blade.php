@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-md-6">
             @if($product->image)
-                <img src="{{ asset('storage/' . $product->image) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
+                <img src="{{ asset($product->image) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
             @else
                 <img src="https://via.placeholder.com/600x400?text={{ urlencode($product->name) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
             @endif
@@ -137,7 +137,7 @@
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card product-card h-100">
                         @if($relatedProduct->image)
-                            <img src="{{ asset('storage/' . $relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                            <img src="{{ asset($relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
                         @else
                             <img src="https://via.placeholder.com/300x250?text={{ urlencode($relatedProduct->name) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
                         @endif

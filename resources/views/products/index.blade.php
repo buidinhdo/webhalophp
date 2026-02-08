@@ -24,6 +24,9 @@
                             <label class="form-label fw-bold">Nền tảng</label>
                             <select name="platform" class="form-select">
                                 <option value="">Tất cả</option>
+                                <option value="PS2" {{ request('platform') == 'PS2' ? 'selected' : '' }}>PS2</option>
+                                <option value="PS3" {{ request('platform') == 'PS3' ? 'selected' : '' }}>PS3</option>
+                                <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>PS4</option>
                                 <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>PS5</option>
                                 <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>Nintendo Switch</option>
                                 <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>Xbox</option>
@@ -78,7 +81,7 @@
                     <div class="card product-card h-100">
                         <div class="position-relative">
                             @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                             @else
                                 <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                             @endif

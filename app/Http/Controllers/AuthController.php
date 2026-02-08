@@ -40,6 +40,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'phone' => $request->phone,
             'address' => $request->address,
+            'is_admin' => 0, // Mặc định không phải admin
         ]);
 
         return redirect()->route('login')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');
@@ -67,6 +68,14 @@ class AuthController extends Controller
         $remember = $request->has('remember');
 
         if (Auth::attempt($credentials, $remember)) {
+            $user = Auth::user();
+            
+            // Nếu là admin, redirect về dashboard
+            if ($user->is_admin) {
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard')->with('success', 'Chào mừng Admin!');
+            }
+            
             $request->session()->regenerate();
             return redirect()->intended(route('home'))->with('success', 'Đăng nhập thành công!');
         }

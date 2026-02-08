@@ -28,7 +28,7 @@
             <div class="card product-card h-100">
                 <div class="position-relative">
                     @if($product->image)
-                        <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                     @else
                         <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                     @endif

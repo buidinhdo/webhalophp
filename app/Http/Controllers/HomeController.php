@@ -6,27 +6,27 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Collection;
+use App\Models\Post;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $featuredProducts = Product::where('is_featured', true)
-            ->where('status', 'active')
+        $featuredProducts = Product::featured()
+            ->active()
             ->latest()
             ->take(8)
             ->get();
             
-        $newProducts = Product::where('is_new', true)
-            ->where('status', 'active')
+        $newProducts = Product::new()
+            ->active()
             ->latest()
-            ->take(8)
+            ->limit(12)
             ->get();
             
-        $preorderProducts = Product::where('is_preorder', true)
-            ->where('status', 'active')
+        $preorderProducts = Product::preorder()
+            ->active()
             ->latest()
-            ->take(8)
             ->get();
             
         $collections = Collection::where('is_active', true)
@@ -39,12 +39,18 @@ class HomeController extends Controller
             ->orderBy('order')
             ->get();
             
+        $posts = Post::where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+            
         return view('home', compact(
             'featuredProducts',
             'newProducts',
             'preorderProducts',
             'collections',
-            'categories'
+            'categories',
+            'posts'
         ));
     }
 }

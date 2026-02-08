@@ -246,38 +246,38 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `parent_id`, `ord
 (13, 'Phụ kiện', 'phu-kien', 'Phụ kiện gaming', NULL, 13, 1, NOW(), NOW());
 
 -- Insert Products
-INSERT INTO `products` (`id`, `name`, `slug`, `description`, `short_description`, `price`, `sale_price`, `stock`, `category_id`, `platform`, `is_featured`, `is_new`, `is_preorder`, `release_date`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `products` (`id`, `name`, `slug`, `description`, `short_description`, `price`, `sale_price`, `stock`, `image`, `category_id`, `platform`, `is_featured`, `is_new`, `is_preorder`, `release_date`, `status`, `created_at`, `updated_at`) VALUES
 -- PlayStation 2 Products
-(1, 'PlayStation 2 Slim Secondhand', 'playstation-2-slim-secondhand', 'Máy PS2 Slim đã qua sử dụng, còn hoạt động tốt. Bảo hành 3 tháng.', 'PS2 Slim - Đã qua sử dụng', 1200000.00, NULL, 5, 2, 'PS2', 0, 0, 0, NULL, 'active', NOW(), NOW()),
+(1, 'PlayStation 2 Slim Secondhand', 'playstation-2-slim-secondhand', 'Máy PS2 Slim đã qua sử dụng, còn hoạt động tốt. Bảo hành 3 tháng.', 'PS2 Slim - Đã qua sử dụng', 1200000.00, NULL, 5, 'images/products/sanpham1.jpg', 2, 'PS2', 0, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- PlayStation 3 Products
-(2, 'PlayStation 3 Slim 500GB', 'playstation-3-slim-500gb', 'Máy PS3 Slim 500GB chính hãng. Bảo hành 6 tháng.', 'PS3 Slim 500GB', 3500000.00, 3200000.00, 8, 3, 'PS3', 0, 0, 0, NULL, 'active', NOW(), NOW()),
+(2, 'PlayStation 3 Slim 500GB', 'playstation-3-slim-500gb', 'Máy PS3 Slim 500GB chính hãng. Bảo hành 6 tháng.', 'PS3 Slim 500GB', 3500000.00, 3200000.00, 8, 'images/products/sanpham2.jpg', 3, 'PS3', 0, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- PlayStation 4 Products
-(3, 'PlayStation 4 Slim 1TB', 'playstation-4-slim-1tb', 'Máy PS4 Slim 1TB chính hãng Sony. Bảo hành 12 tháng.', 'PS4 Slim 1TB - Chính hãng', 7500000.00, NULL, 12, 4, 'PS4', 1, 0, 0, NULL, 'active', NOW(), NOW()),
-(4, 'PlayStation 4 Pro 1TB', 'playstation-4-pro-1tb', 'Máy PS4 Pro 1TB hỗ trợ 4K. Bảo hành chính hãng 12 tháng.', 'PS4 Pro 1TB - 4K Ready', 9500000.00, 8900000.00, 6, 4, 'PS4', 1, 0, 0, NULL, 'active', NOW(), NOW()),
+(3, 'PlayStation 4 Slim 1TB', 'playstation-4-slim-1tb', 'Máy PS4 Slim 1TB chính hãng Sony. Bảo hành 12 tháng.', 'PS4 Slim 1TB - Chính hãng', 7500000.00, NULL, 12, 'images/products/sanpham3.jpg', 4, 'PS4', 1, 0, 0, NULL, 'active', NOW(), NOW()),
+(4, 'PlayStation 4 Pro 1TB', 'playstation-4-pro-1tb', 'Máy PS4 Pro 1TB hỗ trợ 4K. Bảo hành chính hãng 12 tháng.', 'PS4 Pro 1TB - 4K Ready', 9500000.00, 8900000.00, 6, 'images/products/sanpham4.jpg', 4, 'PS4', 1, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- PlayStation 5 Products
-(5, 'PlayStation 5 Slim Digital Edition', 'playstation-5-slim-digital-edition', 'Máy PS5 Slim phiên bản Digital - Không đĩa. Bảo hành chính hãng 12 tháng.', 'PS5 Slim Digital - Chính hãng', 10500000.00, NULL, 10, 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
-(6, 'PlayStation 5 Slim Standard Edition', 'playstation-5-slim-standard', 'Máy PS5 Slim bản Standard có ổ đĩa. Bảo hành chính hãng 12 tháng.', 'PS5 Slim Standard - Chính hãng', 11990000.00, NULL, 8, 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
-(7, 'PlayStation 5 Pro', 'playstation-5-pro', 'Máy PS5 Pro - Hiệu suất cao nhất với hỗ trợ 8K. Bảo hành chính hãng 12 tháng.', 'PS5 Pro - Chính hãng', 19450000.00, NULL, 5, 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(5, 'PlayStation 5 Slim Digital Edition', 'playstation-5-slim-digital-edition', 'Máy PS5 Slim phiên bản Digital - Không đĩa. Bảo hành chính hãng 12 tháng.', 'PS5 Slim Digital - Chính hãng', 10500000.00, NULL, 10, 'images/products/sanpham5.jpg', 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(6, 'PlayStation 5 Slim Standard Edition', 'playstation-5-slim-standard', 'Máy PS5 Slim bản Standard có ổ đĩa. Bảo hành chính hãng 12 tháng.', 'PS5 Slim Standard - Chính hãng', 11990000.00, NULL, 8, 'images/products/sanpham6.jpg', 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(7, 'PlayStation 5 Pro', 'playstation-5-pro', 'Máy PS5 Pro - Hiệu suất cao nhất với hỗ trợ 8K. Bảo hành chính hãng 12 tháng.', 'PS5 Pro - Chính hãng', 19450000.00, NULL, 5, 'images/products/sanpham7.jpg', 5, 'PS5', 1, 1, 0, NULL, 'active', NOW(), NOW()),
 
 -- PlayStation Games
-(8, 'Game Ghost of Yotei - PS5', 'game-ghost-of-yotei-ps5', 'Game Ghost of Yotei cho PS5. Phần tiếp theo của Ghost of Tsushima.', 'Game nhập vai hành động', 1850000.00, NULL, 20, 6, 'PS5', 0, 0, 1, '2026-05-15', 'active', NOW(), NOW()),
-(9, 'Game Final Fantasy VII Remake Intergrade - PS5', 'game-final-fantasy-vii-remake-ps5', 'Game Final Fantasy VII Remake Intergrade cho PS5.', 'Game nhập vai JRPG', 1650000.00, 1450000.00, 15, 6, 'PS5', 1, 0, 0, NULL, 'active', NOW(), NOW()),
-(10, 'Game God of War Ragnarök - PS4/PS5', 'game-god-of-war-ragnarok', 'Game God of War Ragnarök cho PS4 và PS5.', 'Game hành động phiêu lưu', 1550000.00, NULL, 18, 6, 'PS5', 1, 0, 0, NULL, 'active', NOW(), NOW()),
+(8, 'Game Ghost of Yotei - PS5', 'game-ghost-of-yotei-ps5', 'Game Ghost of Yotei cho PS5. Phần tiếp theo của Ghost of Tsushima.', 'Game nhập vai hành động', 1850000.00, NULL, 20, 'images/products/sanpham8.jpg', 6, 'PS5', 0, 0, 1, '2026-05-15', 'active', NOW(), NOW()),
+(9, 'Game Final Fantasy VII Remake Intergrade - PS5', 'game-final-fantasy-vii-remake-ps5', 'Game Final Fantasy VII Remake Intergrade cho PS5.', 'Game nhập vai JRPG', 1650000.00, 1450000.00, 15, 'images/products/sanpham9.jpg', 6, 'PS5', 1, 0, 0, NULL, 'active', NOW(), NOW()),
+(10, 'Game God of War Ragnarök - PS4/PS5', 'game-god-of-war-ragnarok', 'Game God of War Ragnarök cho PS4 và PS5.', 'Game hành động phiêu lưu', 1550000.00, NULL, 18, 'images/products/sanpham10.jpg', 6, 'PS5', 1, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- Nintendo Switch Products
-(11, 'Nintendo Switch 2', 'nintendo-switch-2', 'Máy Nintendo Switch 2 thế hệ mới nhất. Bảo hành 12 tháng.', 'Switch 2 - Chính hãng', 12350000.00, NULL, 8, 7, 'Nintendo Switch', 1, 1, 0, NULL, 'active', NOW(), NOW()),
-(12, 'Game Pokemon Legends: Z-A - Nintendo Switch 2', 'game-pokemon-legends-z-a-switch-2', 'Game Pokemon Legends: Z-A cho Nintendo Switch 2.', 'Game Pokemon thế hệ mới', 1450000.00, NULL, 25, 8, 'Nintendo Switch', 0, 0, 1, '2026-06-20', 'active', NOW(), NOW()),
-(13, 'Game Metroid Prime 4: Beyond - Nintendo Switch', 'game-metroid-prime-4-switch', 'Game Metroid Prime 4: Beyond cho Nintendo Switch.', 'Game bắn súng nhập vai', 1350000.00, NULL, 30, 8, 'Nintendo Switch', 0, 0, 0, NULL, 'active', NOW(), NOW()),
+(11, 'Nintendo Switch 2', 'nintendo-switch-2', 'Máy Nintendo Switch 2 thế hệ mới nhất. Bảo hành 12 tháng.', 'Switch 2 - Chính hãng', 12350000.00, NULL, 8, 'images/products/sanpham11.jpg', 7, 'Nintendo Switch', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(12, 'Game Pokemon Legends: Z-A - Nintendo Switch 2', 'game-pokemon-legends-z-a-switch-2', 'Game Pokemon Legends: Z-A cho Nintendo Switch 2.', 'Game Pokemon thế hệ mới', 1450000.00, NULL, 25, 'images/products/sanpham12.jpg', 8, 'Nintendo Switch', 0, 0, 1, '2026-06-20', 'active', NOW(), NOW()),
+(13, 'Game Metroid Prime 4: Beyond - Nintendo Switch', 'game-metroid-prime-4-switch', 'Game Metroid Prime 4: Beyond cho Nintendo Switch.', 'Game bắn súng nhập vai', 1350000.00, NULL, 30, 'images/products/sanpham13.jpg', 8, 'Nintendo Switch', 0, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- iPhone Products
-(14, 'iPhone 17 Pro Max - Deep Blue VN', 'iphone-17-pro-max-deep-blue-vn', 'iPhone 17 Pro Max màu Deep Blue - Chính hãng VN/A. Bảo hành 12 tháng.', 'iPhone 17 Pro Max - VN/A', 37800000.00, NULL, 5, 9, 'iPhone', 1, 1, 0, NULL, 'active', NOW(), NOW()),
-(15, 'iPhone Air - Space Black VN', 'iphone-air-space-black-vn', 'iPhone Air màu Space Black - Chính hãng VN/A. Bảo hành 12 tháng.', 'iPhone Air - VN/A', 28800000.00, NULL, 8, 9, 'iPhone', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(14, 'iPhone 17 Pro Max - Deep Blue VN', 'iphone-17-pro-max-deep-blue-vn', 'iPhone 17 Pro Max màu Deep Blue - Chính hãng VN/A. Bảo hành 12 tháng.', 'iPhone 17 Pro Max - VN/A', 37800000.00, NULL, 5, 'images/products/iphone17.png', 9, 'iPhone', 1, 1, 0, NULL, 'active', NOW(), NOW()),
+(15, 'iPhone Air - Space Black VN', 'iphone-air-space-black-vn', 'iPhone Air màu Space Black - Chính hãng VN/A. Bảo hành 12 tháng.', 'iPhone Air - VN/A', 28800000.00, NULL, 8, 'images/products/iphone16.png', 9, 'iPhone', 1, 1, 0, NULL, 'active', NOW(), NOW()),
 
 -- Xbox Products
-(16, 'Xbox Series X', 'xbox-series-x', 'Máy Xbox Series X chính hãng. Bảo hành 12 tháng.', 'Xbox Series X - Chính hãng', 13990000.00, NULL, 6, 10, 'Xbox', 0, 0, 0, NULL, 'active', NOW(), NOW()),
+(16, 'Xbox Series X', 'xbox-series-x', 'Máy Xbox Series X chính hãng. Bảo hành 12 tháng.', 'Xbox Series X - Chính hãng', 13990000.00, NULL, 6, 'images/products/sanpham16.jpg', 10, 'Xbox', 0, 0, 0, NULL, 'active', NOW(), NOW()),
 
 -- iPad Products
 (17, 'iPad Pro M5 - 13 inch', 'ipad-pro-m5-13-inch', 'iPad Pro M5 13 inch - Chính hãng VN/A. Bảo hành 12 tháng.', 'iPad Pro M5 - VN/A', 35800000.00, NULL, 4, 11, 'iPad', 0, 1, 0, NULL, 'active', NOW(), NOW()),

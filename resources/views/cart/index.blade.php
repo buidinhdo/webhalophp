@@ -29,7 +29,7 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         @if(isset($item['image']))
-                                            <img src="{{ asset('storage/' . $item['image']) }}" style="width: 80px; height: 80px; object-fit: cover;" class="me-3 rounded" alt="{{ $item['name'] }}">
+                                            <img src="{{ asset($item['image']) }}" style="width: 80px; height: 80px; object-fit: cover;" class="me-3 rounded" alt="{{ $item['name'] }}">
                                         @else
                                             <img src="https://via.placeholder.com/80" class="me-3 rounded" alt="{{ $item['name'] }}">
                                         @endif

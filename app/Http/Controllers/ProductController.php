@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::where('status', 'active');
+        $query = Product::active();
         
         if ($request->has('category')) {
             $query->whereHas('category', function($q) use ($request) {
@@ -19,14 +19,18 @@ class ProductController extends Controller
         }
         
         if ($request->has('platform')) {
-            $query->where('platform', $request->platform);
+            $query->whereRaw('LOWER(platform) = ?', [strtolower($request->platform)]);
         }
         
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                // Tìm kiếm không phân biệt hoa thường
+                $searchLower = strtolower($search);
+                $q->whereRaw('LOWER(name) LIKE ?', ["%{$searchLower}%"])
+                  ->orWhereRaw('LOWER(description) LIKE ?', ["%{$searchLower}%"])
+                  ->orWhereRaw('LOWER(short_description) LIKE ?', ["%{$searchLower}%"])
+                  ->orWhereRaw('LOWER(platform) LIKE ?', ["%{$searchLower}%"]);
             });
         }
         
@@ -57,13 +61,13 @@ class ProductController extends Controller
     public function show($slug)
     {
         $product = Product::where('slug', $slug)
-            ->where('status', 'active')
+            ->active()
             ->firstOrFail();
             
         // Lấy sản phẩm cùng danh mục trước
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
-            ->where('status', 'active')
+            ->active()
             ->inRandomOrder()
             ->take(4)
             ->get();
@@ -73,7 +77,7 @@ class ProductController extends Controller
             $needed = 4 - $relatedProducts->count();
             $excludeIds = $relatedProducts->pluck('id')->push($product->id)->toArray();
             
-            $moreProducts = Product::where('status', 'active')
+            $moreProducts = Product::active()
                 ->whereNotIn('id', $excludeIds)
                 ->inRandomOrder()
                 ->take($needed)
