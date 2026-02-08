@@ -32,17 +32,14 @@ class DashboardController extends Controller
             ->whereYear('created_at', date('Y'))
             ->sum('total_amount');
         
-        // Sản phẩm bán chạy - lấy từ order_items
-        $topProducts = DB::table('products')
-            ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_sold'))
-            ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
-            ->leftJoin('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where(function($query) {
-                $query->whereNull('orders.order_status')
-                      ->orWhereIn('orders.order_status', ['completed', 'shipping']);
-            })
-            ->groupBy('products.id', 'products.name', 'products.slug', 'products.short_description', 'products.description', 'products.price', 'products.sale_price', 'products.stock', 'products.category_id', 'products.image', 'products.status', 'products.is_featured', 'products.is_new', 'products.is_preorder', 'products.platform', 'products.created_at', 'products.updated_at')
-            ->orderBy('total_sold', 'desc')
+        // Sản phẩm bán chạy - lấy từ order_items (đã bán thật)
+        $topProducts = Product::select('products.*')
+            ->selectRaw('COALESCE(SUM(order_items.quantity), 0) as total_sold')
+            ->join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->whereIn('orders.order_status', ['completed', 'shipping', 'processing', 'pending'])
+            ->groupBy('products.id')
+            ->orderByDesc('total_sold')
             ->limit(5)
             ->get();
         
