@@ -635,7 +635,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5><i class="fas fa-gamepad"></i> HaloShop</h5>
+                    <h5><img src="{{ asset('images/logo/logohalo.png') }}" alt="HaloShop" style="height: 30px;"></h5>
                     <p>Cửa hàng game và thiết bị công nghệ hàng đầu Việt Nam</p>
                 </div>
                 <div class="col-md-4">
