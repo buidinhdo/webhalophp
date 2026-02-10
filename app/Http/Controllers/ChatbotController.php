@@ -11,38 +11,60 @@ class ChatbotController extends Controller
 {
     public function sendMessage(Request $request)
     {
-        $request->validate([
-            'message' => 'required|string|max:1000',
-            'session_id' => 'required|string',
-        ]);
-        
-        // Lưu tin nhắn của user
-        $userMessage = ChatMessage::create([
-            'session_id' => $request->session_id,
-            'type' => 'user',
-            'message' => $request->message,
-            'user_id' => auth()->id(),
-        ]);
-        
-        // Tìm kiếm sản phẩm phù hợp
-        $products = $this->searchProducts($request->message);
-        
-        // Tạo response
-        $botResponse = $this->generateResponse($request->message, $products);
-        
-        // Lưu tin nhắn của bot
-        $botMessage = ChatMessage::create([
-            'session_id' => $request->session_id,
-            'type' => 'bot',
-            'message' => $botResponse['message'],
-            'product_id' => $botResponse['product_id'] ?? null,
-        ]);
-        
-        return response()->json([
-            'success' => true,
-            'bot_message' => $botResponse['message'],
-            'products' => $products,
-        ]);
+        try {
+            \Log::info('Chatbot sendMessage called', [
+                'message' => $request->message,
+                'session_id' => $request->session_id,
+            ]);
+            
+            $request->validate([
+                'message' => 'required|string|max:1000',
+                'session_id' => 'required|string',
+            ]);
+            
+            // Lưu tin nhắn của user
+            $userMessage = ChatMessage::create([
+                'session_id' => $request->session_id,
+                'type' => 'user',
+                'message' => $request->message,
+                'user_id' => auth()->id(),
+            ]);
+            
+            \Log::info('User message saved', ['id' => $userMessage->id]);
+            
+            // Tìm kiếm sản phẩm phù hợp
+            $products = $this->searchProducts($request->message);
+            
+            \Log::info('Products found', ['count' => $products->count()]);
+            
+            // Tạo response
+            $botResponse = $this->generateResponse($request->message, $products);
+            
+            // Lưu tin nhắn của bot
+            $botMessage = ChatMessage::create([
+                'session_id' => $request->session_id,
+                'type' => 'bot',
+                'message' => $botResponse['message'],
+                'product_id' => $botResponse['product_id'] ?? null,
+            ]);
+            
+            \Log::info('Bot message saved', ['id' => $botMessage->id]);
+            
+            return response()->json([
+                'success' => true,
+                'bot_message' => $botResponse['message'],
+                'products' => $products,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Chatbot error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Đã có lỗi xảy ra: ' . $e->getMessage()
+            ], 500);
+        }
     }
     
     private function searchProducts($message)

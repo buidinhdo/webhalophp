@@ -522,8 +522,15 @@ function sendChatMessage() {
             session_id: sessionId
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.status);
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
         hideTypingIndicator();
         
         if (data.success) {
@@ -541,11 +548,14 @@ function sendChatMessage() {
             if (document.getElementById('chatbot-container').style.display !== 'none') {
                 startPolling();
             }
+        } else {
+            appendMessage('bot', 'Xin lỗi, có lỗi xảy ra: ' + (data.message || 'Unknown error'));
         }
     })
     .catch(error => {
+        console.error('Chatbot error:', error);
         hideTypingIndicator();
-        appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.');
+        appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau. Error: ' + error.message);
     });
 }
 
