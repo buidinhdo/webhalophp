@@ -56,6 +56,11 @@ Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'se
 Route::get('/chatbot/history', [App\Http\Controllers\ChatbotController::class, 'getHistory'])->name('chatbot.history');
 Route::get('/chatbot/new-messages', [App\Http\Controllers\ChatbotController::class, 'getNewMessages'])->name('chatbot.new-messages');
 
+// Test Chatbot (only for development)
+Route::get('/test-chatbot', function () {
+    return view('test-chatbot');
+})->name('test.chatbot');
+
 // Về chúng tôi
 Route::get('/ve-chung-toi', function () {
     return view('pages.about');
