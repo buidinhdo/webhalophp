@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -52,5 +53,20 @@ class OrderController extends Controller
 
         return redirect()->back()
             ->with('success', 'Đơn hàng đã được cập nhật!');
+    }
+
+    public function exportPdf(Order $order)
+    {
+        // Load order with items and products
+        $order->load('items.product');
+        
+        // Generate PDF
+        $pdf = Pdf::loadView('admin.orders.pdf', compact('order'));
+        
+        // Set paper size and orientation
+        $pdf->setPaper('a4', 'portrait');
+        
+        // Download PDF
+        return $pdf->download('don-hang-' . $order->order_number . '.pdf');
     }
 }

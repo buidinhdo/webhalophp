@@ -9,6 +9,12 @@
     <li class="breadcrumb-item active">Chi tiết</li>
 @endsection
 
+@section('action-buttons')
+    <a href="{{ route('admin.orders.export-pdf', $order->id) }}" class="btn btn-danger" target="_blank">
+        <i class="fas fa-file-pdf"></i> Xuất PDF
+    </a>
+@endsection
+
 @section('content')
 <div class="row">
     <div class="col-md-8">

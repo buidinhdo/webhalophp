@@ -35,6 +35,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Orders Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
+    Route::get('orders/{order}/export-pdf', [OrderController::class, 'exportPdf'])->name('orders.export-pdf');
     
     // Customers Management
     Route::resource('customers', CustomerController::class);

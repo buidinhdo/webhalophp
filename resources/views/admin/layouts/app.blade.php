@@ -210,9 +210,12 @@
                         <h1 class="m-0">@yield('page-title', 'Dashboard')</h1>
                     </div>
                     <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            @yield('breadcrumb')
-                        </ol>
+                        <div class="float-sm-right">
+                            @yield('action-buttons')
+                            <ol class="breadcrumb d-inline-block ml-2">
+                                @yield('breadcrumb')
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
