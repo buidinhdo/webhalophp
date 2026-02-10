@@ -93,6 +93,7 @@ class DashboardController extends Controller
         $labels = [];
         $revenues = [];
         $orderCounts = [];
+        $customerCounts = [];
         $percentChanges = [];
         
         for ($i = $days - 1; $i >= 0; $i--) {
@@ -108,6 +109,10 @@ class DashboardController extends Controller
             
             $dayOrderCount = Order::whereDate('created_at', $date)->count();
             $orderCounts[] = $dayOrderCount;
+            
+            // Đếm số khách hàng mới đăng ký trong ngày
+            $dayCustomerCount = User::whereDate('created_at', $date)->count();
+            $customerCounts[] = $dayCustomerCount;
             
             // Tính phần trăm thay đổi so với ngày hôm trước
             $previousRevenue = Order::where('order_status', 'completed')
@@ -126,6 +131,7 @@ class DashboardController extends Controller
             'labels' => $labels,
             'revenues' => $revenues,
             'orderCounts' => $orderCounts,
+            'customerCounts' => $customerCounts,
             'percentChanges' => $percentChanges
         ];
     }
@@ -154,7 +160,7 @@ class DashboardController extends Controller
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
         
         // Header
-        fputcsv($output, ['Ngày', 'Doanh thu (VNĐ)', 'Số đơn hàng', 'Thay đổi (%)']);
+        fputcsv($output, ['Ngày', 'Doanh thu (VNĐ)', 'Số đơn hàng', 'Số khách hàng', 'Thay đổi (%)']);
         
         // Data
         foreach ($chartData['labels'] as $index => $label) {
@@ -162,6 +168,7 @@ class DashboardController extends Controller
                 $label,
                 number_format($chartData['revenues'][$index], 0, ',', '.'),
                 $chartData['orderCounts'][$index],
+                $chartData['customerCounts'][$index],
                 $chartData['percentChanges'][$index] . '%'
             ]);
         }

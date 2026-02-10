@@ -131,15 +131,44 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-chart-line mr-1"></i>
-                    Doanh thu & Đơn hàng
+                    Doanh thu, Đơn hàng & Khách hàng
                 </h3>
                 <div class="card-tools">
-                    <!-- Time Filter Buttons -->
-                    <div class="btn-group btn-group-sm" role="group">
-                        <button type="button" class="btn btn-outline-primary active" data-days="7">7 ngày</button>
-                        <button type="button" class="btn btn-outline-primary" data-days="14">14 ngày</button>
-                        <button type="button" class="btn btn-outline-primary" data-days="30">30 ngày</button>
-                        <button type="button" class="btn btn-outline-primary" data-days="90">90 ngày</button>
+                    <!-- Time Filter Buttons - Modern Style -->
+                    <style>
+                        .filter-buttons {
+                            display: inline-flex;
+                            gap: 8px;
+                            background: #f8f9fa;
+                            padding: 4px;
+                            border-radius: 8px;
+                        }
+                        .filter-buttons .btn-filter {
+                            padding: 6px 16px;
+                            border-radius: 6px;
+                            border: none;
+                            background: transparent;
+                            color: #6c757d;
+                            font-weight: 500;
+                            font-size: 14px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        }
+                        .filter-buttons .btn-filter:hover {
+                            background: #e9ecef;
+                            color: #495057;
+                        }
+                        .filter-buttons .btn-filter.active {
+                            background: #007bff;
+                            color: white;
+                            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+                        }
+                    </style>
+                    <div class="filter-buttons">
+                        <button type="button" class="btn-filter active" data-days="7">7 ngày</button>
+                        <button type="button" class="btn-filter" data-days="14">14 ngày</button>
+                        <button type="button" class="btn-filter" data-days="30">30 ngày</button>
+                        <button type="button" class="btn-filter" data-days="90">90 ngày</button>
                     </div>
                     <!-- Export Button -->
                     <button type="button" class="btn btn-sm btn-success ml-2" id="exportBtn">
@@ -313,10 +342,11 @@ $(function() {
         labels: {!! json_encode($chartData['labels']) !!},
         revenues: {!! json_encode($chartData['revenues']) !!},
         orderCounts: {!! json_encode($chartData['orderCounts']) !!},
+        customerCounts: {!! json_encode($chartData['customerCounts']) !!},
         percentChanges: {!! json_encode($chartData['percentChanges']) !!}
     };
     
-    // Dual-Axis Revenue & Order Chart with Advanced Tooltip
+    // Triple-Dataset Chart: Revenue, Orders & Customers with Advanced Tooltip
     function createRevenueChart(data) {
         const ctx = document.getElementById('revenueChart').getContext('2d');
         
@@ -344,6 +374,17 @@ $(function() {
                     data: data.orderCounts,
                     backgroundColor: 'rgba(255, 159, 64, 0.2)',
                     borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y1',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }, {
+                    label: 'Số khách hàng mới',
+                    data: data.customerCounts,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 3,
                     tension: 0.4,
                     fill: true,
@@ -379,8 +420,10 @@ $(function() {
                                 }
                                 if (context.datasetIndex === 0) {
                                     label += new Intl.NumberFormat('vi-VN').format(context.parsed.y) + '₫';
-                                } else {
+                                } else if (context.datasetIndex === 1) {
                                     label += context.parsed.y + ' đơn';
+                                } else {
+                                    label += context.parsed.y + ' người';
                                 }
                                 return label;
                             },
@@ -423,7 +466,7 @@ $(function() {
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: 'Số đơn hàng'
+                            text: 'Đơn hàng & Khách hàng'
                         },
                         grid: {
                             drawOnChartArea: false,
@@ -437,9 +480,9 @@ $(function() {
     // Initialize Revenue Chart
     createRevenueChart(initialData);
     
-    // Time Filter Buttons
-    $('.btn-group button').on('click', function() {
-        $('.btn-group button').removeClass('active');
+    // Time Filter Buttons - Modern Style
+    $('.btn-filter').on('click', function() {
+        $('.btn-filter').removeClass('active');
         $(this).addClass('active');
         currentDays = $(this).data('days');
         
