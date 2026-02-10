@@ -346,40 +346,59 @@
 </style>
 
 <script>
-let chatSessionId = localStorage.getItem('chat_session_id');
-if (!chatSessionId) {
-    chatSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('chat_session_id', chatSessionId);
-}
-
+let chatSessionId = null;
 let lastMessageId = 0;
 let pollingInterval = null;
 
-// Start background polling for notifications
-startBackgroundPolling();
+function getOrCreateSessionId() {
+    if (!chatSessionId) {
+        chatSessionId = localStorage.getItem('chat_session_id');
+        if (!chatSessionId) {
+            // Tạo session mới khi người dùng bắt đầu chat
+            chatSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('chat_session_id', chatSessionId);
+        }
+    }
+    return chatSessionId;
+}
 
 function toggleChatbot() {
     const container = document.getElementById('chatbot-container');
     if (container.style.display === 'none') {
         container.style.display = 'flex';
         document.getElementById('chat-input').focus();
-        loadChatHistory();
-        hideNotificationBadge();
-        startPolling();
+        
+        // Tạo session khi mở chatbot lần đầu
+        getOrCreateSessionId();
+        
+        // Load lịch sử nếu có
+        if (chatSessionId) {
+            loadChatHistory();
+            hideNotificationBadge();
+            startPolling();
+        }
     } else {
         container.style.display = 'none';
-        stopPolling();
-        startBackgroundPolling();
+        if (chatSessionId) {
+            stopPolling();
+            startBackgroundPolling();
+        }
     }
 }
 
 function startBackgroundPolling() {
+    // Chỉ poll nếu đã có session
+    if (!chatSessionId) return;
+    
     // Poll every 10 seconds when chatbot is closed
     if (pollingInterval) clearInterval(pollingInterval);
     pollingInterval = setInterval(checkNewMessages, 10000);
 }
 
 function startPolling() {
+    // Chỉ poll nếu đã có session
+    if (!chatSessionId) return;
+    
     // Poll every 3 seconds when chatbot is open
     if (pollingInterval) clearInterval(pollingInterval);
     pollingInterval = setInterval(checkNewMessages, 3000);
@@ -393,6 +412,9 @@ function stopPolling() {
 }
 
 function checkNewMessages() {
+    // Chỉ check nếu đã có session
+    if (!chatSessionId) return;
+    
     fetch(`/chatbot/new-messages?session_id=${chatSessionId}&last_message_id=${lastMessageId}`)
         .then(response => response.json())
         .then(data => {
@@ -439,6 +461,9 @@ function hideNotificationBadge() {
 }
 
 function loadChatHistory() {
+    // Chỉ load nếu đã có session
+    if (!chatSessionId) return;
+    
     fetch('/chatbot/history?session_id=' + chatSessionId)
         .then(response => response.json())
         .then(data => {
@@ -475,6 +500,9 @@ function sendChatMessage() {
     
     if (!message) return;
     
+    // Tạo session nếu chưa có (tin nhắn đầu tiên)
+    const sessionId = getOrCreateSessionId();
+    
     // Hiển thị tin nhắn user
     appendMessage('user', message);
     input.value = '';
@@ -491,7 +519,7 @@ function sendChatMessage() {
         },
         body: JSON.stringify({
             message: message,
-            session_id: chatSessionId
+            session_id: sessionId
         })
     })
     .then(response => response.json())
@@ -507,6 +535,11 @@ function sendChatMessage() {
                 displayProducts(data.products);
             } else {
                 document.getElementById('chatbot-products').style.display = 'none';
+            }
+            
+            // Bắt đầu polling sau tin nhắn đầu tiên
+            if (document.getElementById('chatbot-container').style.display !== 'none') {
+                startPolling();
             }
         }
     })

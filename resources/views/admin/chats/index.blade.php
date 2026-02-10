@@ -46,7 +46,7 @@
                                 <td>
                                     <span class="badge bg-primary">{{ $session->message_count }} tin nhắn</span>
                                 </td>
-                                <td>{{ $session->last_message_at->diffForHumans() }}</td>
+                                <td>{{ \Carbon\Carbon::parse($session->last_message_at)->diffForHumans() }}</td>
                                 <td>
                                     <a href="{{ route('admin.chats.show', $session->session_id) }}" class="btn btn-sm btn-info">
                                         <i class="fas fa-eye"></i> Xem
