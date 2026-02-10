@@ -48,16 +48,29 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
         
-        // Biểu đồ doanh thu 7 ngày gần đây
-        $last7Days = [];
-        $revenueChart = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i);
-            $last7Days[] = $date->format('d/m');
-            $revenueChart[] = Order::where('order_status', 'completed')
-                ->whereDate('created_at', $date)
-                ->sum('total_amount');
-        }
+        // Biểu đồ doanh thu 7 ngày (default)
+        $chartData = $this->getRevenueChartData(7);
+        
+        // Biểu đồ tròn - Top 5 danh mục bán chạy
+        $topCategories = DB::table('categories')
+            ->select('categories.name', DB::raw('SUM(order_items.quantity * order_items.price) as revenue'))
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->where('orders.order_status', 'completed')
+            ->groupBy('categories.id', 'categories.name')
+            ->orderByDesc('revenue')
+            ->limit(5)
+            ->get();
+        
+        // Biểu đồ cột - Doanh thu theo trạng thái đơn
+        $revenueByStatus = [
+            'pending' => Order::where('order_status', 'pending')->sum('total_amount'),
+            'processing' => Order::where('order_status', 'processing')->sum('total_amount'),
+            'shipping' => Order::where('order_status', 'shipping')->sum('total_amount'),
+            'completed' => Order::where('order_status', 'completed')->sum('total_amount'),
+            'cancelled' => Order::where('order_status', 'cancelled')->sum('total_amount'),
+        ];
         
         return view('admin.dashboard', compact(
             'totalProducts',
@@ -69,8 +82,91 @@ class DashboardController extends Controller
             'monthlyRevenue',
             'topProducts',
             'recentOrders',
-            'last7Days',
-            'revenueChart'
+            'chartData',
+            'topCategories',
+            'revenueByStatus'
         ));
+    }
+    
+    public function getRevenueChartData($days = 7)
+    {
+        $labels = [];
+        $revenues = [];
+        $orderCounts = [];
+        $percentChanges = [];
+        
+        for ($i = $days - 1; $i >= 0; $i--) {
+            $date = now()->subDays($i);
+            $previousDate = now()->subDays($i + 1);
+            
+            $labels[] = $date->format('d/m');
+            
+            $dayRevenue = Order::where('order_status', 'completed')
+                ->whereDate('created_at', $date)
+                ->sum('total_amount');
+            $revenues[] = $dayRevenue;
+            
+            $dayOrderCount = Order::whereDate('created_at', $date)->count();
+            $orderCounts[] = $dayOrderCount;
+            
+            // Tính phần trăm thay đổi so với ngày hôm trước
+            $previousRevenue = Order::where('order_status', 'completed')
+                ->whereDate('created_at', $previousDate)
+                ->sum('total_amount');
+            
+            if ($previousRevenue > 0) {
+                $percentChange = (($dayRevenue - $previousRevenue) / $previousRevenue) * 100;
+                $percentChanges[] = round($percentChange, 1);
+            } else {
+                $percentChanges[] = $dayRevenue > 0 ? 100 : 0;
+            }
+        }
+        
+        return [
+            'labels' => $labels,
+            'revenues' => $revenues,
+            'orderCounts' => $orderCounts,
+            'percentChanges' => $percentChanges
+        ];
+    }
+    
+    public function filterRevenueChart(Request $request)
+    {
+        $days = $request->input('days', 7);
+        $chartData = $this->getRevenueChartData($days);
+        
+        return response()->json($chartData);
+    }
+    
+    public function exportRevenue(Request $request)
+    {
+        $days = $request->input('days', 7);
+        $chartData = $this->getRevenueChartData($days);
+        
+        $filename = 'doanh_thu_' . $days . '_ngay_' . date('Y-m-d') . '.csv';
+        
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
+        $output = fopen('php://output', 'w');
+        
+        // UTF-8 BOM for Excel
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+        
+        // Header
+        fputcsv($output, ['Ngày', 'Doanh thu (VNĐ)', 'Số đơn hàng', 'Thay đổi (%)']);
+        
+        // Data
+        foreach ($chartData['labels'] as $index => $label) {
+            fputcsv($output, [
+                $label,
+                number_format($chartData['revenues'][$index], 0, ',', '.'),
+                $chartData['orderCounts'][$index],
+                $chartData['percentChanges'][$index] . '%'
+            ]);
+        }
+        
+        fclose($output);
+        exit;
     }
 }

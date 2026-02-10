@@ -21,6 +21,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 // Admin Routes (cần auth và admin)
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/filter-chart', [DashboardController::class, 'filterRevenueChart'])->name('dashboard.filter-chart');
+    Route::get('/dashboard/export-revenue', [DashboardController::class, 'exportRevenue'])->name('dashboard.export-revenue');
     
     // Products Management
     Route::resource('products', ProductController::class);

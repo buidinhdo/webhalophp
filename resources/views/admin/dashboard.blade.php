@@ -125,17 +125,30 @@
 </div>
 
 <div class="row">
-    <!-- Revenue Chart -->
+    <!-- Revenue Chart with Filter -->
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="fas fa-chart-bar mr-1"></i>
-                    Doanh thu 7 ngày gần đây
+                    <i class="fas fa-chart-line mr-1"></i>
+                    Doanh thu & Đơn hàng
                 </h3>
+                <div class="card-tools">
+                    <!-- Time Filter Buttons -->
+                    <div class="btn-group btn-group-sm" role="group">
+                        <button type="button" class="btn btn-outline-primary active" data-days="7">7 ngày</button>
+                        <button type="button" class="btn btn-outline-primary" data-days="14">14 ngày</button>
+                        <button type="button" class="btn btn-outline-primary" data-days="30">30 ngày</button>
+                        <button type="button" class="btn btn-outline-primary" data-days="90">90 ngày</button>
+                    </div>
+                    <!-- Export Button -->
+                    <button type="button" class="btn btn-sm btn-success ml-2" id="exportBtn">
+                        <i class="fas fa-download"></i> Export CSV
+                    </button>
+                </div>
             </div>
             <div class="card-body">
-                <canvas id="revenueChart" style="height: 300px;"></canvas>
+                <canvas id="revenueChart" style="height: 350px;"></canvas>
             </div>
         </div>
     </div>
@@ -176,6 +189,39 @@
                     </li>
                     @endforelse
                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Category & Status Charts -->
+<div class="row">
+    <!-- Category Pie Chart -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-pie mr-1"></i>
+                    Top 5 Danh mục bán chạy
+                </h3>
+            </div>
+            <div class="card-body">
+                <canvas id="categoryChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Status Column Chart -->
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar mr-1"></i>
+                    Doanh thu theo trạng thái đơn
+                </h3>
+            </div>
+            <div class="card-body">
+                <canvas id="statusChart" style="height: 300px;"></canvas>
             </div>
         </div>
     </div>
@@ -259,20 +305,189 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 <script>
 $(function() {
-    // Revenue Chart
-    var ctx = document.getElementById('revenueChart').getContext('2d');
-    var revenueChart = new Chart(ctx, {
-        type: 'line',
+    let currentDays = 7;
+    let revenueChartInstance = null;
+    
+    // Initial Chart Data
+    const initialData = {
+        labels: {!! json_encode($chartData['labels']) !!},
+        revenues: {!! json_encode($chartData['revenues']) !!},
+        orderCounts: {!! json_encode($chartData['orderCounts']) !!},
+        percentChanges: {!! json_encode($chartData['percentChanges']) !!}
+    };
+    
+    // Dual-Axis Revenue & Order Chart with Advanced Tooltip
+    function createRevenueChart(data) {
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        if (revenueChartInstance) {
+            revenueChartInstance.destroy();
+        }
+        
+        revenueChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: data.revenues,
+                    backgroundColor: 'rgba(0, 217, 255, 0.2)',
+                    borderColor: 'rgba(0, 217, 255, 1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }, {
+                    label: 'Số đơn hàng',
+                    data: data.orderCounts,
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y1',
+                    pointRadius: 5,
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        padding: 12,
+                        displayColors: true,
+                        callbacks: {
+                            title: function(context) {
+                                return 'Ngày: ' + context[0].label;
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.datasetIndex === 0) {
+                                    label += new Intl.NumberFormat('vi-VN').format(context.parsed.y) + '₫';
+                                } else {
+                                    label += context.parsed.y + ' đơn';
+                                }
+                                return label;
+                            },
+                            afterLabel: function(context) {
+                                if (context.datasetIndex === 0) {
+                                    const percentChange = data.percentChanges[context.dataIndex];
+                                    if (percentChange > 0) {
+                                        return '↗ +' + percentChange + '% so với hôm trước';
+                                    } else if (percentChange < 0) {
+                                        return '↘ ' + percentChange + '% so với hôm trước';
+                                    } else {
+                                        return '→ Không đổi';
+                                    }
+                                }
+                                return '';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Doanh thu (VNĐ)'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('vi-VN').format(value) + '₫';
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Số đơn hàng'
+                        },
+                        grid: {
+                            drawOnChartArea: false,
+                        },
+                    }
+                }
+            }
+        });
+    }
+    
+    // Initialize Revenue Chart
+    createRevenueChart(initialData);
+    
+    // Time Filter Buttons
+    $('.btn-group button').on('click', function() {
+        $('.btn-group button').removeClass('active');
+        $(this).addClass('active');
+        currentDays = $(this).data('days');
+        
+        // AJAX Load Chart Data
+        $.ajax({
+            url: '{{ route("admin.dashboard.filter-chart") }}',
+            method: 'GET',
+            data: { days: currentDays },
+            success: function(response) {
+                createRevenueChart(response);
+            },
+            error: function() {
+                alert('Có lỗi xảy ra khi tải dữ liệu!');
+            }
+        });
+    });
+    
+    // Export CSV Button
+    $('#exportBtn').on('click', function() {
+        window.location.href = '{{ route("admin.dashboard.export-revenue") }}?days=' + currentDays;
+    });
+    
+    // Category Pie Chart
+    const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+    const categoryData = {!! json_encode($topCategories->pluck('name')) !!};
+    const categoryRevenue = {!! json_encode($topCategories->pluck('revenue')) !!};
+    
+    new Chart(categoryCtx, {
+        type: 'pie',
         data: {
-            labels: {!! json_encode($last7Days) !!},
+            labels: categoryData,
             datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: {!! json_encode($revenueChart) !!},
-                backgroundColor: 'rgba(0, 217, 255, 0.2)',
-                borderColor: 'rgba(0, 217, 255, 1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true
+                data: categoryRevenue,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)',
+                    'rgba(75, 192, 192, 0.8)',
+                    'rgba(153, 102, 255, 0.8)',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                ],
+                borderWidth: 2
             }]
         },
         options: {
@@ -280,8 +495,70 @@ $(function() {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: true,
-                    position: 'top'
+                    position: 'right',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = new Intl.NumberFormat('vi-VN').format(context.parsed) + '₫';
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((context.parsed / total) * 100).toFixed(1);
+                            return label + ': ' + value + ' (' + percentage + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Order Status Column Chart
+    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    const statusData = {!! json_encode($revenueByStatus) !!};
+    
+    new Chart(statusCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Chờ xử lý', 'Đang xử lý', 'Đang giao', 'Hoàn thành', 'Đã hủy'],
+            datasets: [{
+                label: 'Doanh thu (VNĐ)',
+                data: [
+                    statusData.pending,
+                    statusData.processing,
+                    statusData.shipping,
+                    statusData.completed,
+                    statusData.cancelled
+                ],
+                backgroundColor: [
+                    'rgba(255, 193, 7, 0.7)',
+                    'rgba(23, 162, 184, 0.7)',
+                    'rgba(0, 123, 255, 0.7)',
+                    'rgba(40, 167, 69, 0.7)',
+                    'rgba(220, 53, 69, 0.7)',
+                ],
+                borderColor: [
+                    'rgba(255, 193, 7, 1)',
+                    'rgba(23, 162, 184, 1)',
+                    'rgba(0, 123, 255, 1)',
+                    'rgba(40, 167, 69, 1)',
+                    'rgba(220, 53, 69, 1)',
+                ],
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.parsed.y) + '₫';
+                        }
+                    }
                 }
             },
             scales: {
@@ -289,7 +566,7 @@ $(function() {
                     beginAtZero: true,
                     ticks: {
                         callback: function(value) {
-                            return value.toLocaleString('vi-VN') + '₫';
+                            return new Intl.NumberFormat('vi-VN').format(value) + '₫';
                         }
                     }
                 }
