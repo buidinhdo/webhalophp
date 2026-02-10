@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\AdminAuthController;
 
 // Admin Login Routes (không cần auth)
@@ -37,4 +38,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     
     // Posts Management
     Route::resource('posts', PostController::class);
+    
+    // Contacts Management
+    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
+    Route::post('contacts/{contact}/reply', [ContactController::class, 'reply'])->name('contacts.reply');
+    Route::patch('contacts/{contact}/status', [ContactController::class, 'updateStatus'])->name('contacts.update-status');
 });

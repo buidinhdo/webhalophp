@@ -49,6 +49,7 @@ Route::get('/tin-tuc/{slug}', [App\Http\Controllers\NewsController::class, 'show
 Route::get('/lien-he', function () {
     return view('pages.contact');
 })->name('contact');
+Route::post('/lien-he', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
 // Về chúng tôi
 Route::get('/ve-chung-toi', function () {

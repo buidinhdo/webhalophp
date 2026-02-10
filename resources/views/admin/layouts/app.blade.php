@@ -179,6 +179,14 @@
                         </a>
                     </li>
 
+                    <!-- Contacts -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-envelope"></i>
+                            <p>Liên hệ</p>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
