@@ -23,7 +23,7 @@
                     <img src="{{ asset('images/logo/logohalo.png') }}" alt="Bot">
                 </div>
                 <div class="message-content">
-                    Xin chào! Tôi là trợ lý ảo của HaloShop. Tôi có thể giúp bạn tìm kiếm và tư vấn về các sản phẩm game. Bạn đang tìm kiếm sản phẩm gì?
+                    Xin chào! Chào mừng bạn đến với HaloShop. Hãy để lại câu hỏi của bạn, đội ngũ tư vấn viên sẽ phản hồi ngay!
                 </div>
             </div>
         </div>
@@ -507,8 +507,8 @@ function sendChatMessage() {
     appendMessage('user', message);
     input.value = '';
     
-    // Hiển thị typing indicator
-    showTypingIndicator();
+    // Không hiện typing indicator, chỉ gửi
+    // showTypingIndicator(); // Đã tắt
     
     // Gửi request
     fetch('/chatbot/send', {
@@ -531,20 +531,15 @@ function sendChatMessage() {
     })
     .then(data => {
         console.log('Response data:', data);
-        hideTypingIndicator();
         
         if (data.success) {
-            // Hiển thị response của bot
-            appendMessage('bot', data.bot_message);
+            // Hiện thông báo đã gửi (không có bot tự động trả lời)
+            const notice = document.createElement('div');
+            notice.style.cssText = 'text-align: center; padding: 8px; color: #666; font-size: 13px; font-style: italic;';
+            notice.textContent = '✓ Tin nhắn đã được gửi. Chúng tôi sẽ phản hồi sớm...';
+            document.getElementById('chatbot-messages').appendChild(notice);
             
-            // Hiển thị sản phẩm nếu có
-            if (data.products && data.products.length > 0) {
-                displayProducts(data.products);
-            } else {
-                document.getElementById('chatbot-products').style.display = 'none';
-            }
-            
-            // Bắt đầu polling sau tin nhắn đầu tiên
+            // Bắt đầu polling để nhận phản hồi từ admin
             if (document.getElementById('chatbot-container').style.display !== 'none') {
                 startPolling();
             }
@@ -554,8 +549,7 @@ function sendChatMessage() {
     })
     .catch(error => {
         console.error('Chatbot error:', error);
-        hideTypingIndicator();
-        appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau. Error: ' + error.message);
+        appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.');
     });
 }
 

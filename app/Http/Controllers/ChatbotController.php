@@ -22,7 +22,7 @@ class ChatbotController extends Controller
                 'session_id' => 'required|string',
             ]);
             
-            // Lưu tin nhắn của user
+            // Chỉ lưu tin nhắn của user, không tự động trả lời
             $userMessage = ChatMessage::create([
                 'session_id' => $request->session_id,
                 'type' => 'user',
@@ -32,28 +32,10 @@ class ChatbotController extends Controller
             
             \Log::info('User message saved', ['id' => $userMessage->id]);
             
-            // Tìm kiếm sản phẩm phù hợp
-            $products = $this->searchProducts($request->message);
-            
-            \Log::info('Products found', ['count' => $products->count()]);
-            
-            // Tạo response
-            $botResponse = $this->generateResponse($request->message, $products);
-            
-            // Lưu tin nhắn của bot
-            $botMessage = ChatMessage::create([
-                'session_id' => $request->session_id,
-                'type' => 'bot',
-                'message' => $botResponse['message'],
-                'product_id' => $botResponse['product_id'] ?? null,
-            ]);
-            
-            \Log::info('Bot message saved', ['id' => $botMessage->id]);
-            
+            // Trả về success, admin sẽ trả lời từ dashboard
             return response()->json([
                 'success' => true,
-                'bot_message' => $botResponse['message'],
-                'products' => $products,
+                'message' => 'Tin nhắn đã được gửi. Chúng tôi sẽ phản hồi sớm nhất có thể.',
             ]);
         } catch (\Exception $e) {
             \Log::error('Chatbot error: ' . $e->getMessage(), [

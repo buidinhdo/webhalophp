@@ -145,10 +145,11 @@ document.addEventListener('DOMContentLoaded', function() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
     
-    // Auto refresh every 5 seconds to show new messages from users
+    // Auto refresh every 15 seconds to show new messages from users
+    // Tăng lên 15 giây để admin có thời gian đọc và trả lời
     setInterval(function() {
         location.reload();
-    }, 5000);
+    }, 15000);
 });
 </script>
 @endsection
