@@ -60,11 +60,18 @@ class OrderController extends Controller
         // Load order with items and products
         $order->load('items.product');
         
-        // Generate PDF
+        // Generate PDF with options for Vietnamese support
         $pdf = Pdf::loadView('admin.orders.pdf', compact('order'));
         
         // Set paper size and orientation
         $pdf->setPaper('a4', 'portrait');
+        
+        // Set options for better Unicode support
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'defaultFont' => 'DejaVu Sans'
+        ]);
         
         // Download PDF
         return $pdf->download('don-hang-' . $order->order_number . '.pdf');
