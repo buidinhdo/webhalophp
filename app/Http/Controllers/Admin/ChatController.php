@@ -11,11 +11,27 @@ class ChatController extends Controller
 {
     public function index()
     {
-        // Lấy danh sách các session chat, group theo session_id
-        $sessions = ChatMessage::select('session_id', DB::raw('MAX(created_at) as last_message_at'), DB::raw('COUNT(*) as message_count'))
-            ->groupBy('session_id')
+        // Lấy danh sách các session chat với tên khách hàng
+        $sessions = DB::table('chat_messages as cm1')
+            ->select(
+                'cm1.session_id',
+                DB::raw('MAX(cm1.created_at) as last_message_at'),
+                DB::raw('COUNT(*) as message_count'),
+                DB::raw('(SELECT user_id FROM chat_messages WHERE session_id = cm1.session_id AND type = "user" LIMIT 1) as user_id')
+            )
+            ->groupBy('cm1.session_id')
             ->orderBy('last_message_at', 'desc')
             ->paginate(20);
+        
+        // Lấy thông tin user cho mỗi session
+        foreach ($sessions as $session) {
+            if ($session->user_id) {
+                $user = DB::table('users')->where('id', $session->user_id)->first();
+                $session->customer_name = $user ? $user->name : 'Khách (Guest)';
+            } else {
+                $session->customer_name = 'Khách (Guest)';
+            }
+        }
         
         return view('admin.chats.index', compact('sessions'));
     }
@@ -27,13 +43,24 @@ class ChatController extends Controller
             ->orderBy('created_at', 'asc')
             ->get();
         
+        // Lấy tên khách hàng từ tin nhắn đầu tiên
+        $customerName = 'Khách (Guest)';
+        $firstUserMessage = ChatMessage::where('session_id', $sessionId)
+            ->where('type', 'user')
+            ->with('user:id,name')
+            ->first();
+        
+        if ($firstUserMessage && $firstUserMessage->user) {
+            $customerName = $firstUserMessage->user->name;
+        }
+        
         // Đánh dấu đã đọc các tin nhắn của user
         ChatMessage::where('session_id', $sessionId)
             ->where('type', 'user')
             ->where('is_read', false)
             ->update(['is_read' => true]);
         
-        return view('admin.chats.show', compact('messages', 'sessionId'));
+        return view('admin.chats.show', compact('messages', 'sessionId', 'customerName'));
     }
     
     public function reply(Request $request, $sessionId)

@@ -29,7 +29,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th style="width: 300px">Session ID</th>
+                                <th style="width: 300px">Khách hàng</th>
                                 <th>Số tin nhắn</th>
                                 <th>Tin nhắn cuối</th>
                                 <th style="width: 150px">Hành động</th>
@@ -40,7 +40,7 @@
                             <tr>
                                 <td>
                                     <a href="{{ route('admin.chats.show', $session->session_id) }}" class="text-decoration-none">
-                                        <code>{{ Str::limit($session->session_id, 30) }}</code>
+                                        <strong><i class="fas fa-user-circle mr-1"></i>{{ $session->customer_name }}</strong>
                                     </a>
                                 </td>
                                 <td>

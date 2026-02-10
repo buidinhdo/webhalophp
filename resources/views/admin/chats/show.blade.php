@@ -33,7 +33,9 @@
             <div class="col-md-12">
                 <div class="card card-primary card-outline direct-chat direct-chat-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Cuộc trò chuyện</h3>
+                        <h3 class="card-title">
+                            <i class="fas fa-user-circle mr-1"></i>{{ $customerName }}
+                        </h3>
                         <div class="card-tools">
                             <span class="badge bg-info">{{ $messages->count() }} tin nhắn</span>
                             <form action="{{ route('admin.chats.destroy', $sessionId) }}" method="POST" class="d-inline ml-2" onsubmit="return confirm('Bạn có chắc muốn xóa cuộc trò chuyện này?')">
