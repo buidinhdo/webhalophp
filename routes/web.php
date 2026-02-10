@@ -51,6 +51,10 @@ Route::get('/lien-he', function () {
 })->name('contact');
 Route::post('/lien-he', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
+// Chatbot
+Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
+Route::get('/chatbot/history', [App\Http\Controllers\ChatbotController::class, 'getHistory'])->name('chatbot.history');
+
 // Về chúng tôi
 Route::get('/ve-chung-toi', function () {
     return view('pages.about');

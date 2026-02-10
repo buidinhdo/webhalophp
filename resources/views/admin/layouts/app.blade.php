@@ -187,6 +187,14 @@
                         </a>
                     </li>
 
+                    <!-- Chat -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.chats.index') }}" class="nav-link {{ request()->routeIs('admin.chats.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <p>Chat / Bình luận</p>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
