@@ -18,12 +18,10 @@ class AdminMiddleware
             return redirect()->route('admin.login')->with('error', 'Vui lòng đăng nhập để tiếp tục.');
         }
 
-        // Kiểm tra quyền admin
+        // Kiểm tra quyền admin - Chỉ redirect, KHÔNG logout user
         if (!auth()->user()->is_admin) {
-            // Nếu không phải admin, đăng xuất và redirect về trang chủ
-            auth()->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+            // Nếu không phải admin, chỉ redirect về trang chủ (không logout)
+            // Điều này cho phép user thường vẫn sử dụng chatbot bình thường
             return redirect()->route('home')->with('error', 'Bạn không có quyền truy cập vào trang quản trị.');
         }
 

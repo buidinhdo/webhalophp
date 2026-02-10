@@ -51,10 +51,11 @@ Route::get('/lien-he', function () {
 })->name('contact');
 Route::post('/lien-he', [App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
-// Chatbot
-Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
-Route::get('/chatbot/history', [App\Http\Controllers\ChatbotController::class, 'getHistory'])->name('chatbot.history');
-Route::get('/chatbot/new-messages', [App\Http\Controllers\ChatbotController::class, 'getNewMessages'])->name('chatbot.new-messages');
+// Chatbot - Cho phép TẤT CẢ người dùng (guest, user, admin) sử dụng
+Route::get('/chatbot/session', [App\Http\Controllers\ChatbotController::class, 'getOrCreateSession'])->name('chatbot.session')->withoutMiddleware(['auth', 'admin']);
+Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send')->withoutMiddleware(['auth', 'admin']);
+Route::get('/chatbot/history', [App\Http\Controllers\ChatbotController::class, 'getHistory'])->name('chatbot.history')->withoutMiddleware(['auth', 'admin']);
+Route::get('/chatbot/new-messages', [App\Http\Controllers\ChatbotController::class, 'getNewMessages'])->name('chatbot.new-messages')->withoutMiddleware(['auth', 'admin']);
 
 // Test Chatbot (only for development)
 Route::get('/test-chatbot', function () {

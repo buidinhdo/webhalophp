@@ -148,6 +148,8 @@ class ChatbotController extends Controller
     {
         $sessionId = $request->input('session_id');
         
+        // Chỉ lấy tin nhắn trong session này (không cross-session)
+        // Session đã unique per user nên không cần filter thêm
         $messages = ChatMessage::where('session_id', $sessionId)
             ->with('product:id,name,price,image,slug')
             ->orderBy('created_at', 'asc')
@@ -164,6 +166,7 @@ class ChatbotController extends Controller
         $sessionId = $request->input('session_id');
         $lastMessageId = $request->input('last_message_id', 0);
         
+        // Chỉ lấy tin nhắn mới trong session này (không cross-session)
         $messages = ChatMessage::where('session_id', $sessionId)
             ->where('id', '>', $lastMessageId)
             ->with('product:id,name,price,image,slug', 'user:id,name')
@@ -173,6 +176,40 @@ class ChatbotController extends Controller
         return response()->json([
             'success' => true,
             'messages' => $messages,
+        ]);
+    }
+    
+    public function getOrCreateSession(Request $request)
+    {
+        // Nếu user đã đăng nhập, tìm session gần nhất của user đó
+        if (auth()->check()) {
+            $userId = auth()->id();
+            
+            // Tìm session gần nhất của user này
+            $lastSession = ChatMessage::where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            
+            if ($lastSession) {
+                // Reuse session cũ của user
+                return response()->json([
+                    'success' => true,
+                    'session_id' => $lastSession->session_id,
+                    'is_existing' => true
+                ]);
+            }
+            
+            // Tạo session mới nếu user chưa có chat nào
+            $sessionId = 'session_user_' . $userId . '_' . time();
+        } else {
+            // Guest user - tạo session mới
+            $sessionId = 'session_guest_' . time() . '_' . substr(md5(uniqid()), 0, 8);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'session_id' => $sessionId,
+            'is_existing' => false
         ]);
     }
 }

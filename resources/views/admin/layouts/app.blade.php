@@ -55,7 +55,7 @@
                         <i class="fas fa-user mr-2"></i> Thông tin cá nhân
                     </a>
                     <div class="dropdown-divider"></div>
-                    <form action="{{ route('admin.logout') }}" method="POST">
+                    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
@@ -256,6 +256,18 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+<!-- Clear chat session on logout -->
+<script>
+    // Clear chat localStorage khi admin logout
+    const adminLogoutForm = document.getElementById('admin-logout-form');
+    if (adminLogoutForm) {
+        adminLogoutForm.addEventListener('submit', function() {
+            localStorage.removeItem('chat_session_id');
+            localStorage.removeItem('chat_user_id');
+        });
+    }
+</script>
 
 @stack('scripts')
 

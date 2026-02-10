@@ -349,17 +349,50 @@
 let chatSessionId = null;
 let lastMessageId = 0;
 let pollingInterval = null;
+const currentUserId = '{{ auth()->id() ?? "guest" }}';
 
-function getOrCreateSessionId() {
-    if (!chatSessionId) {
-        chatSessionId = localStorage.getItem('chat_session_id');
-        if (!chatSessionId) {
-            // Tạo session mới khi người dùng bắt đầu chat
-            chatSessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('chat_session_id', chatSessionId);
-        }
+// Auto clear localStorage khi user khác đăng nhập (để tránh hiển thị sai session_id tạm thời)
+(function() {
+    const storedUserId = localStorage.getItem('chat_user_id');
+    if (storedUserId && storedUserId !== currentUserId) {
+        localStorage.removeItem('chat_session_id');
+        localStorage.removeItem('chat_user_id');
+        console.log('Cleared old localStorage for different user');
     }
-    return chatSessionId;
+})();
+
+function getOrCreateSessionId(callback) {
+    // Nếu đã có session trong memory, dùng luôn
+    if (chatSessionId) {
+        if (callback) callback(chatSessionId);
+        return;
+    }
+    
+    // Gọi API để lấy session từ server (dựa trên user_id trong database)
+    fetch('/chatbot/session', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            chatSessionId = data.session_id;
+            localStorage.setItem('chat_session_id', chatSessionId);
+            localStorage.setItem('chat_user_id', currentUserId);
+            console.log('Session loaded:', chatSessionId, 'Existing:', data.is_existing);
+            
+            if (callback) callback(chatSessionId);
+        }
+    })
+    .catch(error => {
+        console.error('Error getting session:', error);
+        // Fallback: tạo session tạm thời nếu API lỗi
+        chatSessionId = 'session_' + currentUserId + '_' + Date.now();
+        if (callback) callback(chatSessionId);
+    });
 }
 
 function toggleChatbot() {
@@ -368,15 +401,13 @@ function toggleChatbot() {
         container.style.display = 'flex';
         document.getElementById('chat-input').focus();
         
-        // Tạo session khi mở chatbot lần đầu
-        getOrCreateSessionId();
-        
-        // Load lịch sử nếu có
-        if (chatSessionId) {
+        // Lấy session từ server (sẽ reuse session cũ nếu user đã có)
+        getOrCreateSessionId(function(sessionId) {
+            // Sau khi có session, load history và bắt đầu polling
             loadChatHistory();
             hideNotificationBadge();
             startPolling();
-        }
+        });
     } else {
         container.style.display = 'none';
         if (chatSessionId) {
@@ -467,23 +498,36 @@ function loadChatHistory() {
     fetch('/chatbot/history?session_id=' + chatSessionId)
         .then(response => response.json())
         .then(data => {
-            if (data.success && data.messages.length > 1) {
+            if (data.success) {
                 const messagesDiv = document.getElementById('chatbot-messages');
-                messagesDiv.innerHTML = '';
+                // Clear messages cũ và thêm lại welcome message
+                messagesDiv.innerHTML = `
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <img src="{{ asset('images/logo/logohalo.png') }}" alt="Bot">
+                        </div>
+                        <div class="message-content">
+                            Xin chào! Chào mừng bạn đến với HaloShop. Hãy để lại câu hỏi của bạn, đội ngũ tư vấn viên sẽ phản hồi ngay!
+                        </div>
+                    </div>
+                `;
                 
-                data.messages.forEach(msg => {
-                    if (msg.type === 'user') {
-                        appendMessage('user', msg.message, false);
-                    } else if (msg.type === 'bot') {
-                        appendMessage('bot', msg.message, false);
-                    } else if (msg.type === 'admin') {
-                        appendMessage('admin', msg.message, false, msg.user?.name || 'Admin');
-                    }
-                    lastMessageId = msg.id;
-                });
-                
-                const messagesDiv2 = document.getElementById('chatbot-messages');
-                messagesDiv2.scrollTop = messagesDiv2.scrollHeight;
+                // Load lại tin nhắn của session hiện tại
+                if (data.messages.length > 0) {
+                    data.messages.forEach(msg => {
+                        if (msg.type === 'user') {
+                            appendMessage('user', msg.message, false);
+                        } else if (msg.type === 'bot') {
+                            appendMessage('bot', msg.message, false);
+                        } else if (msg.type === 'admin') {
+                            appendMessage('admin', msg.message, false, msg.user?.name || 'Admin');
+                        }
+                        lastMessageId = msg.id;
+                    });
+                    
+                    const messagesDiv2 = document.getElementById('chatbot-messages');
+                    messagesDiv2.scrollTop = messagesDiv2.scrollHeight;
+                }
             }
         });
 }
@@ -500,56 +544,53 @@ function sendChatMessage() {
     
     if (!message) return;
     
-    // Tạo session nếu chưa có (tin nhắn đầu tiên)
-    const sessionId = getOrCreateSessionId();
-    
-    // Hiển thị tin nhắn user
+    // Hiển thị tin nhắn user ngay lập tức
     appendMessage('user', message);
     input.value = '';
     
-    // Không hiện typing indicator, chỉ gửi
-    // showTypingIndicator(); // Đã tắt
-    
-    // Gửi request
-    fetch('/chatbot/send', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-        },
-        body: JSON.stringify({
-            message: message,
-            session_id: sessionId
+    // Lấy session từ server rồi gửi message
+    getOrCreateSessionId(function(sessionId) {
+        // Gửi request
+        fetch('/chatbot/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+                message: message,
+                session_id: sessionId
+            })
         })
-    })
-    .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-            throw new Error('Network response was not ok: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Response data:', data);
-        
-        if (data.success) {
-            // Hiện thông báo đã gửi (không có bot tự động trả lời)
-            const notice = document.createElement('div');
-            notice.style.cssText = 'text-align: center; padding: 8px; color: #666; font-size: 13px; font-style: italic;';
-            notice.textContent = '✓ Tin nhắn đã được gửi. Chúng tôi sẽ phản hồi sớm...';
-            document.getElementById('chatbot-messages').appendChild(notice);
-            
-            // Bắt đầu polling để nhận phản hồi từ admin
-            if (document.getElementById('chatbot-container').style.display !== 'none') {
-                startPolling();
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.status);
             }
-        } else {
-            appendMessage('bot', 'Xin lỗi, có lỗi xảy ra: ' + (data.message || 'Unknown error'));
-        }
-    })
-    .catch(error => {
-        console.error('Chatbot error:', error);
-        appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.');
+            return response.json();
+        })
+        .then(data => {
+            console.log('Response data:', data);
+            
+            if (data.success) {
+                // Hiện thông báo đã gửi (không có bot tự động trả lời)
+                const notice = document.createElement('div');
+                notice.style.cssText = 'text-align: center; padding: 8px; color: #666; font-size: 13px; font-style: italic;';
+                notice.textContent = '✓ Tin nhắn đã được gửi. Chúng tôi sẽ phản hồi sớm...';
+                document.getElementById('chatbot-messages').appendChild(notice);
+                
+                // Bắt đầu polling để nhận phản hồi từ admin
+                if (document.getElementById('chatbot-container').style.display !== 'none') {
+                    startPolling();
+                }
+            } else {
+                appendMessage('bot', 'Xin lỗi, có lỗi xảy ra: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('Chatbot error:', error);
+            appendMessage('bot', 'Xin lỗi, đã có lỗi xảy ra. Vui lòng thử lại sau.');
+        });
     });
 }
 

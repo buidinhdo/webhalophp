@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'HaloShop - Gaming Store')</title>
     
     <!-- Bootstrap CSS -->
@@ -584,7 +585,7 @@
                                 <li><a class="dropdown-item" href="{{ route('account.orders') }}"><i class="fas fa-box me-2"></i>Đơn hàng</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
-                                    <form action="{{ route('logout') }}" method="POST">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</button>
                                     </form>
@@ -667,6 +668,18 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Clear chat session on logout -->
+    <script>
+        // Clear chat localStorage khi user logout
+        const logoutForm = document.getElementById('logout-form');
+        if (logoutForm) {
+            logoutForm.addEventListener('submit', function() {
+                localStorage.removeItem('chat_session_id');
+                localStorage.removeItem('chat_user_id');
+            });
+        }
+    </script>
     
     @yield('scripts')
 </body>
