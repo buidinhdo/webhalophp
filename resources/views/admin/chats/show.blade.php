@@ -144,6 +144,11 @@ document.addEventListener('DOMContentLoaded', function() {
     if (chatMessages) {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
+    
+    // Auto refresh every 5 seconds to show new messages from users
+    setInterval(function() {
+        location.reload();
+    }, 5000);
 });
 </script>
 @endsection

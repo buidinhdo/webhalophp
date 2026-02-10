@@ -88,6 +88,21 @@
     font-weight: bold;
 }
 
+.chatbot-badge.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+    }
+}
+
 .chatbot-container {
     position: fixed;
     bottom: 90px;
@@ -190,8 +205,20 @@
 }
 
 .admin-message .message-content {
-    background: #e3f2fd;
-    border-color: #90caf9;
+    background: #d4edda;
+    border-color: #28a745;
+}
+
+.admin-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-label {
+    color: #28a745;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: block;
 }
 
 .chatbot-products {
@@ -325,14 +352,89 @@ if (!chatSessionId) {
     localStorage.setItem('chat_session_id', chatSessionId);
 }
 
+let lastMessageId = 0;
+let pollingInterval = null;
+
+// Start background polling for notifications
+startBackgroundPolling();
+
 function toggleChatbot() {
     const container = document.getElementById('chatbot-container');
     if (container.style.display === 'none') {
         container.style.display = 'flex';
         document.getElementById('chat-input').focus();
         loadChatHistory();
+        hideNotificationBadge();
+        startPolling();
     } else {
         container.style.display = 'none';
+        stopPolling();
+        startBackgroundPolling();
+    }
+}
+
+function startBackgroundPolling() {
+    // Poll every 10 seconds when chatbot is closed
+    if (pollingInterval) clearInterval(pollingInterval);
+    pollingInterval = setInterval(checkNewMessages, 10000);
+}
+
+function startPolling() {
+    // Poll every 3 seconds when chatbot is open
+    if (pollingInterval) clearInterval(pollingInterval);
+    pollingInterval = setInterval(checkNewMessages, 3000);
+}
+
+function stopPolling() {
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+        pollingInterval = null;
+    }
+}
+
+function checkNewMessages() {
+    fetch(`/chatbot/new-messages?session_id=${chatSessionId}&last_message_id=${lastMessageId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.messages.length > 0) {
+                let hasAdminMessage = false;
+                data.messages.forEach(msg => {
+                    if (msg.type === 'admin') {
+                        appendMessage('admin', msg.message, true, msg.user?.name || 'Admin');
+                        hasAdminMessage = true;
+                    } else if (msg.type === 'bot') {
+                        appendMessage('bot', msg.message, true);
+                    }
+                    lastMessageId = msg.id;
+                });
+                
+                // Show notification if chatbot is closed and admin replied
+                const container = document.getElementById('chatbot-container');
+                if (hasAdminMessage && container.style.display === 'none') {
+                    showNotificationBadge();
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error checking new messages:', error);
+        });
+}
+
+function showNotificationBadge() {
+    const badge = document.getElementById('chat-badge');
+    if (badge) {
+        badge.style.display = 'flex';
+        badge.textContent = '!';
+        // Animate badge
+        badge.classList.add('pulse');
+    }
+}
+
+function hideNotificationBadge() {
+    const badge = document.getElementById('chat-badge');
+    if (badge) {
+        badge.style.display = 'none';
+        badge.classList.remove('pulse');
     }
 }
 
@@ -345,8 +447,18 @@ function loadChatHistory() {
                 messagesDiv.innerHTML = '';
                 
                 data.messages.forEach(msg => {
-                    appendMessage(msg.type, msg.message, false);
+                    if (msg.type === 'user') {
+                        appendMessage('user', msg.message, false);
+                    } else if (msg.type === 'bot') {
+                        appendMessage('bot', msg.message, false);
+                    } else if (msg.type === 'admin') {
+                        appendMessage('admin', msg.message, false, msg.user?.name || 'Admin');
+                    }
+                    lastMessageId = msg.id;
                 });
+                
+                const messagesDiv2 = document.getElementById('chatbot-messages');
+                messagesDiv2.scrollTop = messagesDiv2.scrollHeight;
             }
         });
 }
@@ -404,25 +516,44 @@ function sendChatMessage() {
     });
 }
 
-function appendMessage(type, message, scroll = true) {
+function appendMessage(type, message, scroll = true, adminName = '') {
     const messagesDiv = document.getElementById('chatbot-messages');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}-message`;
     
     let avatarSrc = '';
+    let messageContent = '';
+    
     if (type === 'user') {
         avatarSrc = '{{ auth()->check() ? "https://ui-avatars.com/api/?name=" . urlencode(auth()->user()->name) : "https://ui-avatars.com/api/?name=U" }}';
+        messageContent = `
+            <div class="message-avatar">
+                <img src="${avatarSrc}" alt="User">
+            </div>
+            <div class="message-content">${message}</div>
+        `;
+    } else if (type === 'admin') {
+        avatarSrc = `https://ui-avatars.com/api/?name=${encodeURIComponent(adminName)}&background=28a745&color=fff`;
+        messageContent = `
+            <div class="message-avatar">
+                <img src="${avatarSrc}" alt="Admin">
+            </div>
+            <div class="message-content admin-content">
+                <small class="admin-label"><i class="fas fa-user-shield"></i> ${adminName}</small>
+                <div>${message}</div>
+            </div>
+        `;
     } else {
         avatarSrc = '{{ asset("images/logo/logohalo.png") }}';
+        messageContent = `
+            <div class="message-avatar">
+                <img src="${avatarSrc}" alt="Bot">
+            </div>
+            <div class="message-content">${message}</div>
+        `;
     }
     
-    messageDiv.innerHTML = `
-        <div class="message-avatar">
-            <img src="${avatarSrc}" alt="${type}">
-        </div>
-        <div class="message-content">${message}</div>
-    `;
-    
+    messageDiv.innerHTML = messageContent;
     messagesDiv.appendChild(messageDiv);
     
     if (scroll) {

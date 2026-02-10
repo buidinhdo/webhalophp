@@ -154,4 +154,21 @@ class ChatbotController extends Controller
             'messages' => $messages,
         ]);
     }
+    
+    public function getNewMessages(Request $request)
+    {
+        $sessionId = $request->input('session_id');
+        $lastMessageId = $request->input('last_message_id', 0);
+        
+        $messages = ChatMessage::where('session_id', $sessionId)
+            ->where('id', '>', $lastMessageId)
+            ->with('product:id,name,price,image,slug', 'user:id,name')
+            ->orderBy('created_at', 'asc')
+            ->get();
+        
+        return response()->json([
+            'success' => true,
+            'messages' => $messages,
+        ]);
+    }
 }

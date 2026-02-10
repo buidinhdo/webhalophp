@@ -54,6 +54,7 @@ Route::post('/lien-he', [App\Http\Controllers\ContactController::class, 'submit'
 // Chatbot
 Route::post('/chatbot/send', [App\Http\Controllers\ChatbotController::class, 'sendMessage'])->name('chatbot.send');
 Route::get('/chatbot/history', [App\Http\Controllers\ChatbotController::class, 'getHistory'])->name('chatbot.history');
+Route::get('/chatbot/new-messages', [App\Http\Controllers\ChatbotController::class, 'getNewMessages'])->name('chatbot.new-messages');
 
 // Về chúng tôi
 Route::get('/ve-chung-toi', function () {
