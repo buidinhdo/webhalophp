@@ -75,11 +75,7 @@
                         @foreach($order->items as $item)
                         <tr>
                             <td>
-                                @if($item->product_image)
-                                    <img src="{{ asset($item->product_image) }}" alt="{{ $item->product_name }}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                                @else
-                                    <img src="{{ asset('images/no-image.png') }}" alt="No image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
-                                @endif
+                                @include('components.order-item-image', ['item' => $item])
                             </td>
                             <td>{{ $item->product_name }}</td>
                             <td class="text-center">{{ $item->quantity }}</td>

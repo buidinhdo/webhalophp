@@ -39,13 +39,17 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        $order->load('items.product');
+        // Refresh dữ liệu từ database để đảm bảo hiển thị mới nhất
+        $order->refresh();
+        $order->load(['items.product']);
         return view('admin.orders.show', compact('order'));
     }
 
     public function edit(Order $order)
     {
-        $order->load('items.product');
+        // Refresh dữ liệu từ database
+        $order->refresh();
+        $order->load(['items.product']);
         return view('admin.orders.edit', compact('order'));
     }
 
@@ -113,8 +117,9 @@ class OrderController extends Controller
 
     public function exportPdf(Order $order)
     {
-        // Load order with items and products
-        $order->load('items.product');
+        // Load order with items and products - refresh to get latest data
+        $order->refresh();
+        $order->load(['items.product']);
         
         // Generate PDF with options for Vietnamese support
         $pdf = Pdf::loadView('admin.orders.pdf', compact('order'));
