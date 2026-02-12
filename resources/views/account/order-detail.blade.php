@@ -70,22 +70,24 @@
                         <table class="table">
                             <thead>
                                 <tr>
+                                    <th width="80">Ảnh</th>
                                     <th>Sản phẩm</th>
-                                    <th>Ảnh</th>
-                                    <th>Số lượng</th>
-                                    <th>Đơn giá</th>
-                                    <th>Thành tiền</th>
+                                    <th width="100">Số lượng</th>
+                                    <th width="120">Đơn giá</th>
+                                    <th width="120">Thành tiền</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($order->items as $item)
                                 <tr>
-                                    <td>{{ $item->product_name }}</td>
                                     <td>
                                         @if($item->product_image)
-                                            <img src="{{ asset('storage/' . $item->product_image) }}" alt="{{ $item->product_name }}" style="width: 50px; height: 50px; object-fit: contain;">
+                                            <img src="{{ asset($item->product_image) }}" alt="{{ $item->product_name }}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                                        @else
+                                            <img src="{{ asset('images/no-image.png') }}" alt="No image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                         @endif
                                     </td>
+                                    <td>{{ $item->product_name }}</td>
                                     <td>{{ $item->quantity }}</td>
                                     <td>{{ number_format($item->price) }}₫</td>
                                     <td><strong>{{ number_format($item->subtotal) }}₫</strong></td>

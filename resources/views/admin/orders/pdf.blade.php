@@ -109,13 +109,18 @@
             font-size: 13px;
         }
         
-        .products-table th:nth-child(2) {
+        .products-table th:nth-child(1) {
             text-align: center;
             width: 80px;
         }
         
-        .products-table th:nth-child(3),
-        .products-table th:nth-child(4) {
+        .products-table th:nth-child(3) {
+            text-align: center;
+            width: 80px;
+        }
+        
+        .products-table th:nth-child(4),
+        .products-table th:nth-child(5) {
             text-align: right;
             width: 120px;
         }
@@ -132,12 +137,16 @@
             padding: 12px 10px;
         }
         
-        .products-table td:nth-child(2) {
+        .products-table td:nth-child(1) {
             text-align: center;
         }
         
-        .products-table td:nth-child(3),
-        .products-table td:nth-child(4) {
+        .products-table td:nth-child(3) {
+            text-align: center;
+        }
+        
+        .products-table td:nth-child(4),
+        .products-table td:nth-child(5) {
             text-align: right;
         }
         
@@ -299,6 +308,7 @@
         <table class="products-table">
             <thead>
                 <tr>
+                    <th width="80">Ảnh</th>
                     <th>Tên sản phẩm</th>
                     <th>Số lượng</th>
                     <th>Đơn giá</th>
@@ -308,6 +318,11 @@
             <tbody>
                 @foreach($order->items as $item)
                 <tr>
+                    <td style="text-align: center;">
+                        @if($item->product_image)
+                            <img src="{{ public_path($item->product_image) }}" alt="{{ $item->product_name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                        @endif
+                    </td>
                     <td>{{ $item->product_name }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->price, 0, ',', '.') }}₫</td>
@@ -317,7 +332,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" style="text-align: right;">TỔNG CỘNG:</td>
+                    <td colspan="4" style="text-align: right;">TỔNG CỘNG:</td>
                     <td class="total-amount">{{ number_format($order->total_amount, 0, ',', '.') }}₫</td>
                 </tr>
             </tfoot>
