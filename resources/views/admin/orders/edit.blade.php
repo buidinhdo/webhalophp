@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
+<form action="{{ route('admin.orders.update', $order->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     
@@ -92,6 +92,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th width="80">Ảnh</th>
                                 <th>Sản phẩm</th>
                                 <th width="100">Số lượng</th>
                                 <th width="150">Đơn giá</th>
@@ -99,8 +100,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($order->items as $item)
+                            @foreach($order->items as $index => $item)
                             <tr>
+                                <td>
+                                    @if($item->product_image)
+                                        <img src="{{ asset($item->product_image) }}" alt="{{ $item->product_name }}" 
+                                            class="img-thumbnail mb-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('images/no-image.png') }}" alt="No image" 
+                                            class="img-thumbnail mb-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                    @endif
+                                    <input type="file" name="item_images[{{ $item->id }}]" class="form-control-file" accept="image/*">
+                                    <small class="text-muted">Cập nhật ảnh</small>
+                                </td>
                                 <td>{{ $item->product_name }}</td>
                                 <td class="text-center">{{ $item->quantity }}</td>
                                 <td class="text-right">{{ number_format($item->price) }}₫</td>
@@ -110,12 +122,12 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="3" class="text-right"><strong>Tổng cộng:</strong></td>
+                                <td colspan="4" class="text-right"><strong>Tổng cộng:</strong></td>
                                 <td class="text-right"><strong class="text-danger">{{ number_format($order->total_amount) }}₫</strong></td>
                             </tr>
                         </tfoot>
                     </table>
-                    <small class="text-muted"><i class="fas fa-info-circle"></i> Không thể sửa sản phẩm trong đơn hàng. Chỉ có thể cập nhật thông tin khách hàng và trạng thái.</small>
+                    <small class="text-muted"><i class="fas fa-info-circle"></i> Có thể cập nhật ảnh sản phẩm. Không thể sửa số lượng và giá.</small>
                 </div>
             </div>
         </div>
