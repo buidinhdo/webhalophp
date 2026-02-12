@@ -43,6 +43,7 @@ Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('ca
 // Thanh toán
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/thanh-toan/xu-ly', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/thanh-toan/qr/{order}', [CheckoutController::class, 'paymentQR'])->name('checkout.payment-qr');
 Route::get('/thanh-toan/thanh-cong/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Tin tức

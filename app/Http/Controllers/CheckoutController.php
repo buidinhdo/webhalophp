@@ -36,11 +36,13 @@ class CheckoutController extends Controller
             'email' => 'required|email',
             'phone' => 'required|string',
             'address' => 'required|string',
+            'payment_method' => 'required|in:cod,bank_transfer',
         ], [
             'name.required' => 'Vui lòng nhập họ tên',
             'email.required' => 'Vui lòng nhập email',
             'phone.required' => 'Vui lòng nhập số điện thoại',
             'address.required' => 'Vui lòng nhập địa chỉ',
+            'payment_method.required' => 'Vui lòng chọn phương thức thanh toán',
         ]);
         
         $cart = session()->get('cart', []);
@@ -88,8 +90,23 @@ class CheckoutController extends Controller
         // Xóa giỏ hàng
         session()->forget('cart');
         
+        // Nếu thanh toán chuyển khoản, chuyển đến trang QR
+        if ($request->payment_method === 'bank_transfer') {
+            return redirect()->route('checkout.payment-qr', $order->id);
+        }
+        
         return redirect()->route('checkout.success', $order->id)
             ->with('success', 'Đặt hàng thành công!');
+    }
+    
+    public function paymentQR($orderId)
+    {
+        $order = Order::with('items.product')->findOrFail($orderId);
+        
+        // Lấy danh sách ngân hàng
+        $banks = config('banks.banks');
+        
+        return view('checkout.payment-qr', compact('order', 'banks'));
     }
     
     public function success($orderId)

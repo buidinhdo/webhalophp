@@ -79,8 +79,8 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment_method" id="bank" value="bank">
-                                    <label class="form-check-label" for="bank">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer" value="bank_transfer">
+                                    <label class="form-check-label" for="bank_transfer">
                                         <i class="fas fa-university text-primary"></i> Chuyển khoản ngân hàng
                                     </label>
                                 </div>
