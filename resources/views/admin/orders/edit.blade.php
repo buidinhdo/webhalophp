@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<form action="{{ route('admin.orders.update', $order->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
     @csrf
     @method('PUT')
     
@@ -105,13 +105,11 @@
                                 <td>
                                     @if($item->product_image)
                                         <img src="{{ asset($item->product_image) }}" alt="{{ $item->product_name }}" 
-                                            class="img-thumbnail mb-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                            class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                     @else
                                         <img src="{{ asset('images/no-image.png') }}" alt="No image" 
-                                            class="img-thumbnail mb-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                            class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                     @endif
-                                    <input type="file" name="item_images[{{ $item->id }}]" class="form-control-file" accept="image/*">
-                                    <small class="text-muted">Cập nhật ảnh</small>
                                 </td>
                                 <td>{{ $item->product_name }}</td>
                                 <td class="text-center">{{ $item->quantity }}</td>
@@ -127,7 +125,6 @@
                             </tr>
                         </tfoot>
                     </table>
-                    <small class="text-muted"><i class="fas fa-info-circle"></i> Có thể cập nhật ảnh sản phẩm. Không thể sửa số lượng và giá.</small>
                 </div>
             </div>
         </div>

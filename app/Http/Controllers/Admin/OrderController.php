@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -62,8 +61,7 @@ class OrderController extends Controller
             'customer_address' => 'required|string|max:500',
             'order_status' => 'required|in:pending,processing,shipping,completed,cancelled',
             'payment_status' => 'required|in:unpaid,paid',
-            'notes' => 'nullable|string',
-            'item_images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+            'notes' => 'nullable|string'
         ]);
 
         // Cập nhật thông tin đơn hàng
@@ -76,28 +74,6 @@ class OrderController extends Controller
             'payment_status' => $validated['payment_status'],
             'notes' => $validated['notes'] ?? null,
         ]);
-
-        // Xử lý upload ảnh cho từng order item
-        if ($request->hasFile('item_images')) {
-            foreach ($request->file('item_images') as $itemId => $image) {
-                if ($image) {
-                    $orderItem = OrderItem::find($itemId);
-                    if ($orderItem && $orderItem->order_id == $order->id) {
-                        // Xóa ảnh cũ nếu có
-                        if ($orderItem->product_image && file_exists(public_path($orderItem->product_image))) {
-                            @unlink(public_path($orderItem->product_image));
-                        }
-                        
-                        // Upload ảnh mới
-                        $imageName = time() . '_' . $itemId . '_' . $image->getClientOriginalName();
-                        $image->move(public_path('images/products'), $imageName);
-                        $orderItem->update([
-                            'product_image' => 'images/products/' . $imageName
-                        ]);
-                    }
-                }
-            }
-        }
 
         return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Đơn hàng đã được cập nhật!');

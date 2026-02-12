@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\ReviewController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -52,4 +53,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('chats', ChatController::class)->only(['index', 'show', 'destroy']);
     Route::post('chats/{sessionId}/reply', [ChatController::class, 'reply'])->name('chats.reply');
     Route::get('chats/unread/count', [ChatController::class, 'getUnreadCount'])->name('chats.unread-count');
+    
+    // Reviews Management
+    Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
+    Route::patch('reviews/{review}/update-status', [ReviewController::class, 'updateStatus'])->name('reviews.update-status');
+    Route::patch('reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
 });

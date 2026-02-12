@@ -62,6 +62,11 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)
             ->active()
+            ->with(['reviews' => function($query) {
+                $query->where('status', 'approved')
+                      ->with('user')
+                      ->latest();
+            }])
             ->firstOrFail();
             
         // Lấy sản phẩm cùng danh mục trước

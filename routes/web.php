@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Sản phẩm
 Route::get('/san-pham', [ProductController::class, 'index'])->name('products.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('products.show');
+
+// Đánh giá sản phẩm (yêu cầu đăng nhập)
+Route::post('/san-pham/{productId}/danh-gia', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
 
 // Danh mục
 Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('categories.show');

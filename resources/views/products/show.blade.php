@@ -2,8 +2,53 @@
 
 @section('title', $product->name . ' - HaloShop')
 
+@section('styles')
+<style>
+    .rating-input {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+    .rating-input input {
+        display: none;
+    }
+    .rating-input label {
+        cursor: pointer;
+        font-size: 2rem;
+        color: #ddd;
+        transition: color 0.2s;
+    }
+    .rating-input label:hover,
+    .rating-input label:hover ~ label,
+    .rating-input input:checked ~ label {
+        color: #ffc107;
+    }
+    .review-item {
+        transition: box-shadow 0.2s;
+    }
+    .review-item:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="container my-5">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
@@ -126,6 +171,98 @@
         </div>
     </div>
     @endif
+    
+    <!-- Reviews Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-star"></i> Đánh giá sản phẩm
+                        @if($product->reviews->count() > 0)
+                            <span class="badge bg-warning text-dark ms-2">
+                                {{ number_format($product->reviews->avg('rating'), 1) }} <i class="fas fa-star"></i>
+                                ({{ $product->reviews->count() }} đánh giá)
+                            </span>
+                        @endif
+                    </h4>
+                </div>
+                <div class="card-body">
+                    @auth
+                        <!-- Form đánh giá -->
+                        <div class="mb-4 p-3 bg-light rounded">
+                            <h5 class="mb-3">Viết đánh giá của bạn</h5>
+                            <form action="{{ route('reviews.store', $product->id) }}" method="POST">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label">Đánh giá của bạn <span class="text-danger">*</span></label>
+                                    <div class="rating-input">
+                                        <input type="radio" name="rating" id="star5" value="5" required>
+                                        <label for="star5" title="5 sao"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star4" value="4">
+                                        <label for="star4" title="4 sao"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star3" value="3">
+                                        <label for="star3" title="3 sao"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star2" value="2">
+                                        <label for="star2" title="2 sao"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star1" value="1">
+                                        <label for="star1" title="1 sao"><i class="fas fa-star"></i></label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nhận xét của bạn <span class="text-danger">*</span></label>
+                                    <textarea name="comment" class="form-control" rows="4" required placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Gửi đánh giá
+                                </button>
+                            </form>
+                        </div>
+                    @else
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> 
+                            Vui lòng <a href="{{ route('login') }}" class="alert-link">đăng nhập</a> để viết đánh giá.
+                        </div>
+                    @endauth
+
+                    <!-- Danh sách đánh giá -->
+                    @if($product->reviews->count() > 0)
+                        <hr>
+                        <h5 class="mb-3">Các đánh giá</h5>
+                        @foreach($product->reviews as $review)
+                            <div class="review-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong>{{ $review->user->name ?? 'Khách hàng' }}</strong>
+                                        <div class="text-warning">
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $review->rating)
+                                                    <i class="fas fa-star"></i>
+                                                @else
+                                                    <i class="far fa-star"></i>
+                                                @endif
+                                            @endfor
+                                        </div>
+                                    </div>
+                                    <small class="text-muted">{{ $review->created_at->format('d/m/Y') }}</small>
+                                </div>
+                                <p class="mt-2 mb-0">{{ $review->comment }}</p>
+                                
+                                @if($review->admin_reply)
+                                    <div class="admin-reply mt-3 p-2 bg-light rounded">
+                                        <strong class="text-primary"><i class="fas fa-reply"></i> Phản hồi từ HaloShop:</strong>
+                                        <p class="mb-0 mt-1">{{ $review->admin_reply }}</p>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    @else
+                        <p class="text-muted text-center py-4">Chưa có đánh giá nào cho sản phẩm này.</p>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Related Products -->
     @if($relatedProducts->count() > 0)
