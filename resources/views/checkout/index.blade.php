@@ -18,10 +18,17 @@
                     <form action="{{ route('checkout.process') }}" method="POST" id="checkoutForm">
                         @csrf
                         
+                        @auth
+                        <div class="alert alert-info mb-3">
+                            <i class="fas fa-info-circle"></i> Thông tin dưới đây được lấy từ tài khoản của bạn. Bạn có thể sửa nếu cần.
+                        </div>
+                        @endauth
+                        
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                                <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
+                                    value="{{ old('name', $user->name ?? '') }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -29,7 +36,8 @@
                             
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" 
+                                    value="{{ old('email', $user->email ?? '') }}" required>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -38,7 +46,8 @@
                         
                         <div class="mb-3">
                             <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                            <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" required>
+                            <input type="tel" name="phone" class="form-control @error('phone') is-invalid @enderror" 
+                                value="{{ old('phone', $user->phone ?? '') }}" required>
                             @error('phone')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -46,7 +55,8 @@
                         
                         <div class="mb-3">
                             <label class="form-label">Địa chỉ <span class="text-danger">*</span></label>
-                            <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}" required>
+                            <input type="text" name="address" class="form-control @error('address') is-invalid @enderror" 
+                                value="{{ old('address', $user->address ?? '') }}" required>
                             @error('address')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

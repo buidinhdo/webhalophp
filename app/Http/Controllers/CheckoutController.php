@@ -23,7 +23,10 @@ class CheckoutController extends Controller
             $subtotal += $item['price'] * $item['quantity'];
         }
         
-        return view('checkout.index', compact('cart', 'subtotal'));
+        // Lấy thông tin user nếu đã đăng nhập
+        $user = Auth::user();
+        
+        return view('checkout.index', compact('cart', 'subtotal', 'user'));
     }
     
     public function process(Request $request)

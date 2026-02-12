@@ -21,6 +21,10 @@
         </div>
         
         <div class="col-md-9">
+            <div class="alert alert-info mb-3">
+                <i class="fas fa-info-circle"></i> Đây là danh sách đơn hàng được tạo từ tài khoản <strong>{{ Auth::user()->name }}</strong>
+            </div>
+            
             @if($orders->count() > 0)
                 @foreach($orders as $order)
                 <div class="card mb-3">
