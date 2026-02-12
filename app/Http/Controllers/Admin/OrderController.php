@@ -42,17 +42,40 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
+    public function edit(Order $order)
+    {
+        $order->load('items.product');
+        return view('admin.orders.edit', compact('order'));
+    }
+
     public function update(Request $request, Order $order)
     {
         $validated = $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'customer_email' => 'required|email|max:255',
+            'customer_phone' => 'required|string|max:20',
+            'customer_address' => 'required|string|max:500',
             'order_status' => 'required|in:pending,processing,shipping,completed,cancelled',
-            'payment_status' => 'required|in:unpaid,paid'
+            'payment_status' => 'required|in:unpaid,paid',
+            'notes' => 'nullable|string'
         ]);
 
         $order->update($validated);
 
-        return redirect()->back()
+        return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Đơn hàng đã được cập nhật!');
+    }
+
+    public function destroy(Order $order)
+    {
+        // Xóa order items trước
+        $order->items()->delete();
+        
+        // Xóa order
+        $order->delete();
+
+        return redirect()->route('admin.orders.index')
+            ->with('success', 'Xóa đơn hàng thành công!');
     }
 
     public function exportPdf(Order $order)

@@ -33,7 +33,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::post('categories/{category}/toggle-active', [CategoryController::class, 'toggleActive'])->name('categories.toggle-active');
     
     // Orders Management
-    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
     Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::get('orders/{order}/export-pdf', [OrderController::class, 'exportPdf'])->name('orders.export-pdf');
     

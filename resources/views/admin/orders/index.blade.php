@@ -85,9 +85,20 @@
                     </td>
                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-info">
+                        <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-info" title="Xem chi tiết">
                             <i class="fas fa-eye"></i>
                         </a>
+                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-sm btn-primary" title="Sửa">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" class="d-inline" 
+                            onsubmit="return confirm('Đồng ý xóa đơn hàng #{{ $order->order_number }}? Hành động này không thể hoàn tác!')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @empty

@@ -10,6 +10,9 @@
 @endsection
 
 @section('action-buttons')
+    <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-primary">
+        <i class="fas fa-edit"></i> Sửa đơn hàng
+    </a>
     <a href="{{ route('admin.orders.export-pdf', $order->id) }}" class="btn btn-danger" target="_blank">
         <i class="fas fa-file-pdf"></i> Xuất PDF
     </a>
@@ -129,32 +132,22 @@
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Cập nhật trạng thái</h3>
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title">Thao tác</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
+                <a href="{{ route('admin.orders.edit', $order->id) }}" class="btn btn-primary btn-block mb-2">
+                    <i class="fas fa-edit"></i> Sửa đơn hàng
+                </a>
+                <a href="{{ route('admin.orders.export-pdf', $order->id) }}" class="btn btn-danger btn-block mb-2" target="_blank">
+                    <i class="fas fa-file-pdf"></i> Xuất PDF
+                </a>
+                <form action="{{ route('admin.orders.destroy', $order->id) }}" method="POST" 
+                    onsubmit="return confirm('Đồng ý xóa đơn hàng #{{ $order->order_number }}? Hành động này không thể hoàn tác!')">
                     @csrf
-                    @method('PUT')
-                    <div class="form-group">
-                        <label>Trạng thái đơn hàng</label>
-                        <select name="order_status" class="form-control">
-                            <option value="pending" {{ $order->order_status == 'pending' ? 'selected' : '' }}>Chờ xử lý</option>
-                            <option value="processing" {{ $order->order_status == 'processing' ? 'selected' : '' }}>Đang xử lý</option>
-                            <option value="shipping" {{ $order->order_status == 'shipping' ? 'selected' : '' }}>Đang giao</option>
-                            <option value="completed" {{ $order->order_status == 'completed' ? 'selected' : '' }}>Hoàn thành</option>
-                            <option value="cancelled" {{ $order->order_status == 'cancelled' ? 'selected' : '' }}>Đã hủy</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Trạng thái thanh toán</label>
-                        <select name="payment_status" class="form-control">
-                            <option value="unpaid" {{ $order->payment_status == 'unpaid' ? 'selected' : '' }}>Chưa thanh toán</option>
-                            <option value="paid" {{ $order->payment_status == 'paid' ? 'selected' : '' }}>Đã thanh toán</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-save"></i> Cập nhật
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-block">
+                        <i class="fas fa-trash"></i> Xóa đơn hàng
                     </button>
                 </form>
             </div>
