@@ -75,12 +75,153 @@
     .copy-btn:hover {
         color: #0056b3;
     }
+    
+    /* Print Styles */
     @media print {
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+        
+        body {
+            background: white !important;
+        }
+        
+        /* Ẩn header, navbar, footer của trang */
+        header, nav, .navbar, .header, footer, .footer {
+            display: none !important;
+        }
+        
         .no-print {
             display: none !important;
         }
+        
+        .payment-container {
+            max-width: 100% !important;
+        }
+        
         .qr-container {
             box-shadow: none;
+            padding: 0;
+        }
+        
+        .print-layout {
+            display: flex !important;
+            gap: 30px;
+            page-break-inside: avoid;
+        }
+        
+        .print-left {
+            flex: 0 0 45%;
+            text-align: center;
+            border: 4px solid #0066cc;
+            border-radius: 20px;
+            padding: 30px 20px;
+            background: white;
+        }
+        
+        .print-right {
+            flex: 0 0 50%;
+        }
+        
+        .qr-code-print {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+        }
+        
+        .qr-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .qr-footer img {
+            height: 32px;
+            object-fit: contain;
+        }
+        
+        .qr-info {
+            font-size: 13px;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+        
+        .qr-info strong {
+            font-size: 14px;
+            color: #000;
+        }
+        
+        .print-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #198754;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #d1f5d3;
+            border-radius: 5px;
+        }
+        
+        .info-box-print {
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .info-row-print {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed #ccc;
+        }
+        
+        .info-row-print:last-child {
+            border-bottom: none;
+        }
+        
+        .info-row-print strong {
+            color: #333;
+        }
+        
+        .info-row-print .value {
+            font-weight: 600;
+            color: #000;
+        }
+        
+        .print-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            margin-top: 15px;
+        }
+        
+        .print-order-items {
+            margin-top: 15px;
+        }
+        
+        .print-order-items ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        
+        .print-order-items li {
+            padding: 5px 0;
+            font-size: 12px;
+            border-bottom: 1px solid #eee;
+        }
+    }
+    
+    @media screen {
+        .print-layout {
+            display: none;
         }
     }
 </style>
@@ -205,6 +346,90 @@
             </div>
         </div>
     </div>
+
+    <!-- Print Layout - Chỉ hiển thị khi in -->
+    <div class="print-layout">
+        <div class="print-left">
+            <div id="qr-code-print">
+                <!-- QR Code sẽ được inject bằng JS -->
+            </div>
+            <div class="qr-footer">
+                <img src="https://api.vietqr.io/img/NAPAS.png" alt="NAPAS" style="height: 32px; object-fit: contain;">
+                <span id="bank-logo-print"></span>
+            </div>
+            <div class="qr-info">
+                <strong id="account-name-print">{{ config('banks.account_name') }}</strong><br>
+                <span id="account-number-print">{{ config('banks.account_number') }}</span><br>
+                Số tiền: <strong>{{ number_format($order->total_amount) }} VNĐ</strong>
+            </div>
+            <p style="margin-top: 15px; font-size: 12px; color: #666;">
+                Quét mã QR để thanh toán tự động
+            </p>
+        </div>
+        
+        <div class="print-right">
+            <div class="print-title">
+                <i class="fas fa-info-circle"></i> Thông tin chuyển khoản
+            </div>
+            
+            <div class="info-box-print">
+                <div class="info-row-print">
+                    <strong>Ngân hàng:</strong>
+                    <span class="value" id="selected-bank-print">---</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Số tài khoản:</strong>
+                    <span class="value">{{ config('banks.account_number') }}</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Chủ tài khoản:</strong>
+                    <span class="value">{{ config('banks.account_name') }}</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Tên khách hàng:</strong>
+                    <span class="value">{{ $order->customer_name }}</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Email:</strong>
+                    <span class="value">{{ $order->customer_email }}</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Số tiền:</strong>
+                    <span class="value" style="color: #dc3545;">{{ number_format($order->total_amount) }}₫</span>
+                </div>
+                <div class="info-row-print">
+                    <strong>Nội dung CK:</strong>
+                    <span class="value">{{ $order->order_number }}</span>
+                </div>
+            </div>
+
+            <div class="print-warning">
+                <i class="fas fa-exclamation-triangle"></i>
+                <strong>Lưu ý:</strong> Vui lòng chuyển khoản đúng số tiền và ghi đúng nội dung để đơn hàng được xử lý nhanh nhất.
+            </div>
+
+            <div class="print-order-items">
+                <h6 style="font-weight: bold; margin-bottom: 10px;">Chi tiết đơn hàng:</h6>
+                <ul>
+                    @foreach($order->items as $item)
+                    <li>
+                        <i class="fas fa-box" style="color: #0066cc;"></i>
+                        {{ $item->product_name }} 
+                        <span style="color: #666;">(x{{ $item->quantity }})</span>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #dee2e6; text-align: center;">
+                <p style="font-size: 11px; color: #666; margin: 0;">
+                    Đơn hàng: <strong>{{ $order->order_number }}</strong><br>
+                    Ngày đặt: {{ $order->created_at->format('d/m/Y H:i') }}<br>
+                    <strong>HaloShop</strong> - Cảm ơn quý khách đã đặt hàng!
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section('scripts')
@@ -227,15 +452,30 @@
             const bankBin = this.getAttribute('data-bank-bin');
             const bankName = this.getAttribute('data-bank-name');
             
-            // Cập nhật tên ngân hàng
+            // Cập nhật tên ngân hàng (màn hình)
             document.getElementById('selected-bank-name').textContent = bankName;
+            
+            // Cập nhật tên ngân hàng (print)
+            document.getElementById('selected-bank-print').textContent = bankName;
             
             // Tạo QR code sử dụng VietQR API
             const qrUrl = `https://img.vietqr.io/image/${bankBin}-${accountNumber}-compact2.jpg?amount=${orderAmount}&addInfo=${orderContent}&accountName=${encodeURIComponent(accountName)}`;
             
+            // Cập nhật QR code cho màn hình
             document.getElementById('qr-code-wrapper').innerHTML = `
                 <img src="${qrUrl}" alt="QR Code" class="qr-code-image" />
                 <p class="text-muted mt-2"><small>Quét mã QR để thanh toán tự động</small></p>
+            `;
+            
+            // Cập nhật QR code cho print
+            document.getElementById('qr-code-print').innerHTML = `
+                <img src="${qrUrl}" alt="QR Code" class="qr-code-print" />
+            `;
+            
+            // Cập nhật logo ngân hàng trong print
+            const bankLogoUrl = `https://api.vietqr.io/img/${bankCode}.png`;
+            document.getElementById('bank-logo-print').innerHTML = `
+                <img src="${bankLogoUrl}" alt="${bankName}" style="height: 32px; object-fit: contain;">
             `;
         });
     });
