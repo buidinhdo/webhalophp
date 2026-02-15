@@ -15,7 +15,6 @@ class HomeController extends Controller
         $featuredProducts = Product::featured()
             ->active()
             ->latest()
-            ->take(8)
             ->get();
             
         $newProducts = Product::new()

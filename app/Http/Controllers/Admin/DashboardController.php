@@ -37,37 +37,7 @@ class DashboardController extends Controller
             ->whereYear('created_at', now()->subMonth()->year)
             ->sum('total_amount');
         
-        // ========== THỐNG KÊ NÂNG CAO ==========
-        
-        // 1. Giá trị đơn hàng trung bình (AOV)
-        $avgOrderValue = Order::where('order_status', 'completed')->avg('total_amount') ?? 0;
-        
-        // 2. Số lượng sản phẩm trung bình mỗi đơn
-        $avgProductsPerOrder = OrderItem::selectRaw('AVG(quantity) as avg_qty')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.order_status', '!=', 'cancelled')
-            ->value('avg_qty') ?? 0;
-        
-        // 3. Tỷ lệ khách hàng quay lại
-        $repeatCustomers = User::whereHas('orders', function($q) {
-            $q->select('user_id')
-              ->groupBy('user_id')
-              ->havingRaw('COUNT(*) > 1');
-        })->count();
-        $repeatCustomerRate = $totalCustomers > 0 ? ($repeatCustomers / $totalCustomers) * 100 : 0;
-        
-        // 4. Thời gian xử lý đơn trung bình (từ pending → completed, tính bằng giờ)
-        $avgProcessingTime = Order::where('order_status', 'completed')
-            ->whereNotNull('updated_at')
-            ->selectRaw('AVG(TIMESTAMPDIFF(HOUR, created_at, updated_at)) as avg_hours')
-            ->value('avg_hours') ?? 0;
-        
-        // 5. Tỷ lệ hủy đơn
-        $cancelledOrders = Order::where('order_status', 'cancelled')->count();
-        $cancellationRate = $totalOrders > 0 ? ($cancelledOrders / $totalOrders) * 100 : 0;
-        
-        // 6. Tỷ lệ chuyển đổi (estimated - tổng khách vs đơn hàng)
-        $conversionRate = $totalCustomers > 0 ? ($totalOrders / $totalCustomers) * 100 : 0;
+
         
         // ========== SO SÁNH THÁNG NÀY VS THÁNG TRƯỚC ==========
         $revenueGrowth = $lastMonthRevenue > 0 
@@ -82,16 +52,20 @@ class DashboardController extends Controller
             ? (($thisMonthOrders - $lastMonthOrders) / $lastMonthOrders) * 100 
             : ($thisMonthOrders > 0 ? 100 : 0);
         
-        // ========== THỐNG KÊ KHÁCH HÀNG ==========
+        // So sánh khách hàng tháng này vs tháng trước
+        $thisMonthCustomers = User::whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->where('is_admin', 0)
+            ->count();
+        $lastMonthCustomers = User::whereMonth('created_at', now()->subMonth()->month)
+            ->whereYear('created_at', now()->subMonth()->year)
+            ->where('is_admin', 0)
+            ->count();
+        $customersGrowth = $lastMonthCustomers > 0 
+            ? (($thisMonthCustomers - $lastMonthCustomers) / $lastMonthCustomers) * 100 
+            : ($thisMonthCustomers > 0 ? 100 : 0);
         
-        // Top 10 khách hàng VIP
-        $vipCustomers = User::select('users.*', DB::raw('SUM(orders.total_amount) as total_spent'), DB::raw('COUNT(orders.id) as order_count'))
-            ->join('orders', 'users.id', '=', 'orders.user_id')
-            ->where('orders.order_status', 'completed')
-            ->groupBy('users.id')
-            ->orderByDesc('total_spent')
-            ->limit(10)
-            ->get();
+        // ========== THỐNG KÊ KHÁCH HÀNG ==========
         
         // Khách hàng mới (tháng này)
         $newCustomers = User::whereMonth('created_at', date('m'))
@@ -117,34 +91,10 @@ class DashboardController extends Controller
             ->whereIn('orders.order_status', ['completed', 'shipping', 'processing'])
             ->groupBy('products.id')
             ->orderByDesc('total_sold')
-            ->limit(5)
+            ->limit(15)
             ->get();
         
-        // Sản phẩm có doanh thu cao nhất
-        $topRevenueProducts = Product::select('products.*')
-            ->selectRaw('SUM(order_items.quantity * order_items.price) as product_revenue')
-            ->join('order_items', 'products.id', '=', 'order_items.product_id')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.order_status', 'completed')
-            ->groupBy('products.id')
-            ->orderByDesc('product_revenue')
-            ->limit(5)
-            ->get();
-        
-        // Sản phẩm sắp hết hàng (stock < 10)
-        $lowStockProducts = Product::where('stock', '<', 10)
-            ->where('stock', '>', 0)
-            ->orderBy('stock')
-            ->limit(10)
-            ->get();
-        
-        // Top sản phẩm được yêu thích (từ Wishlist)
-        $topWishlistProducts = Product::select('products.*', DB::raw('COUNT(wishlists.id) as wishlist_count'))
-            ->join('wishlists', 'products.id', '=', 'wishlists.product_id')
-            ->groupBy('products.id')
-            ->orderByDesc('wishlist_count')
-            ->limit(10)
-            ->get();
+
         
         // Sản phẩm mới hiệu quả (30 ngày đầu)
         $newProductsPerformance = Product::select('products.*')
@@ -160,15 +110,6 @@ class DashboardController extends Controller
         
         // Biểu đồ doanh thu 7 ngày
         $chartData = $this->getRevenueChartData(7);
-        
-        // Doanh thu theo giờ trong ngày (24 giờ)
-        $revenueByHour = $this->getRevenueByHour();
-        
-        // Doanh thu theo ngày trong tuần
-        $revenueByWeekday = $this->getRevenueByWeekday();
-        
-        // Doanh thu theo tháng (12 tháng)
-        $revenueByMonth = $this->getRevenueByMonth();
         
         // Top danh mục
         $topCategories = DB::table('categories')
@@ -191,22 +132,7 @@ class DashboardController extends Controller
             'cancelled' => Order::where('order_status', 'cancelled')->sum('total_amount'),
         ];
         
-        // Doanh thu theo nền tảng (platform)
-        $revenueByPlatform = Product::select('products.platform', DB::raw('SUM(order_items.quantity * order_items.price) as revenue'))
-            ->join('order_items', 'products.id', '=', 'order_items.product_id')
-            ->join('orders', 'order_items.order_id', '=', 'orders.id')
-            ->where('orders.order_status', 'completed')
-            ->whereNotNull('products.platform')
-            ->groupBy('products.platform')
-            ->orderByDesc('revenue')
-            ->get();
-        
-        // Doanh thu theo phương thức thanh toán
-        $revenueByPaymentMethod = Order::select('payment_method', DB::raw('SUM(total_amount) as revenue'))
-            ->where('order_status', 'completed')
-            ->groupBy('payment_method')
-            ->orderByDesc('revenue')
-            ->get();
+
         
         // Đơn hàng gần đây
         $recentOrders = Order::latest()->limit(10)->get();
@@ -216,24 +142,19 @@ class DashboardController extends Controller
             'totalProducts', 'totalOrders', 'totalCustomers', 'totalRevenue',
             'pendingOrders', 'todayOrders', 'monthlyRevenue',
             
-            // Thống kê nâng cao
-            'avgOrderValue', 'avgProductsPerOrder', 'repeatCustomerRate',
-            'avgProcessingTime', 'cancellationRate', 'conversionRate',
-            
             // So sánh tăng trưởng
-            'revenueGrowth', 'ordersGrowth', 'lastMonthRevenue',
+            'revenueGrowth', 'ordersGrowth', 'customersGrowth',
+            'lastMonthRevenue', 'thisMonthOrders', 'lastMonthOrders',
+            'thisMonthCustomers', 'lastMonthCustomers',
             
             // Khách hàng
-            'vipCustomers', 'newCustomers', 'inactiveCustomers',
+            'newCustomers', 'inactiveCustomers',
             
             // Sản phẩm
-            'topProducts', 'topRevenueProducts', 'lowStockProducts',
-            'topWishlistProducts', 'newProductsPerformance',
+            'topProducts', 'newProductsPerformance',
             
             // Biểu đồ
-            'chartData', 'revenueByHour', 'revenueByWeekday', 'revenueByMonth',
-            'topCategories', 'revenueByStatus', 'revenueByPlatform',
-            'revenueByPaymentMethod',
+            'chartData', 'topCategories', 'revenueByStatus',
             
             // Khác
             'recentOrders'
@@ -329,77 +250,5 @@ class DashboardController extends Controller
         exit;
     }
     
-    // ========== HELPER METHODS CHO BIỂU ĐỒ MỚI ==========
-    
-    /**
-     * Doanh thu theo giờ trong ngày (0-23h)
-     */
-    public function getRevenueByHour()
-    {
-        $hours = [];
-        $revenues = [];
-        
-        for ($h = 0; $h < 24; $h++) {
-            $hours[] = sprintf('%02d:00', $h);
-            
-            $hourRevenue = Order::where('order_status', 'completed')
-                ->whereRaw('HOUR(created_at) = ?', [$h])
-                ->sum('total_amount');
-            
-            $revenues[] = $hourRevenue;
-        }
-        
-        return [
-            'labels' => $hours,
-            'revenues' => $revenues
-        ];
-    }
-    
-    /**
-     * Doanh thu theo ngày trong tuần (Thứ 2 - CN)
-     */
-    public function getRevenueByWeekday()
-    {
-        $weekdays = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
-        $revenues = [];
-        
-        for ($day = 1; $day <= 7; $day++) {
-            $dayRevenue = Order::where('order_status', 'completed')
-                ->whereRaw('DAYOFWEEK(created_at) = ?', [$day == 7 ? 1 : $day + 1]) // MySQL: 1=Sunday
-                ->sum('total_amount');
-            
-            $revenues[] = $dayRevenue;
-        }
-        
-        return [
-            'labels' => $weekdays,
-            'revenues' => $revenues
-        ];
-    }
-    
-    /**
-     * Doanh thu theo tháng (12 tháng gần nhất)
-     */
-    public function getRevenueByMonth()
-    {
-        $labels = [];
-        $revenues = [];
-        
-        for ($i = 11; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
-            $labels[] = $date->format('M Y');
-            
-            $monthRevenue = Order::where('order_status', 'completed')
-                ->whereMonth('created_at', $date->month)
-                ->whereYear('created_at', $date->year)
-                ->sum('total_amount');
-            
-            $revenues[] = $monthRevenue;
-        }
-        
-        return [
-            'labels' => $labels,
-            'revenues' => $revenues
-        ];
-    }
+
 }

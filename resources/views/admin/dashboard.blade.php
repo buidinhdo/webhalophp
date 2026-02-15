@@ -124,117 +124,6 @@
     </div>
 </div>
 
-<!-- Thống kê nâng cao -->
-<div class="row">
-    <div class="col-12">
-        <h5 class="mb-3"><i class="fas fa-chart-pie text-primary"></i> Thống kê nâng cao</h5>
-    </div>
-</div>
-
-<div class="row">
-    <!-- AOV -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-info">
-            <span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">AOV</span>
-                <span class="info-box-number">{{ number_format($avgOrderValue/1000, 0) }}K</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: 70%"></div>
-                </div>
-                <span class="progress-description">
-                    Giá trị TB/đơn
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Conversion Rate -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-success">
-            <span class="info-box-icon"><i class="fas fa-chart-line"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Chuyển đổi</span>
-                <span class="info-box-number">{{ number_format($conversionRate, 1) }}%</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: {{ min($conversionRate, 100) }}%"></div>
-                </div>
-                <span class="progress-description">
-                    Khách → Đơn hàng
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Repeat Customer -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-warning">
-            <span class="info-box-icon"><i class="fas fa-redo"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Khách quay lại</span>
-                <span class="info-box-number">{{ number_format($repeatCustomerRate, 1) }}%</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: {{ $repeatCustomerRate }}%"></div>
-                </div>
-                <span class="progress-description">
-                    Mua > 1 lần
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Avg Products -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-primary">
-            <span class="info-box-icon"><i class="fas fa-box"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">SP/Đơn</span>
-                <span class="info-box-number">{{ number_format($avgProductsPerOrder, 1) }}</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: {{ min($avgProductsPerOrder * 20, 100) }}%"></div>
-                </div>
-                <span class="progress-description">
-                    Trung bình/đơn
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Processing Time -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-secondary">
-            <span class="info-box-icon"><i class="fas fa-clock"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Thời gian XL</span>
-                <span class="info-box-number">{{ number_format($avgProcessingTime, 0) }}h</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: {{ min($avgProcessingTime / 48 * 100, 100) }}%"></div>
-                </div>
-                <span class="progress-description">
-                    Xử lý đơn TB
-                </span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cancellation Rate -->
-    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-        <div class="info-box bg-gradient-danger">
-            <span class="info-box-icon"><i class="fas fa-times-circle"></i></span>
-            <div class="info-box-content">
-                <span class="info-box-text">Tỷ lệ hủy</span>
-                <span class="info-box-number">{{ number_format($cancellationRate, 1) }}%</span>
-                <div class="progress">
-                    <div class="progress-bar" style="width: {{ $cancellationRate }}%"></div>
-                </div>
-                <span class="progress-description">
-                    Đơn bị hủy
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- So sánh tăng trưởng -->
 <div class="row">
     <div class="col-12">
@@ -243,7 +132,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card card-primary card-outline">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -272,13 +161,13 @@
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card card-success card-outline">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h5 class="mb-0">Đơn hàng</h5>
-                        <h3 class="mb-0">{{ number_format($totalOrders) }}</h3>
+                        <h3 class="mb-0">{{ number_format($thisMonthOrders) }}</h3>
                     </div>
                     <div class="text-right">
                         @if($ordersGrowth >= 0)
@@ -290,11 +179,41 @@
                                 <i class="fas fa-arrow-down"></i> {{ number_format($ordersGrowth, 1) }}%
                             </span>
                         @endif
+                        <small class="d-block text-muted mt-1">Tháng trước: {{ number_format($lastMonthOrders) }}</small>
                     </div>
                 </div>
                 <div class="progress mt-3" style="height: 10px;">
                     <div class="progress-bar {{ $ordersGrowth >= 0 ? 'bg-success' : 'bg-danger' }}" 
                          style="width: {{ min(abs($ordersGrowth), 100) }}%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-warning card-outline">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0">Khách hàng</h5>
+                        <h3 class="mb-0">{{ number_format($thisMonthCustomers) }}</h3>
+                    </div>
+                    <div class="text-right">
+                        @if($customersGrowth >= 0)
+                            <span class="badge badge-success" style="font-size: 1.2rem;">
+                                <i class="fas fa-arrow-up"></i> +{{ number_format($customersGrowth, 1) }}%
+                            </span>
+                        @else
+                            <span class="badge badge-danger" style="font-size: 1.2rem;">
+                                <i class="fas fa-arrow-down"></i> {{ number_format($customersGrowth, 1) }}%
+                            </span>
+                        @endif
+                        <small class="d-block text-muted mt-1">Tháng trước: {{ number_format($lastMonthCustomers) }}</small>
+                    </div>
+                </div>
+                <div class="progress mt-3" style="height: 10px;">
+                    <div class="progress-bar {{ $customersGrowth >= 0 ? 'bg-success' : 'bg-danger' }}" 
+                         style="width: {{ min(abs($customersGrowth), 100) }}%"></div>
                 </div>
             </div>
         </div>
@@ -368,7 +287,7 @@
                     Sản phẩm bán chạy
                 </h3>
             </div>
-            <div class="card-body p-0">
+            <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                     @forelse($topProducts as $product)
                     <li class="item">
@@ -408,7 +327,7 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-chart-pie mr-1"></i>
-                    Top 5 Danh mục bán chạy
+                    Top Danh mục bán chạy
                 </h3>
             </div>
             <div class="card-body">
@@ -501,268 +420,6 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========== MỚI: THỐNG KÊ KHÁCH HÀNG VIP ========== -->
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-success">
-                <h3 class="card-title">
-                    <i class="fas fa-crown mr-1"></i>
-                    Top 10 Khách Hàng VIP
-                </h3>
-            </div>
-            <div class="card-body table-responsive p-0" style="max-height: 400px;">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Khách hàng</th>
-                            <th>Số đơn</th>
-                            <th>Tổng chi tiêu</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($vipCustomers as $index => $customer)
-                        <tr>
-                            <td>
-                                @if($index == 0)
-                                    <i class="fas fa-trophy text-warning"></i>
-                                @elseif($index == 1)
-                                    <i class="fas fa-medal text-secondary"></i>
-                                @elseif($index == 2)
-                                    <i class="fas fa-award text-danger"></i>
-                                @else
-                                    {{ $index + 1 }}
-                                @endif
-                            </td>
-                            <td>
-                                <strong>{{ $customer->name }}</strong><br>
-                                <small class="text-muted">{{ $customer->email }}</small>
-                            </td>
-                            <td><span class="badge badge-info">{{ $customer->order_count }} đơn</span></td>
-                            <td><strong class="text-success">{{ number_format($customer->total_spent) }}₫</strong></td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-3">Chưa có dữ liệu</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-primary">
-                <h3 class="card-title">
-                    <i class="fas fa-heart mr-1"></i>
-                    Sản Phẩm Được Yêu Thích Nhất
-                </h3>
-            </div>
-            <div class="card-body table-responsive p-0" style="max-height: 400px;">
-                <table class="table table-hover table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Sản phẩm</th>
-                            <th>Lượt thích</th>
-                            <th>Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($topWishlistProducts as $index => $product)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <strong>{{ Str::limit($product->name, 40) }}</strong><br>
-                                <small class="text-muted">{{ $product->platform ?? 'N/A' }}</small>
-                            </td>
-                            <td>
-                                <span class="badge badge-danger">
-                                    <i class="fas fa-heart"></i> {{ $product->wishlist_count }}
-                                </span>
-                            </td>
-                            <td><strong>{{ number_format($product->price) }}₫</strong></td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-3">Chưa có dữ liệu</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========== THỐNG KÊ SẢN PHẨM ========== -->
-<div class="row">
-    <div class="col-md-6">
-        <div class="card card-warning">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-exclamation-triangle mr-1"></i>
-                    Sản Phẩm Sắp Hết Hàng
-                </h3>
-            </div>
-            <div class="card-body table-responsive p-0" style="max-height: 350px;">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Sản phẩm</th>
-                            <th>Tồn kho</th>
-                            <th>Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($lowStockProducts as $product)
-                        <tr class="{{ $product->stock <= 3 ? 'table-danger' : 'table-warning' }}">
-                            <td>
-                                <strong>{{ Str::limit($product->name, 35) }}</strong>
-                            </td>
-                            <td>
-                                <span class="badge badge-{{ $product->stock <= 3 ? 'danger' : 'warning' }}">
-                                    {{ $product->stock }} sản phẩm
-                                </span>
-                            </td>
-                            <td>{{ number_format($product->price) }}₫</td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="3" class="text-center py-3">Tất cả sản phẩm đều còn hàng!</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6">
-        <div class="card card-info">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-dollar-sign mr-1"></i>
-                    Top Sản Phẩm Doanh Thu Cao
-                </h3>
-            </div>
-            <div class="card-body table-responsive p-0" style="max-height: 350px;">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Sản phẩm</th>
-                            <th>Doanh thu</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($topRevenueProducts as $index => $product)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>
-                                <strong>{{ Str::limit($product->name, 40) }}</strong>
-                            </td>
-                            <td>
-                                <strong class="text-success">{{ number_format($product->product_revenue) }}₫</strong>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="3" class="text-center py-3">Chưa có dữ liệu</td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ========== BIỂU ĐỒ SO SÁNH MỚI ========== -->
-<div class="row">
-    <!-- Revenue by Hour -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-info">
-                <h3 class="card-title">
-                    <i class="fas fa-clock mr-1"></i>
-                    Doanh Thu Theo Giờ Trong Ngày
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="hourChart" style="height: 250px;"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Revenue by Weekday -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-success">
-                <h3 class="card-title">
-                    <i class="fas fa-calendar-week mr-1"></i>
-                    Doanh Thu Theo Ngày Trong Tuần
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="weekdayChart" style="height: 250px;"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Revenue by Month -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-primary">
-                <h3 class="card-title">
-                    <i class="fas fa-chart-area mr-1"></i>
-                    Doanh Thu 12 Tháng Gần Nhất
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="monthChart" style="height: 250px;"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Revenue by Platform -->
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-gradient-warning">
-                <h3 class="card-title">
-                    <i class="fas fa-gamepad mr-1"></i>
-                    Doanh Thu Theo Nền Tảng
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="platformChart" style="height: 250px;"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Revenue by Payment Method -->
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-gradient-secondary">
-                <h3 class="card-title">
-                    <i class="fas fa-credit-card mr-1"></i>
-                    Doanh Thu Theo Phương Thức Thanh Toán
-                </h3>
-            </div>
-            <div class="card-body">
-                <canvas id="paymentChart" style="height: 200px;"></canvas>
             </div>
         </div>
     </div>
@@ -1057,264 +714,7 @@ $(function() {
         }
     });
     
-    // ========== BIỂU ĐỒ MỚI ==========
-    
-    // 1. Revenue by Hour Chart
-    const hourData = {!! json_encode($revenueByHour) !!};
-    const hourCtx = document.getElementById('hourChart').getContext('2d');
-    new Chart(hourCtx, {
-        type: 'bar',
-        data: {
-            labels: hourData.labels,
-            datasets: [{
-                label: 'Doanh thu (VNĐ)',
-                data: hourData.revenues,
-                backgroundColor: 'rgba(23, 162, 184, 0.6)',
-                borderColor: 'rgba(23, 162, 184, 1)',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.parsed.y) + '₫';
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: { 
-                    title: { display: true, text: 'Giờ trong ngày' }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('vi-VN', { 
-                                notation: 'compact',
-                                compactDisplay: 'short'
-                            }).format(value) + '₫';
-                        }
-                    }
-                }
-            }
-        }
-    });
-    
-    // 2. Revenue by Weekday Chart
-    const weekdayData = {!! json_encode($revenueByWeekday) !!};
-    const weekdayCtx = document.getElementById('weekdayChart').getContext('2d');
-    new Chart(weekdayCtx, {
-        type: 'radar',
-        data: {
-            labels: weekdayData.labels,
-            datasets: [{
-                label: 'Doanh thu',
-                data: weekdayData.revenues,
-                backgroundColor: 'rgba(40, 167, 69, 0.2)',
-                borderColor: 'rgba(40, 167, 69, 1)',
-                borderWidth: 2,
-                pointBackgroundColor: 'rgba(40, 167, 69, 1)',
-                pointBorderColor: '#fff',
-                pointHoverBackgroundColor: '#fff',
-                pointHoverBorderColor: 'rgba(40, 167, 69, 1)'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.parsed.r) + '₫';
-                        }
-                    }
-                }
-            },
-            scales: {
-                r: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('vi-VN', { 
-                                notation: 'compact' 
-                            }).format(value) + '₫';
-                        }
-                    }
-                }
-            }
-        }
-    });
-    
-    // 3. Revenue by Month Chart
-    const monthData = {!! json_encode($revenueByMonth) !!};
-    const monthCtx = document.getElementById('monthChart').getContext('2d');
-    new Chart(monthCtx, {
-        type: 'line',
-        data: {
-            labels: monthData.labels,
-            datasets: [{
-                label: 'Doanh thu',
-                data: monthData.revenues,
-                backgroundColor: 'rgba(0, 123, 255, 0.1)',
-                borderColor: 'rgba(0, 123, 255, 1)',
-                borderWidth: 3,
-                fill: true,
-                tension: 0.4,
-                pointRadius: 5,
-                pointHoverRadius: 7
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.parsed.y) + '₫';
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    title: { display: true, text: 'Tháng' }
-                },
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('vi-VN', { 
-                                notation: 'compact' 
-                            }).format(value) + '₫';
-                        }
-                    }
-                }
-            }
-        }
-    });
-    
-    // 4. Revenue by Platform Chart
-    const platformData = {!! json_encode($revenueByPlatform) !!};
-    const platformCtx = document.getElementById('platformChart').getContext('2d');
-    new Chart(platformCtx, {
-        type: 'doughnut',
-        data: {
-            labels: platformData.map(p => p.platform),
-            datasets: [{
-                data: platformData.map(p => p.revenue),
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 206, 86, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)',
-                    'rgba(255, 159, 64, 0.7)',
-                    'rgba(199, 199, 199, 0.7)',
-                    'rgba(83, 102, 255, 0.7)'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        padding: 15,
-                        font: { size: 12 }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                            const value = context.parsed;
-                            const percentage = ((value / total) * 100).toFixed(1);
-                            return context.label + ': ' + 
-                                   new Intl.NumberFormat('vi-VN').format(value) + '₫ (' + 
-                                   percentage + '%)';
-                        }
-                    }
-                }
-            }
-        }
-    });
-    
-    // 5. Revenue by Payment Method Chart
-    const paymentData = {!! json_encode($revenueByPaymentMethod) !!};
-    const paymentCtx = document.getElementById('paymentChart').getContext('2d');
-    new Chart(paymentCtx, {
-        type: 'horizontalBar',
-        data: {
-            labels: paymentData.map(p => {
-                switch(p.payment_method) {
-                    case 'cod': return 'Tiền mặt (COD)';
-                    case 'bank_transfer': return 'Chuyển khoản';
-                    case 'card': return 'Thẻ tín dụng';
-                    case 'momo': return 'Ví MoMo';
-                    case 'zalopay': return 'ZaloPay';
-                    default: return p.payment_method;
-                }
-            }),
-            datasets: [{
-                label: 'Doanh thu',
-                data: paymentData.map(p => p.revenue),
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 206, 86, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            return 'Doanh thu: ' + new Intl.NumberFormat('vi-VN').format(context.parsed.x) + '₫';
-                        }
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return new Intl.NumberFormat('vi-VN', { 
-                                notation: 'compact' 
-                            }).format(value) + '₫';
-                        }
-                    }
-                }
-            }
-        }
-    });
+
 });
 </script>
 @endpush
