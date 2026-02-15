@@ -120,6 +120,9 @@
                                 <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary">
                                     <i class="fas fa-eye"></i> Xem chi tiết
                                 </a>
+                                <button type="button" class="btn btn-outline-primary" onclick="quickView({{ $product->id }})">
+                                    <i class="fas fa-search"></i> Xem nhanh
+                                </button>
                             </div>
                         </div>
                     </div>

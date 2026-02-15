@@ -63,10 +63,13 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
+                    <div class="d-grid gap-2">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Xem chi tiết
                         </a>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
+                            <i class="fas fa-eye"></i> Xem nhanh
+                        </button>
                     </div>
                 </div>
             </div>
@@ -121,10 +124,13 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
+                    <div class="d-grid gap-2">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Xem chi tiết
                         </a>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
+                            <i class="fas fa-eye"></i> Xem nhanh
+                        </button>
                     </div>
                 </div>
             </div>
@@ -180,10 +186,13 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
+                    <div class="d-grid gap-2">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Đặt trước ngay
                         </a>
+                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
+                            <i class="fas fa-eye"></i> Xem nhanh
+                        </button>
                     </div>
                 </div>
             </div>

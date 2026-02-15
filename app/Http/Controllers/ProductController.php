@@ -93,4 +93,37 @@ class ProductController extends Controller
             
         return view('products.show', compact('product', 'relatedProducts'));
     }
+    
+    public function quickView($id)
+    {
+        $product = Product::with(['category', 'images'])
+            ->where('id', $id)
+            ->active()
+            ->firstOrFail();
+            
+        return response()->json([
+            'success' => true,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => $product->price,
+                'sale_price' => $product->sale_price,
+                'stock' => $product->stock,
+                'sku' => $product->sku,
+                'platform' => $product->platform,
+                'short_description' => $product->short_description,
+                'is_new' => $product->is_new,
+                'is_preorder' => $product->is_preorder,
+                'image' => $product->image ? asset($product->image) : null,
+                'images' => $product->images->map(function($img) {
+                    return asset('storage/' . $img->image_path);
+                }),
+                'category_name' => $product->category ? $product->category->name : null,
+                'price_formatted' => number_format($product->price),
+                'sale_price_formatted' => $product->sale_price ? number_format($product->sale_price) : null,
+                'discount_percent' => $product->sale_price ? round((($product->price - $product->sale_price) / $product->price) * 100) : 0,
+            ]
+        ]);
+    }
 }

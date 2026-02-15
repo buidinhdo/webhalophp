@@ -545,28 +545,37 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">Trang chủ</a>
+                        <a class="nav-link" href="{{ route('home') }}">{{ __('general.home') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">Sản phẩm</a>
+                        <a class="nav-link" href="{{ route('products.index') }}">{{ __('general.products') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('news.index') }}">Tin tức</a>
+                        <a class="nav-link" href="{{ route('news.index') }}">{{ __('general.news') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                        <a class="nav-link" href="{{ route('contact') }}">{{ __('general.contact') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('about') }}">Về chúng tôi</a>
+                        <a class="nav-link" href="{{ route('about') }}">{{ __('general.about') }}</a>
                     </li>
                 </ul>
                 
                 <!-- Form tìm kiếm -->
                 <form action="{{ route('products.index') }}" method="GET" class="d-none d-lg-flex mx-3">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm sản phẩm..." value="{{ request('search') }}" style="width: 200px; border-radius: 20px;">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ __('general.search_placeholder') }}" value="{{ request('search') }}" style="width: 200px; border-radius: 20px;">
                 </form>
                 
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe"></i> {{ app()->getLocale() == 'vi' ? 'Tiếng Việt' : 'English' }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="langDropdown">
+                            <li><a class="dropdown-item {{ app()->getLocale() == 'vi' ? 'active' : '' }}" href="{{ route('language.switch', 'vi') }}"><i class="fas fa-flag me-2"></i>Tiếng Việt</a></li>
+                            <li><a class="dropdown-item {{ app()->getLocale() == 'en' ? 'active' : '' }}" href="{{ route('language.switch', 'en') }}"><i class="fas fa-flag me-2"></i>English</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                             <i class="fas fa-shopping-cart fa-lg"></i>
@@ -581,13 +590,13 @@
                                 <i class="fas fa-user-circle fa-lg"></i> {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{{ route('account.profile') }}"><i class="fas fa-user me-2"></i>Tài khoản</a></li>
-                                <li><a class="dropdown-item" href="{{ route('account.orders') }}"><i class="fas fa-box me-2"></i>Đơn hàng</a></li>
+                                <li><a class="dropdown-item" href="{{ route('account.profile') }}"><i class="fas fa-user me-2"></i>{{ __('general.account') }}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('account.orders') }}"><i class="fas fa-box me-2"></i>{{ app()->getLocale() == 'vi' ? 'Đơn hàng' : 'Orders' }}</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                                         @csrf
-                                        <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Đăng xuất</button>
+                                        <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>{{ __('general.logout') }}</button>
                                     </form>
                                 </li>
                             </ul>
@@ -595,12 +604,12 @@
                     @else
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">
-                                <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                                <i class="fas fa-sign-in-alt"></i> {{ __('general.login') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="btn btn-primary btn-sm ms-2" href="{{ route('register') }}" style="white-space: nowrap;">
-                                <i class="fas fa-user-plus"></i> Đăng ký
+                                <i class="fas fa-user-plus"></i> {{ __('general.register') }}
                             </a>
                         </li>
                     @endauth
@@ -663,11 +672,121 @@
         </div>
     </footer>
 
+    <!-- Quick View Modal -->
+    <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickViewModalLabel">{{ __('general.quick_view') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="quickViewContent">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Chatbot Widget -->
     @include('partials.chatbot')
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Quick View JS -->
+    <script>
+        function quickView(productId) {
+            const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+            const content = document.getElementById('quickViewContent');
+            
+            // Show loading
+            content.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+            
+            modal.show();
+            
+            // Fetch product data
+            fetch(`/api/san-pham/quick-view/${productId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const product = data.product;
+                        content.innerHTML = `
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="${product.image || 'https://via.placeholder.com/400'}" class="img-fluid rounded" alt="${product.name}" style="max-height: 400px; object-fit: contain; width: 100%;">
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="mb-3">${product.name}</h3>
+                                    ${product.is_new ? '<span class="badge bg-success me-1">MỚI</span>' : ''}
+                                    ${product.is_preorder ? '<span class="badge bg-warning">ĐẶT TRƯỚC</span>' : ''}
+                                    
+                                    ${product.platform ? `<p class="text-muted mt-3"><i class="fas fa-gamepad"></i> <strong>Nền tảng:</strong> ${product.platform}</p>` : ''}
+                                    ${product.sku ? `<p class="text-muted"><strong>SKU:</strong> ${product.sku}</p>` : ''}
+                                    
+                                    <div class="my-4">
+                                        ${product.sale_price_formatted ? `
+                                            <span class="text-decoration-line-through text-muted d-block mb-2" style="font-size: 1.2rem;">${product.price_formatted}₫</span>
+                                            <span class="text-danger fw-bold" style="font-size: 2rem;">${product.sale_price_formatted}₫</span>
+                                            <span class="badge bg-danger ms-2">Giảm ${product.discount_percent}%</span>
+                                        ` : `
+                                            <span class="fw-bold" style="font-size: 2rem;">${product.price_formatted}₫</span>
+                                        `}
+                                    </div>
+                                    
+                                    ${product.stock > 0 ? `
+                                        <div class="alert alert-success">
+                                            <i class="fas fa-check-circle"></i> Còn hàng: ${product.stock} sản phẩm
+                                        </div>
+                                    ` : `
+                                        <div class="alert alert-danger">
+                                            <i class="fas fa-times-circle"></i> Hết hàng
+                                        </div>
+                                    `}
+                                    
+                                    ${product.short_description ? `
+                                        <div class="mb-3">
+                                            <h6>Mô tả ngắn:</h6>
+                                            <p>${product.short_description}</p>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div class="d-grid gap-2">
+                                        <a href="/san-pham/${product.slug}" class="btn btn-primary btn-lg">
+                                            <i class="fas fa-eye"></i> Xem chi tiết
+                                        </a>
+                                        ${product.stock > 0 ? `
+                                            <form action="/gio-hang/them/${product.id}" method="POST">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="btn btn-success btn-lg w-100">
+                                                    <i class="fas fa-cart-plus"></i> Thêm vào giỏ hàng
+                                                </button>
+                                            </form>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        content.innerHTML = '<div class="alert alert-danger">Không thể tải thông tin sản phẩm</div>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    content.innerHTML = '<div class="alert alert-danger">Có lỗi xảy ra khi tải dữ liệu</div>';
+                });
+        }
+    </script>
     
     <!-- Clear chat session on logout -->
     <script>

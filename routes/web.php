@@ -27,6 +27,15 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Sản phẩm
 Route::get('/san-pham', [ProductController::class, 'index'])->name('products.index');
 Route::get('/san-pham/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/api/san-pham/quick-view/{id}', [ProductController::class, 'quickView'])->name('products.quickView');
+
+// Language Switcher
+Route::get('/language/{locale}', function ($locale) {
+    if (in_array($locale, ['vi', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('language.switch');
 
 // Đánh giá sản phẩm (yêu cầu đăng nhập)
 Route::post('/san-pham/{productId}/danh-gia', [ReviewController::class, 'store'])->name('reviews.store')->middleware('auth');
