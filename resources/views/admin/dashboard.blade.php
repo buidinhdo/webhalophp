@@ -222,7 +222,7 @@
 
 <div class="row">
     <!-- Revenue Chart with Filter -->
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
@@ -279,7 +279,7 @@
     </div>
 
     <!-- Top Products -->
-    <div class="col-md-4">
+    <div class="col-md-6">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
@@ -287,7 +287,7 @@
                     Sản phẩm bán chạy
                 </h3>
             </div>
-            <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
+            <div class="card-body p-0" style="height: 350px; overflow-y: auto;">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                     @forelse($topProducts as $product)
                     <li class="item">

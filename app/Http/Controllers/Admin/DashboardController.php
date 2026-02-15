@@ -91,7 +91,7 @@ class DashboardController extends Controller
             ->whereIn('orders.order_status', ['completed', 'shipping', 'processing'])
             ->groupBy('products.id')
             ->orderByDesc('total_sold')
-            ->limit(15)
+            ->limit(6)
             ->get();
         
 
