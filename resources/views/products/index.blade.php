@@ -2,6 +2,51 @@
 
 @section('title', 'Sản phẩm - HaloShop')
 
+@section('styles')
+<style>
+    .product-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    .quick-view-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .product-card:hover .quick-view-overlay {
+        opacity: 1;
+    }
+    .quick-view-icon {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    }
+    .quick-view-overlay:hover .quick-view-icon {
+        transform: scale(1);
+    }
+    .quick-view-icon i {
+        font-size: 24px;
+        color: #007bff;
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="container my-5">
     <div class="row">
@@ -79,17 +124,23 @@
                 @foreach($products as $product)
                 <div class="col-md-4">
                     <div class="card product-card h-100">
-                        <div class="position-relative">
+                        <div class="product-image-wrapper">
                             @if($product->image)
                                 <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
                             @else
                                 <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                             @endif
                             
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                            
                             @if($product->is_new)
-                                <span class="badge-new position-absolute top-0 end-0 m-2">MỚI</span>
+                                <span class="badge-new position-absolute top-0 end-0 m-2" style="z-index: 11;">MỚI</span>
                             @elseif($product->is_preorder)
-                                <span class="badge-preorder position-absolute top-0 end-0 m-2">PRE-ORDER</span>
+                                <span class="badge-preorder position-absolute top-0 end-0 m-2" style="z-index: 11;">PRE-ORDER</span>
                             @endif
                         </div>
                         <div class="card-body d-flex flex-column">
@@ -116,13 +167,10 @@
                                 @endif
                             </p>
                             
-                            <div class="d-grid gap-2">
+                            <div class="d-grid">
                                 <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary">
                                     <i class="fas fa-eye"></i> Xem chi tiết
                                 </a>
-                                <button type="button" class="btn btn-outline-primary" onclick="quickView({{ $product->id }})">
-                                    <i class="fas fa-search"></i> Xem nhanh
-                                </button>
                             </div>
                         </div>
                     </div>

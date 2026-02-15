@@ -2,6 +2,51 @@
 
 @section('title', 'Trang chủ - HaloShop')
 
+@section('styles')
+<style>
+    .product-image-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+    .quick-view-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .product-card:hover .quick-view-overlay {
+        opacity: 1;
+    }
+    .quick-view-icon {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    }
+    .quick-view-overlay:hover .quick-view-icon {
+        transform: scale(1);
+    }
+    .quick-view-icon i {
+        font-size: 24px;
+        color: #007bff;
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Hero Slider -->
 <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
@@ -48,11 +93,18 @@
                 @if($product->is_new)
                     <span class="badge-new">NEW</span>
                 @endif
-                @if($product->image)
-                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                @else
-                    <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                @endif
+                <div class="product-image-wrapper">
+                    @if($product->image)
+                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @else
+                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @endif
+                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                        <div class="quick-view-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
                     <p class="card-text mb-3">
@@ -63,13 +115,10 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid gap-2">
+                    <div class="d-grid">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Xem chi tiết
                         </a>
-                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
-                            <i class="fas fa-eye"></i> Xem nhanh
-                        </button>
                     </div>
                 </div>
             </div>
@@ -109,11 +158,18 @@
                 @else
                     <span class="badge-new">NEW</span>
                 @endif
-                @if($product->image)
-                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                @else
-                    <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                @endif
+                <div class="product-image-wrapper">
+                    @if($product->image)
+                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @else
+                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @endif
+                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                        <div class="quick-view-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
                     <p class="card-text mb-3">
@@ -124,13 +180,10 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid gap-2">
+                    <div class="d-grid">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Xem chi tiết
                         </a>
-                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
-                            <i class="fas fa-eye"></i> Xem nhanh
-                        </button>
                     </div>
                 </div>
             </div>
@@ -166,11 +219,18 @@
         <div class="col-lg-3 col-md-4 col-sm-6">
             <div class="card product-card position-relative">
                 <span class="badge-preorder">PRE-ORDER</span>
-                @if($product->image)
-                    <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                @else
-                    <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                @endif
+                <div class="product-image-wrapper">
+                    @if($product->image)
+                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @else
+                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                    @endif
+                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                        <div class="quick-view-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
                     @if($product->release_date)
@@ -186,13 +246,10 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid gap-2">
+                    <div class="d-grid">
                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
                             Đặt trước ngay
                         </a>
-                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="quickView({{ $product->id }})">
-                            <i class="fas fa-eye"></i> Xem nhanh
-                        </button>
                     </div>
                 </div>
             </div>
