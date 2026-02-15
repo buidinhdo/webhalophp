@@ -9,6 +9,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/tai-khoan/doi-mat-khau', [AccountController::class, 'changePassword'])->name('account.change-password');
     Route::get('/don-hang', [AccountController::class, 'orders'])->name('account.orders');
     Route::get('/don-hang/{id}', [AccountController::class, 'orderDetail'])->name('account.order-detail');
+    
+    // Wishlist routes
+    Route::get('/yeu-thich', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/yeu-thich/toggle/{productId}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::post('/yeu-thich/them/{productId}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::delete('/yeu-thich/xoa/{productId}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+    Route::get('/yeu-thich/check/{productId}', [WishlistController::class, 'check'])->name('wishlist.check');
 });
 
 // Authentication routes

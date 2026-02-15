@@ -585,6 +585,14 @@
                         </a>
                     </li>
                     @auth
+                        <li class="nav-item">
+                            <a class="nav-link position-relative" href="{{ route('wishlist.index') }}" title="Yêu thích">
+                                <i class="fas fa-heart fa-lg"></i>
+                                <span class="wishlist-count cart-badge" style="display: none;">0</span>
+                            </a>
+                        </li>
+                    @endauth
+                    @auth
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="fas fa-user-circle fa-lg"></i> {{ Auth::user()->name }}
@@ -799,6 +807,27 @@
             });
         }
     </script>
+    
+    <!-- Load wishlist count -->
+    @auth
+    <script>
+        // Load wishlist count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/yeu-thich/check/1') // Use any product ID just to get count
+                .then(response => response.json())
+                .then(data => {
+                    if (data.count !== undefined) {
+                        const wishlistCount = document.querySelector('.wishlist-count');
+                        if (wishlistCount && data.count > 0) {
+                            wishlistCount.textContent = data.count;
+                            wishlistCount.style.display = 'inline-block';
+                        }
+                    }
+                })
+                .catch(error => console.log('Wishlist count load error:', error));
+        });
+    </script>
+    @endauth
     
     @yield('scripts')
 </body>

@@ -54,6 +54,38 @@
     .product-title-link:hover {
         color: #007bff;
     }
+    .wishlist-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        cursor: pointer;
+        z-index: 15;
+        transition: all 0.3s ease;
+    }
+    .wishlist-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .wishlist-btn i {
+        font-size: 18px;
+        color: #999;
+        transition: color 0.3s ease;
+    }
+    .wishlist-btn.active i {
+        color: #ff4081;
+    }
+    .wishlist-btn:hover i {
+        color: #ff4081;
+    }
 </style>
 @endsection
 
@@ -141,6 +173,12 @@
                                 <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
                             @endif
                             
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            
                             <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
                                 <div class="quick-view-icon">
                                     <i class="fas fa-eye"></i>
@@ -196,4 +234,117 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+function toggleWishlist(productId, button) {
+    fetch(`/yeu-thich/toggle/${productId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const icon = button.querySelector('i');
+            if (data.inWishlist) {
+                button.classList.add('active');
+                icon.className = 'fas fa-heart';
+            } else {
+                button.classList.remove('active');
+                icon.className = 'far fa-heart';
+            }
+            
+            // Update wishlist count in navbar
+            updateWishlistCount(data.count);
+            
+            // Show toast notification
+            showToast(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showToast('Có lỗi xảy ra, vui lòng thử lại!', 'error');
+    });
+}
+
+function updateWishlistCount(count) {
+    const wishlistCount = document.querySelector('.wishlist-count');
+    if (wishlistCount) {
+        wishlistCount.textContent = count;
+        wishlistCount.style.display = count > 0 ? 'inline-block' : 'none';
+    }
+}
+
+function showToast(message, type = 'success') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast-notification ${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 20px;
+        background: ${type === 'success' ? '#28a745' : '#dc3545'};
+        color: white;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 9999;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Load initial wishlist state on page load
+document.addEventListener('DOMContentLoaded', function() {
+    @auth
+    const wishlistButtons = document.querySelectorAll('.wishlist-btn');
+    wishlistButtons.forEach(button => {
+        const productId = button.getAttribute('onclick').match(/\d+/)[0];
+        fetch(`/yeu-thich/check/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.inWishlist) {
+                    button.classList.add('active');
+                    button.querySelector('i').className = 'fas fa-heart';
+                }
+            });
+    });
+    @endauth
+});
+</script>
+
+<style>
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+</style>
 @endsection
