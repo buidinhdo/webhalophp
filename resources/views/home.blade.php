@@ -44,6 +44,16 @@
         font-size: 24px;
         color: #007bff;
     }
+    .product-title-link {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block;
+        cursor: pointer;
+    }
+    .product-title-link:hover {
+        color: #007bff;
+    }
 </style>
 @endsection
 
@@ -106,7 +116,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    </a>
                     <p class="card-text mb-3">
                         @if($product->sale_price)
                             <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
@@ -115,11 +127,6 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
-                        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
-                            Xem chi tiết
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -171,7 +178,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    </a>
                     <p class="card-text mb-3">
                         @if($product->sale_price)
                             <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
@@ -180,11 +189,6 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
-                        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
-                            Xem chi tiết
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -232,7 +236,9 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                    </a>
                     @if($product->release_date)
                         <p class="text-muted small mb-2">
                             <i class="far fa-calendar me-1"></i> {{ $product->release_date->format('d/m/Y') }}
@@ -246,11 +252,6 @@
                             <span class="price">{{ number_format($product->price) }}₫</span>
                         @endif
                     </p>
-                    <div class="d-grid">
-                        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary btn-sm">
-                            Đặt trước ngay
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

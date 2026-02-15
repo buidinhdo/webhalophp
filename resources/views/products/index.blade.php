@@ -44,6 +44,16 @@
         font-size: 24px;
         color: #007bff;
     }
+    .product-title-link {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block;
+        cursor: pointer;
+    }
+    .product-title-link:hover {
+        color: #007bff;
+    }
 </style>
 @endsection
 
@@ -144,7 +154,9 @@
                             @endif
                         </div>
                         <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ Str::limit($product->name, 60) }}</h5>
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 60) }}</h5>
+                            </a>
                             
                             @if($product->platform)
                             <p class="text-muted small mb-2">
@@ -166,12 +178,6 @@
                                     <span class="price">{{ number_format($product->price) }}₫</span>
                                 @endif
                             </p>
-                            
-                            <div class="d-grid">
-                                <a href="{{ route('products.show', $product->slug) }}" class="btn btn-primary">
-                                    <i class="fas fa-eye"></i> Xem chi tiết
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
