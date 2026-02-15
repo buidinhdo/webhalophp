@@ -2,6 +2,22 @@
 
 @section('title', 'Danh sách yêu thích - HaloShop')
 
+@section('styles')
+<style>
+    .product-title-link {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block;
+        cursor: pointer;
+    }
+    .product-title-link:hover {
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+@endsection
+
 @section('content')
 <div class="container my-5">
     <h2 class="mb-4"><i class="fas fa-heart text-danger me-2"></i> Danh sách yêu thích</h2>
