@@ -117,8 +117,6 @@
                                 <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>PS5</option>
                                 <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>Nintendo Switch</option>
                                 <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>Xbox</option>
-                                <option value="iPhone" {{ request('platform') == 'iPhone' ? 'selected' : '' }}>iPhone</option>
-                                <option value="iPad" {{ request('platform') == 'iPad' ? 'selected' : '' }}>iPad</option>
                             </select>
                         </div>
 
