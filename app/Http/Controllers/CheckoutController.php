@@ -86,7 +86,7 @@ class CheckoutController extends Controller
                 'product_image' => $product ? $product->image : null,
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
-                'subtotal' => $item['price'] * $item['quantity'],
+                'total' => $item['price'] * $item['quantity'],
             ]);
         }
         

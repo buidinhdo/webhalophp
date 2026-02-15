@@ -16,12 +16,12 @@ class OrderItem extends Model
         'product_image',
         'quantity',
         'price',
-        'subtotal'
+        'total'
     ];
     
     protected $casts = [
         'price' => 'decimal:2',
-        'subtotal' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
     
     public function order()
