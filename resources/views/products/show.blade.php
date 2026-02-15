@@ -48,28 +48,39 @@
     }
     .quick-view-overlay {
         position: absolute;
-        bottom: 0;
+        top: 0;
         left: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
         display: flex;
         align-items: center;
         justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
         cursor: pointer;
-        transform: translateY(100%);
-        transition: transform 0.3s ease;
-        padding: 10px;
+        z-index: 10;
     }
     .product-image-wrapper:hover .quick-view-overlay {
-        transform: translateY(0);
+        opacity: 1;
     }
     .quick-view-icon {
-        text-align: center;
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.8);
+        transition: transform 0.3s ease;
+    }
+    .quick-view-overlay:hover .quick-view-icon {
+        transform: scale(1);
     }
     .quick-view-icon i {
         font-size: 24px;
-        color: #fff;
+        color: #007bff;
     }
 </style>
 @endsection
