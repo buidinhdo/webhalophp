@@ -15,8 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             CategorySeeder::class,
             ProductSeeder::class,
-            OrderSeeder::class,
-            PaymentMethodSeeder::class, // Update payment methods cho orders cũ nếu có
         ]);
     }
 }
