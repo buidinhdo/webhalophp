@@ -111,8 +111,6 @@
                             <label class="form-label fw-bold">Nền tảng</label>
                             <select name="platform" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="PS2" {{ request('platform') == 'PS2' ? 'selected' : '' }}>PS2</option>
-                                <option value="PS3" {{ request('platform') == 'PS3' ? 'selected' : '' }}>PS3</option>
                                 <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>PS4</option>
                                 <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>PS5</option>
                                 <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>Nintendo Switch</option>
