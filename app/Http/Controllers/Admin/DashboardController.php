@@ -90,8 +90,8 @@ class DashboardController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereIn('orders.order_status', ['completed', 'shipping', 'processing'])
             ->groupBy('products.id')
+            ->havingRaw('total_sold > 0')
             ->orderByDesc('total_sold')
-            ->limit(6)
             ->get();
         
 
