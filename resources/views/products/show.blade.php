@@ -30,6 +30,47 @@
     .review-item:hover {
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+    .product-title-link {
+        color: #333;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        display: block;
+        cursor: pointer;
+    }
+    .product-title-link:hover {
+        color: #007bff;
+        text-decoration: none;
+    }
+    .product-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.5rem;
+    }
+    .quick-view-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+        padding: 10px;
+    }
+    .product-image-wrapper:hover .quick-view-overlay {
+        transform: translateY(0);
+    }
+    .quick-view-icon {
+        text-align: center;
+    }
+    .quick-view-icon i {
+        font-size: 24px;
+        color: #fff;
+    }
 </style>
 @endsection
 
@@ -273,13 +314,22 @@
                 @foreach($relatedProducts as $relatedProduct)
                 <div class="col-6 col-md-4 col-lg-3">
                     <div class="card product-card h-100">
-                        @if($relatedProduct->image)
-                            <img src="{{ asset($relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
-                        @else
-                            <img src="https://via.placeholder.com/300x250?text={{ urlencode($relatedProduct->name) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
-                        @endif
+                        <div class="product-image-wrapper">
+                            @if($relatedProduct->image)
+                                <img src="{{ asset($relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($relatedProduct->name) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                            @endif
+                            <div class="quick-view-overlay" onclick="quickView({{ $relatedProduct->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ Str::limit($relatedProduct->name, 50) }}</h5>
+                            <a href="{{ route('products.show', $relatedProduct->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($relatedProduct->name, 50) }}</h5>
+                            </a>
                             <p class="card-text">
                                 @if($relatedProduct->sale_price)
                                     <span class="old-price">{{ number_format($relatedProduct->price) }}₫</span><br>
@@ -288,9 +338,6 @@
                                     <span class="price">{{ number_format($relatedProduct->price) }}₫</span>
                                 @endif
                             </p>
-                            <a href="{{ route('products.show', $relatedProduct->slug) }}" class="btn btn-primary w-100">
-                                <i class="fas fa-eye"></i> Xem chi tiết
-                            </a>
                         </div>
                     </div>
                 </div>
