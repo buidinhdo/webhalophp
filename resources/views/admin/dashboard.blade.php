@@ -287,7 +287,7 @@
                     Sản phẩm bán chạy
                 </h3>
             </div>
-            <div class="card-body p-0" style="height: 350px; overflow-y: auto;">
+            <div class="card-body p-0" style="height: 420px; overflow-y: auto;">
                 <ul class="products-list product-list-in-card pl-2 pr-2">
                     @forelse($topProducts as $product)
                     <li class="item">
