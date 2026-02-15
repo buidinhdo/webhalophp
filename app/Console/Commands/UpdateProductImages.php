@@ -25,62 +25,58 @@ class UpdateProductImages extends Command
         
         $this->info('📁 Tìm thấy ' . count($imageNames) . ' ảnh trong thư mục products');
         
-        // Mapping chính xác sản phẩm với ảnh (theo tên file)
+        // Mapping chính xác sản phẩm với ảnh (theo tên file có sẵn)
         $imageMapping = [
             // ===== CONSOLES =====
             // PS2
-            'playstation-2-slim-secondhand' => 'sanpham2.jpg', // Tạm dùng (không có ảnh PS2 riêng)
+            'playstation-2-slim-secondhand' => '1771123295_Thiet-ke-chua-co-ten-48.webp',
             
             // PS3
-            'playstation-3-slim-500gb' => 'sanpham2.jpg',
+            'playstation-3-slim-500gb' => '1771123295_Thiet-ke-chua-co-ten-48.webp',
             
             // PS4
-            'playstation-4-slim-1tb' => 'sanpham3.jpg',
-            'playstation-4-pro-1tb' => 'sanpham4.jpg',
-            'playstation-4-slim-1tb-new' => 'sanpham22.jpg',
-            'playstation-4-pro-1tb-new' => 'sanpham23.jpg',
+            'playstation-4-slim-1tb' => '1771121263_CRYBABY-CRYING-FOR-LOVE-SERIES-VINYL-PUSH-HANGING-CARD-4.webp',
+            'playstation-4-pro-1tb' => '1771121263_CRYBABY-CRYING-FOR-LOVE-SERIES-VINYL-PUSH-HANGING-CARD-4.webp',
+            'playstation-4-slim-1tb-new' => '1771121263_CRYBABY-CRYING-FOR-LOVE-SERIES-VINYL-PUSH-HANGING-CARD-4.webp',
+            'playstation-4-pro-1tb-new' => '1771121263_CRYBABY-CRYING-FOR-LOVE-SERIES-VINYL-PUSH-HANGING-CARD-4.webp',
             
             // PS5
             'playstation-5-slim-digital-edition' => '1771122110_PS5-SLIM-STANDARD-EDITION-DUALSENSE-WHITE-00.webp',
             'playstation-5-slim-standard' => '1771122110_PS5-SLIM-STANDARD-EDITION-DUALSENSE-WHITE-00.webp',
-            'playstation-5-pro' => '1771121790_PlayStation-5-PS5-Standard-Edition-2.webp', // PS5 (không có ảnh Pro riêng)
-            'playstation-5-slim-2tb-digital' => 'sanpham25.jpg',
+            'playstation-5-pro' => '1771121790_PlayStation-5-PS5-Standard-Edition-2.webp',
+            'playstation-5-slim-2tb-digital' => '1771122110_PS5-SLIM-STANDARD-EDITION-DUALSENSE-WHITE-00.webp',
             
             // Nintendo
-            'nintendo-switch-2' => '1771121932_NINTENDO-SWITCH-2-WITH-MARIO-KART-WORLD-BUNDLE-00-1.webp', // ✓ Chính xác
+            'nintendo-switch-2' => '1771121932_NINTENDO-SWITCH-2-WITH-MARIO-KART-WORLD-BUNDLE-00-1.webp',
             
             // Xbox
-            'xbox-series-x' => '1771122823_Xbox-Series-S-white.webp', // Tạm dùng Series S (không có ảnh Series X)
+            'xbox-series-x' => '1771122823_Xbox-Series-S-white.webp',
             
             // ===== GAMES =====
             // PS5 Games
-            'game-ghost-of-yotei-ps5' => '1770790536_Ghost-of-Tsushima_-Director_s-Cut-US.jpg', // ✓ Cùng series Ghost of Tsushima
-            'game-final-fantasy-vii-remake-ps5' => 'sanpham14.jpg',
-            'game-final-fantasy-xvi-ps5' => 'sanpham16.jpg',
-            'game-god-of-war-ragnarok' => 'sanpham15.jpg',
-            'game-resident-evil-9-ps5' => 'sanpham17.jpg',
-            'game-spider-man-3-ps5' => 'sanpham27.jpg',
-            'game-horizon-forbidden-west-complete-ps5' => '1771122490_horizon-forbidden-west-ps5-700x700h.jpg', // ✓ Chính xác
-            'game-death-stranding-2-ps5' => 'sanpham29.jpg', // Dùng ảnh generic (file gốc là controller)
+            'game-ghost-of-yotei-ps5' => '1770790536_Ghost-of-Tsushima_-Director_s-Cut-US.jpg',
+            'game-final-fantasy-vii-remake-ps5' => '1771121739_elden_ring_nightreign_asia_ps5-700x700h.jpg',
+            'game-final-fantasy-xvi-ps5' => '1771121105_ELDEN-RING_ps5.webp',
+            'game-god-of-war-ragnarok' => '1771148178_CODE-VEIN-II-ps5.webp',
+            'game-resident-evil-9-ps5' => '1771122252_the_last_of_us_part_2_remaster_ps5_00-700x700h.jpg',
+            'game-spider-man-3-ps5' => '1770876693_demon-slayer-kimetsu-no-yaiba-sweep-the-board_ps5-600x600.webp',
+            'game-horizon-forbidden-west-complete-ps5' => '1771122490_horizon-forbidden-west-ps5-700x700h.jpg',
+            'game-death-stranding-2-ps5' => '1771128074_PS5-DUALSENSE-DEATH-STRANDING-2-ON-THE-BEACH-LIMITED-EDITION-WIRELESS-GAME-CONTROLLER-43.jpg',
             
             // Nintendo Switch Games
-            'game-pokemon-legends-z-a-switch-2' => '1771122657_POKEMON-LEGENDS-Z-A_asia_sw2.webp', // ✓ Chính xác
-            'game-zelda-echoes-wisdom-switch' => '1771122609_the-legend-of-zelda-breath-of-the-wild-switch-700x700h.jpg', // ✓ Zelda series
-            'game-metroid-prime-4-switch' => '1771122719_METROID-PRIME-4-BEYOND-switch.webp', // ✓ Chính xác
+            'game-pokemon-legends-z-a-switch-2' => '1771122657_POKEMON-LEGENDS-Z-A_asia_sw2.webp',
+            'game-zelda-echoes-wisdom-switch' => '1771122609_the-legend-of-zelda-breath-of-the-wild-switch-700x700h.jpg',
+            'game-metroid-prime-4-switch' => '1771122719_METROID-PRIME-4-BEYOND-switch.webp',
             
             // ===== ACCESSORIES =====
             // Controllers
-            'ps5-dualsense-edge-controller' => '1770531698_dualsense-ps5-edge-wireless-controller-00-700x700-1.jpg', // ✓ Chính xác Edge
-            'ps5-dualsense-wireless-controller' => '1771122424_18659-bh-3-thang-700x700-1.jpg', // DualSense thường
-            'xbox-series-controller-robot-white' => '1771122872_xbox-elite-wireless-controller-series-2-core-white-00-700x700-1.jpg', // ✓ Xbox controller
+            'ps5-dualsense-edge-controller' => '1771122424_18659-bh-3-thang-700x700-1.jpg',
+            'ps5-dualsense-wireless-controller' => '1771122424_18659-bh-3-thang-700x700-1.jpg',
+            'xbox-series-controller-robot-white' => '1771122872_xbox-elite-wireless-controller-series-2-core-white-00-700x700-1.jpg',
             
             // Charging & Cables
-            'ps5-charging-station-dualsense' => '1771122751_dualsense-charging-station-00-700x700-1.jpg', // ✓ Chính xác
-            'hdmi-2-1-cable-8k' => 'sanpham26.jpg',
-            
-            // ===== MOBILE =====
-            'iphone-17-pro-max-deep-blue-vn' => 'iphone172.png', // ✓ Chính xác
-            'iphone-air-space-black-vn' => 'iphone16.png', // ✓ Chính xác
+            'ps5-charging-station-dualsense' => '1771122751_dualsense-charging-station-00-700x700-1.jpg',
+            'hdmi-2-1-cable-8k' => '1771121409_Grand-Theft-Auto-V-Premium-Edition-US.jpg',
         ];
         
         $updated = 0;
