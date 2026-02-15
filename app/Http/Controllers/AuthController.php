@@ -70,6 +70,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
             
+            // Lưu email vào cookie nếu chọn ghi nhớ
+            if ($remember) {
+                cookie()->queue('remember_email', $request->email, 43200); // 30 days
+            } else {
+                cookie()->queue(cookie()->forget('remember_email'));
+            }
+            
             // Nếu là admin, redirect về dashboard
             if ($user->is_admin) {
                 $request->session()->regenerate();

@@ -38,7 +38,7 @@
                                    class="form-control @error('email') is-invalid @enderror" 
                                    id="email" 
                                    name="email" 
-                                   value="{{ old('email') }}" 
+                                   value="{{ old('email', request()->cookie('remember_email')) }}" 
                                    required 
                                    autofocus
                                    placeholder="Nhập email của bạn">
@@ -62,11 +62,18 @@
                             @enderror
                         </div>
 
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">
-                                Ghi nhớ đăng nhập
-                            </label>
+                        <div class="mb-3">
+                            <div class="form-check remember-box p-3 border rounded" style="background-color: #f8f9fa;">
+                                <input type="checkbox" class="form-check-input" id="remember" name="remember" value="1">
+                                <label class="form-check-label" for="remember" style="cursor: pointer;">
+                                    <i class="fas fa-check-circle me-2 text-success"></i>
+                                    <strong>Ghi nhớ đăng nhập</strong>
+                                    <small class="d-block text-muted mt-1">
+                                        <i class="fas fa-info-circle me-1"></i>
+                                        Giữ trạng thái đăng nhập trong 30 ngày
+                                    </small>
+                                </label>
+                            </div>
                         </div>
 
                         <div class="d-grid gap-2">
@@ -88,4 +95,73 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('styles')
+<style>
+    .remember-box {
+        transition: all 0.3s ease;
+    }
+    .remember-box:hover {
+        background-color: #e9ecef !important;
+        cursor: pointer;
+    }
+    .remember-box.checked {
+        background-color: #d4edda !important;
+        border-color: #28a745 !important;
+    }
+    .form-check-input:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+</style>
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const rememberCheckbox = document.getElementById('remember');
+    const rememberBox = rememberCheckbox.closest('.form-check');
+    
+    // Load saved remember preference from localStorage
+    const savedRemember = localStorage.getItem('login_remember_preference');
+    if (savedRemember === 'true') {
+        rememberCheckbox.checked = true;
+        rememberBox.classList.add('checked');
+    }
+    
+    // Toggle visual state
+    function updateRememberState() {
+        if (rememberCheckbox.checked) {
+            rememberBox.classList.add('checked');
+            localStorage.setItem('login_remember_preference', 'true');
+        } else {
+            rememberBox.classList.remove('checked');
+            localStorage.setItem('login_remember_preference', 'false');
+        }
+    }
+    
+    // Handle checkbox change
+    rememberCheckbox.addEventListener('change', updateRememberState);
+    
+    // Handle click on entire box
+    rememberBox.addEventListener('click', function(e) {
+        if (e.target !== rememberCheckbox) {
+            rememberCheckbox.checked = !rememberCheckbox.checked;
+            updateRememberState();
+        }
+    });
+    
+    // Initial state
+    updateRememberState();
+    
+    // Show success message if remember me is working
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function() {
+        if (rememberCheckbox.checked) {
+            console.log('Remember me is enabled - user will stay logged in for 30 days');
+        }
+    });
+});
+</script>
 @endsection
