@@ -452,42 +452,30 @@ $(function() {
         }
         
         revenueChartInstance = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: data.labels,
                 datasets: [{
                     label: 'Doanh thu (VNĐ)',
                     data: data.revenues,
-                    backgroundColor: 'rgba(0, 217, 255, 0.2)',
+                    backgroundColor: 'rgba(0, 217, 255, 0.7)',
                     borderColor: 'rgba(0, 217, 255, 1)',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    fill: true,
-                    yAxisID: 'y',
-                    pointRadius: 5,
-                    pointHoverRadius: 7
+                    borderWidth: 1,
+                    yAxisID: 'y'
                 }, {
                     label: 'Số đơn hàng',
                     data: data.orderCounts,
-                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    backgroundColor: 'rgba(255, 159, 64, 0.7)',
                     borderColor: 'rgba(255, 159, 64, 1)',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    fill: true,
-                    yAxisID: 'y1',
-                    pointRadius: 5,
-                    pointHoverRadius: 7
+                    borderWidth: 1,
+                    yAxisID: 'y1'
                 }, {
                     label: 'Số khách hàng mới',
                     data: data.customerCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 3,
-                    tension: 0.4,
-                    fill: true,
-                    yAxisID: 'y1',
-                    pointRadius: 5,
-                    pointHoverRadius: 7
+                    borderWidth: 1,
+                    yAxisID: 'y1'
                 }]
             },
             options: {
