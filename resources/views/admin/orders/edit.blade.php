@@ -162,7 +162,17 @@
                     
                     <div class="form-group">
                         <label>Phương thức thanh toán</label>
-                        <input type="text" class="form-control" value="@if($order->payment_method == 'cod')COD@elseif($order->payment_method == 'momo')MoMo@else Chuyển khoản @endif" readonly>
+                        @php
+                            $paymentMethodDisplay = 'Chuyển khoản';
+                            if($order->payment_method == 'cod') {
+                                $paymentMethodDisplay = 'COD';
+                            } elseif($order->payment_method == 'momo') {
+                                $paymentMethodDisplay = 'MoMo';
+                            } elseif($order->payment_method == 'bank_transfer') {
+                                $paymentMethodDisplay = 'Chuyển khoản';
+                            }
+                        @endphp
+                        <input type="text" class="form-control" value="{{ $paymentMethodDisplay }}" readonly>
                     </div>
                     
                     <hr>
