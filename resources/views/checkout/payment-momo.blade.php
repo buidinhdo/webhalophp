@@ -153,13 +153,6 @@
             </div>
             @endif
 
-            @if(isset($response['resultCode']) && $response['resultCode'] != 0)
-            <div class="error-message">
-                <i class="fas fa-exclamation-triangle"></i>
-                <strong>Lỗi:</strong> {{ $response['message'] ?? 'Có lỗi xảy ra khi tạo thanh toán' }}
-            </div>
-            @endif
-
             <div class="row">
                 <div class="col-md-7">
                     <!-- Thông tin người mua -->
@@ -211,8 +204,10 @@
                         <h5 class="mb-3"><i class="fas fa-shopping-bag text-success"></i> Sản phẩm đặt mua</h5>
                         @foreach($order->items as $item)
                         <div class="product-item">
-                            @if($item->product_image)
-                            <img src="{{ asset('images/' . $item->product_image) }}" alt="{{ $item->product_name }}" class="product-image">
+                            @if($item->product_image && file_exists(public_path($item->product_image)))
+                            <img src="{{ asset($item->product_image) }}" alt="{{ $item->product_name }}" class="product-image">
+                            @elseif($item->product && $item->product->image && file_exists(public_path($item->product->image)))
+                            <img src="{{ asset($item->product->image) }}" alt="{{ $item->product_name }}" class="product-image">
                             @else
                             <div class="product-image" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
                                 <i class="fas fa-image text-muted"></i>
@@ -236,30 +231,12 @@
                         {{ number_format($order->total_amount) }}₫
                     </div>
 
-                    <!-- Nút thanh toán -->
-                    @if(isset($response['payUrl']) && $response['resultCode'] == 0)
-                    <div class="text-center">
-                        <a href="{{ $response['payUrl'] }}" class="btn payment-button w-100 mb-3">
-                            <i class="fas fa-wallet"></i> Thanh toán bằng MoMo
-                        </a>
-                        <p class="text-muted small mb-3">
-                            <i class="fas fa-shield-alt"></i> Giao dịch được bảo mật bởi MoMo
-                        </p>
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i>
-                            <strong>Hướng dẫn:</strong><br>
-                            1. Nhấn nút "Thanh toán bằng MoMo"<br>
-                            2. Đăng nhập vào ví MoMo của bạn<br>
-                            3. Xác nhận thanh toán<br>
-                            4. Chờ xử lý và hoàn tất
-                        </div>
+                    <!-- Thông báo đặt hàng thành công -->
+                    <div class="alert alert-success text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h5 class="mb-2">Đặt hàng thành công!</h5>
+                        <p class="mb-0">Đơn hàng của bạn đã được tiếp nhận và đang chờ xử lý. Vui lòng thanh toán qua ví MoMo khi nhận hàng.</p>
                     </div>
-                    @else
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle"></i>
-                        Không thể tạo liên kết thanh toán. Vui lòng thử lại sau.
-                    </div>
-                    @endif
 
                     <!-- Thông tin đơn hàng -->
                     <div class="mt-3">
@@ -299,16 +276,4 @@
         </p>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-    // Auto refresh status sau 30s nếu đang chờ thanh toán
-    @if(isset($response['resultCode']) && $response['resultCode'] == 0)
-    setTimeout(function() {
-        console.log('Checking payment status...');
-        // Có thể thêm AJAX check status ở đây nếu cần
-    }, 30000);
-    @endif
-</script>
 @endsection

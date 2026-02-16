@@ -129,13 +129,9 @@ class CheckoutController extends Controller
     {
         $order = Order::with('items.product')->findOrFail($orderId);
         
-        // Khởi tạo MoMo Payment Service
-        $momoService = new MoMoPaymentService();
-        
-        // Tạo yêu cầu thanh toán
-        $response = $momoService->createPayment($order);
-        
-        return view('checkout.payment-momo', compact('order', 'response'));
+        // Chỉ hiển thị thông tin đơn hàng, không tích hợp API MoMo
+        // Đơn hàng đã được lưu vào database với payment_method = 'momo'
+        return view('checkout.payment-momo', compact('order'));
     }
     
     public function momoCallback(Request $request)
