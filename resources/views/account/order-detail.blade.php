@@ -40,6 +40,8 @@
                                 <strong>Thanh toán:</strong>
                                 @if($order->payment_method == 'cod')
                                     COD
+                                @elseif($order->payment_method == 'momo')
+                                    <span style="color: #A50064;"><i class="fas fa-wallet"></i> MoMo</span>
                                 @else
                                     Chuyển khoản
                                 @endif

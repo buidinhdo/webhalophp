@@ -50,7 +50,15 @@
                         @endswitch
                     </div>
                     <div class="col-md-6">
-                        <strong>Thanh toán:</strong> {{ $order->payment_method == 'cod' ? 'COD' : 'Chuyển khoản' }}<br>
+                        <strong>Thanh toán:</strong> 
+                        @if($order->payment_method == 'cod')
+                            COD
+                        @elseif($order->payment_method == 'momo')
+                            <span style="color: #A50064;"><i class="fas fa-wallet"></i> MoMo</span>
+                        @else
+                            Chuyển khoản
+                        @endif
+                        <br>
                         <strong>Trạng thái TT:</strong> 
                         <span class="badge badge-{{ $order->payment_status == 'paid' ? 'success' : 'warning' }}">
                             {{ $order->payment_status == 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán' }}

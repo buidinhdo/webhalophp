@@ -263,7 +263,14 @@
                     <td>
                         <strong>Mã đơn hàng:</strong> #{{ $order->order_number }}<br>
                         <strong>Ngày đặt:</strong> {{ $order->created_at->format('d/m/Y H:i') }}<br>
-                        <strong>Phương thức thanh toán:</strong> {{ $order->payment_method == 'cod' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng' }}
+                        <strong>Phương thức thanh toán:</strong> 
+                        @if($order->payment_method == 'cod')
+                            Thanh toán khi nhận hàng (COD)
+                        @elseif($order->payment_method == 'momo')
+                            Ví điện tử MoMo
+                        @else
+                            Chuyển khoản ngân hàng
+                        @endif
                     </td>
                     <td>
                         <strong>Trạng thái đơn hàng:</strong><br>

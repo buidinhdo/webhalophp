@@ -54,6 +54,9 @@ Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('ca
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/thanh-toan/xu-ly', [CheckoutController::class, 'process'])->name('checkout.process');
 Route::get('/thanh-toan/qr/{order}', [CheckoutController::class, 'paymentQR'])->name('checkout.payment-qr');
+Route::get('/thanh-toan/momo/{order}', [CheckoutController::class, 'paymentMoMo'])->name('checkout.payment-momo');
+Route::get('/thanh-toan/momo/callback', [CheckoutController::class, 'momoCallback'])->name('checkout.momo-callback');
+Route::post('/thanh-toan/momo/ipn', [CheckoutController::class, 'momoIPN'])->name('checkout.momo-ipn');
 Route::get('/thanh-toan/thanh-cong/{order}', [CheckoutController::class, 'success'])->name('checkout.success');
 
 // Tin tức

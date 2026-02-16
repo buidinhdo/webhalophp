@@ -78,10 +78,16 @@
                                         <i class="fas fa-money-bill-wave text-success"></i> Thanh toán khi nhận hàng (COD)
                                     </label>
                                 </div>
-                                <div class="form-check">
+                                <div class="form-check mb-2">
                                     <input class="form-check-input" type="radio" name="payment_method" id="bank_transfer" value="bank_transfer">
                                     <label class="form-check-label" for="bank_transfer">
                                         <i class="fas fa-university text-primary"></i> Chuyển khoản ngân hàng
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment_method" id="momo" value="momo">
+                                    <label class="form-check-label" for="momo">
+                                        <i class="fas fa-wallet" style="color: #A50064;"></i> Ví điện tử MoMo
                                     </label>
                                 </div>
                             </div>

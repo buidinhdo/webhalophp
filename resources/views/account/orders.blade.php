@@ -56,6 +56,8 @@
                                     <strong>Thanh toán:</strong> 
                                     @if($order->payment_method == 'cod')
                                         <span class="badge bg-success">COD</span>
+                                    @elseif($order->payment_method == 'momo')
+                                        <span class="badge" style="background: #A50064;"><i class="fas fa-wallet"></i> MoMo</span>
                                     @else
                                         <span class="badge bg-primary">Chuyển khoản</span>
                                     @endif

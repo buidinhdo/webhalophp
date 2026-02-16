@@ -26,7 +26,15 @@
                         </div>
                         <div class="col-md-6">
                             <p><strong>Trạng thái:</strong> <span class="badge bg-warning">Đang xử lý</span></p>
-                            <p><strong>Thanh toán:</strong> {{ $order->payment_method == 'cod' ? 'COD' : 'Chuyển khoản' }}</p>
+                            <p><strong>Thanh toán:</strong> 
+                                @if($order->payment_method == 'cod')
+                                    COD
+                                @elseif($order->payment_method == 'momo')
+                                    <span style="color: #A50064;"><i class="fas fa-wallet"></i> MoMo</span>
+                                @else
+                                    Chuyển khoản
+                                @endif
+                            </p>
                         </div>
                     </div>
                     
