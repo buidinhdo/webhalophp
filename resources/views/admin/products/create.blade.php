@@ -120,6 +120,27 @@
                             <label class="custom-control-label" for="is_preorder">Đặt trước</label>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Danh mục nhanh</label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_ps4" name="category_quick" value="ps4" data-category-name="PlayStation 4">
+                            <label class="custom-control-label" for="cat_ps4"><i class="fab fa-playstation text-primary"></i> PlayStation 4</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_ps5" name="category_quick" value="ps5" data-category-name="PlayStation 5">
+                            <label class="custom-control-label" for="cat_ps5"><i class="fab fa-playstation text-info"></i> PlayStation 5</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_nintendo" name="category_quick" value="nintendo-switch" data-category-name="Nintendo Switch">
+                            <label class="custom-control-label" for="cat_nintendo"><img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo" style="width: 18px; height: 18px;"> Nintendo Switch</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_xbox" name="category_quick" value="xbox" data-category-name="Xbox">
+                            <label class="custom-control-label" for="cat_xbox"><i class="fab fa-xbox text-success"></i> Xbox</label>
+                        </div>
+                        <small class="form-text text-muted">Hoặc chọn từ danh mục bên trên</small>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,3 +156,45 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Sync radio buttons with category dropdown
+    $('.category-quick-select').on('change', function() {
+        if ($(this).is(':checked')) {
+            var categorySlug = $(this).val();
+            var categoryName = $(this).data('category-name');
+            
+            // Find and select the matching category in dropdown
+            $('select[name="category_id"] option').each(function() {
+                if ($(this).text().trim() === categoryName) {
+                    $('select[name="category_id"]').val($(this).val());
+                    return false;
+                }
+            });
+        }
+    });
+    
+    // When dropdown changes, update radio button
+    $('select[name="category_id"]').on('change', function() {
+        var selectedText = $(this).find('option:selected').text().trim();
+        $('.category-quick-select').prop('checked', false);
+        
+        $('.category-quick-select').each(function() {
+            if ($(this).data('category-name') === selectedText) {
+                $(this).prop('checked', true);
+            }
+        });
+    });
+    
+    // Initialize on page load
+    var currentCategoryText = $('select[name="category_id"]').find('option:selected').text().trim();
+    $('.category-quick-select').each(function() {
+        if ($(this).data('category-name') === currentCategoryText) {
+            $(this).prop('checked', true);
+        }
+    });
+});
+</script>
+@endpush
