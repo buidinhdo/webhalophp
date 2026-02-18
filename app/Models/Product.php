@@ -25,6 +25,7 @@ class Product extends Model
         'is_preorder',
         'release_date',
         'platform',
+        'genre',
         'status'
     ];
     

@@ -22,6 +22,10 @@ class ProductController extends Controller
             $query->whereRaw('LOWER(platform) = ?', [strtolower($request->platform)]);
         }
         
+        if ($request->has('genre')) {
+            $query->where('genre', $request->genre);
+        }
+        
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -54,8 +58,9 @@ class ProductController extends Controller
         
         $products = $query->paginate(20);
         $categories = Category::where('is_active', true)->orderBy('order')->get();
+        $genres = Product::active()->whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
         
-        return view('products.index', compact('products', 'categories'));
+        return view('products.index', compact('products', 'categories', 'genres'));
     }
     
     public function show($slug)

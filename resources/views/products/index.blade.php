@@ -118,6 +118,17 @@
                             </select>
                         </div>
 
+                        <!-- Genre -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Thể loại game</label>
+                            <select name="genre" class="form-select">
+                                <option value="">Tất cả</option>
+                                @foreach($genres as $genre)
+                                    <option value="{{ $genre }}" {{ request('genre') == $genre ? 'selected' : '' }}>{{ $genre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Sort -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Sắp xếp</label>

@@ -48,6 +48,26 @@
                                 <input type="text" name="platform" class="form-control" value="{{ old('platform', $product->platform) }}" placeholder="VD: PS5, Xbox, Nintendo Switch...">
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Thể loại game</label>
+                                <select name="genre" class="form-control">
+                                    <option value="">-- Chọn thể loại --</option>
+                                    <option value="Action" {{ old('genre', $product->genre) == 'Action' ? 'selected' : '' }}>Action (Hành động)</option>
+                                    <option value="Adventure" {{ old('genre', $product->genre) == 'Adventure' ? 'selected' : '' }}>Adventure (Phiêu lưu)</option>
+                                    <option value="RPG" {{ old('genre', $product->genre) == 'RPG' ? 'selected' : '' }}>RPG (Nhập vai)</option>
+                                    <option value="Shooting" {{ old('genre', $product->genre) == 'Shooting' ? 'selected' : '' }}>Shooting (Bắn súng)</option>
+                                    <option value="Sports" {{ old('genre', $product->genre) == 'Sports' ? 'selected' : '' }}>Sports (Thể thao)</option>
+                                    <option value="Racing" {{ old('genre', $product->genre) == 'Racing' ? 'selected' : '' }}>Racing (Đua xe)</option>
+                                    <option value="Fighting" {{ old('genre', $product->genre) == 'Fighting' ? 'selected' : '' }}>Fighting (Đối kháng)</option>
+                                    <option value="Simulation" {{ old('genre', $product->genre) == 'Simulation' ? 'selected' : '' }}>Simulation (Mô phỏng)</option>
+                                    <option value="Strategy" {{ old('genre', $product->genre) == 'Strategy' ? 'selected' : '' }}>Strategy (Chiến thuật)</option>
+                                    <option value="Horror" {{ old('genre', $product->genre) == 'Horror' ? 'selected' : '' }}>Horror (Kinh dị)</option>
+                                    <option value="Puzzle" {{ old('genre', $product->genre) == 'Puzzle' ? 'selected' : '' }}>Puzzle (Giải đố)</option>
+                                    <option value="Music" {{ old('genre', $product->genre) == 'Music' ? 'selected' : '' }}>Music (Âm nhạc)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">

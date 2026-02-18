@@ -47,6 +47,26 @@
                                 <input type="text" name="platform" class="form-control" value="{{ old('platform') }}" placeholder="VD: PS5, Xbox, Nintendo Switch...">
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Thể loại game</label>
+                                <select name="genre" class="form-control">
+                                    <option value="">-- Chọn thể loại --</option>
+                                    <option value="Action" {{ old('genre') == 'Action' ? 'selected' : '' }}>Action (Hành động)</option>
+                                    <option value="Adventure" {{ old('genre') == 'Adventure' ? 'selected' : '' }}>Adventure (Phiêu lưu)</option>
+                                    <option value="RPG" {{ old('genre') == 'RPG' ? 'selected' : '' }}>RPG (Nhập vai)</option>
+                                    <option value="Shooting" {{ old('genre') == 'Shooting' ? 'selected' : '' }}>Shooting (Bắn súng)</option>
+                                    <option value="Sports" {{ old('genre') == 'Sports' ? 'selected' : '' }}>Sports (Thể thao)</option>
+                                    <option value="Racing" {{ old('genre') == 'Racing' ? 'selected' : '' }}>Racing (Đua xe)</option>
+                                    <option value="Fighting" {{ old('genre') == 'Fighting' ? 'selected' : '' }}>Fighting (Đối kháng)</option>
+                                    <option value="Simulation" {{ old('genre') == 'Simulation' ? 'selected' : '' }}>Simulation (Mô phỏng)</option>
+                                    <option value="Strategy" {{ old('genre') == 'Strategy' ? 'selected' : '' }}>Strategy (Chiến thuật)</option>
+                                    <option value="Horror" {{ old('genre') == 'Horror' ? 'selected' : '' }}>Horror (Kinh dị)</option>
+                                    <option value="Puzzle" {{ old('genre') == 'Puzzle' ? 'selected' : '' }}>Puzzle (Giải đố)</option>
+                                    <option value="Music" {{ old('genre') == 'Music' ? 'selected' : '' }}>Music (Âm nhạc)</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
