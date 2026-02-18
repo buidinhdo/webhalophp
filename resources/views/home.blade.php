@@ -86,6 +86,55 @@
     .wishlist-btn:hover i {
         color: #ff4081;
     }
+    
+    /* Swiper Slider Styles */
+    .product-slider {
+        position: relative;
+        padding: 0 50px;
+    }
+    .product-slider .swiper-button-next,
+    .product-slider .swiper-button-prev {
+        width: 45px;
+        height: 45px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    }
+    .product-slider .swiper-button-next:after,
+    .product-slider .swiper-button-prev:after {
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+    }
+    .product-slider .swiper-button-next:hover,
+    .product-slider .swiper-button-prev:hover {
+        background: var(--primary-color);
+        transform: scale(1.1);
+    }
+    .product-slider .swiper-button-next:hover:after,
+    .product-slider .swiper-button-prev:hover:after {
+        color: white;
+    }
+    .product-slider .swiper-pagination {
+        position: relative;
+        margin-top: 25px;
+    }
+    .product-slider .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: #ccc;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+    .product-slider .swiper-pagination-bullet-active {
+        background: var(--primary-color);
+        width: 25px;
+        border-radius: 5px;
+    }
+    .product-slider .swiper-slide {
+        height: auto;
+    }
 </style>
 @endsection
 
@@ -125,49 +174,56 @@
     <h2 class="section-title">
         <i class="fas fa-star text-warning me-2"></i> Sản phẩm nổi bật
     </h2>
-    <div class="row g-4">
-        @foreach($featuredProducts as $product)
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="card product-card position-relative">
-                @if($product->sale_price)
-                    <span class="badge-sale">SALE</span>
-                @endif
-                @if($product->is_new)
-                    <span class="badge-new">NEW</span>
-                @endif
-                <div class="product-image-wrapper">
-                    @if($product->image)
-                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @else
-                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @endif
-                    @auth
-                    <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    @endauth
-                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
-                        <div class="quick-view-icon">
-                            <i class="fas fa-eye"></i>
+    <div class="product-slider">
+        <div class="swiper featuredSwiper">
+            <div class="swiper-wrapper">
+                @foreach($featuredProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
-                    </a>
-                    <p class="card-text mb-3">
-                        @if($product->sale_price)
-                            <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
-                            <span class="price">{{ number_format($product->sale_price) }}₫</span>
-                        @else
-                            <span class="price">{{ number_format($product->price) }}₫</span>
-                        @endif
-                    </p>
-                </div>
+                @endforeach
             </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
         </div>
-        @endforeach
     </div>
 </section>
 @endif
@@ -193,48 +249,55 @@
     <h2 class="section-title">
         <i class="fas fa-fire text-danger me-2"></i> Sản phẩm mới
     </h2>
-    <div class="row g-4">
-        @foreach($newProducts as $product)
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="card product-card position-relative">
-                @if($product->is_preorder)
-                    <span class="badge-preorder">PRE-ORDER</span>
-                @else
-                    <span class="badge-new">NEW</span>
-                @endif
-                <div class="product-image-wrapper">
-                    @if($product->image)
-                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @else
-                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @endif
-                    @auth
-                    <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    @endauth
-                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
-                        <div class="quick-view-icon">
-                            <i class="fas fa-eye"></i>
+    <div class="product-slider">
+        <div class="swiper newSwiper">
+            <div class="swiper-wrapper">
+                @foreach($newProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->is_preorder)
+                            <span class="badge-preorder">PRE-ORDER</span>
+                        @else
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
-                    </a>
-                    <p class="card-text mb-3">
-                        @if($product->sale_price)
-                            <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
-                            <span class="price">{{ number_format($product->sale_price) }}₫</span>
-                        @else
-                            <span class="price">{{ number_format($product->price) }}₫</span>
-                        @endif
-                    </p>
-                </div>
+                @endforeach
             </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
         </div>
-        @endforeach
     </div>
 </section>
 @endif
@@ -260,49 +323,56 @@
     <h2 class="section-title">
         <i class="fas fa-clock text-warning me-2"></i> Sản phẩm đặt trước
     </h2>
-    <div class="row g-4">
-        @foreach($preorderProducts as $product)
-        <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="card product-card position-relative">
-                <span class="badge-preorder">PRE-ORDER</span>
-                <div class="product-image-wrapper">
-                    @if($product->image)
-                        <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @else
-                        <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
-                    @endif
-                    @auth
-                    <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
-                        <i class="far fa-heart"></i>
-                    </button>
-                    @endauth
-                    <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
-                        <div class="quick-view-icon">
-                            <i class="fas fa-eye"></i>
+    <div class="product-slider">
+        <div class="swiper preorderSwiper">
+            <div class="swiper-wrapper">
+                @foreach($preorderProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        <span class="badge-preorder">PRE-ORDER</span>
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            @if($product->release_date)
+                                <p class="text-muted small mb-2">
+                                    <i class="far fa-calendar me-1"></i> {{ $product->release_date->format('d/m/Y') }}
+                                </p>
+                            @endif
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                        <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
-                    </a>
-                    @if($product->release_date)
-                        <p class="text-muted small mb-2">
-                            <i class="far fa-calendar me-1"></i> {{ $product->release_date->format('d/m/Y') }}
-                        </p>
-                    @endif
-                    <p class="card-text mb-3">
-                        @if($product->sale_price)
-                            <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
-                            <span class="price">{{ number_format($product->sale_price) }}₫</span>
-                        @else
-                            <span class="price">{{ number_format($product->price) }}₫</span>
-                        @endif
-                    </p>
-                </div>
+                @endforeach
             </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
         </div>
-        @endforeach
     </div>
 </section>
 @endif
@@ -382,6 +452,114 @@
 
 @section('scripts')
 <script>
+// Initialize Swiper Sliders
+document.addEventListener('DOMContentLoaded', function() {
+    // Featured Products Slider
+    const featuredSwiper = new Swiper('.featuredSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.featuredSwiper ~ .swiper-button-next',
+            prevEl: '.featuredSwiper ~ .swiper-button-prev',
+        },
+        pagination: {
+            el: '.featuredSwiper ~ .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // New Products Slider
+    const newSwiper = new Swiper('.newSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.newSwiper ~ .swiper-button-next',
+            prevEl: '.newSwiper ~ .swiper-button-prev',
+        },
+        pagination: {
+            el: '.newSwiper ~ .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // Preorder Products Slider
+    const preorderSwiper = new Swiper('.preorderSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.preorderSwiper ~ .swiper-button-next',
+            prevEl: '.preorderSwiper ~ .swiper-button-prev',
+        },
+        pagination: {
+            el: '.preorderSwiper ~ .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+});
+
 function toggleWishlist(productId, button) {
     fetch(`/yeu-thich/toggle/${productId}`, {
         method: 'POST',
