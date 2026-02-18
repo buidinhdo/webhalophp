@@ -385,6 +385,246 @@
 </section>
 @endif
 
+<!-- PS4 Products -->
+@if($ps4Products->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <i class="fab fa-playstation text-primary me-2"></i> PlayStation 4
+    </h2>
+    <div class="product-slider">
+        <div class="swiper ps4Swiper">
+            <div class="swiper-wrapper">
+                @foreach($ps4Products as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- PS5 Products -->
+@if($ps5Products->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <i class="fab fa-playstation text-info me-2"></i> PlayStation 5
+    </h2>
+    <div class="product-slider">
+        <div class="swiper ps5Swiper">
+            <div class="swiper-wrapper">
+                @foreach($ps5Products as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Nintendo Switch Products -->
+@if($nintendoProducts->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <i class="fas fa-gamepad text-danger me-2"></i> Nintendo Switch
+    </h2>
+    <div class="product-slider">
+        <div class="swiper nintendoSwiper">
+            <div class="swiper-wrapper">
+                @foreach($nintendoProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Xbox Products -->
+@if($xboxProducts->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <i class="fab fa-xbox text-success me-2"></i> Xbox
+    </h2>
+    <div class="product-slider">
+        <div class="swiper xboxSwiper">
+            <div class="swiper-wrapper">
+                @foreach($xboxProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- Apple Section -->
 <div class="category-banner" style="background: url('{{ asset('images/banners/banner9.jpg') }}') center/cover no-repeat;">
     <div class="container">
@@ -548,6 +788,146 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         pagination: {
             el: '.preorderSwiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // PS4 Products Slider
+    const ps4Swiper = new Swiper('.ps4Swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3200,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.ps4Swiper .swiper-button-next',
+            prevEl: '.ps4Swiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.ps4Swiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // PS5 Products Slider
+    const ps5Swiper = new Swiper('.ps5Swiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3400,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.ps5Swiper .swiper-button-next',
+            prevEl: '.ps5Swiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.ps5Swiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // Nintendo Switch Products Slider
+    const nintendoSwiper = new Swiper('.nintendoSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3600,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.nintendoSwiper .swiper-button-next',
+            prevEl: '.nintendoSwiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.nintendoSwiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // Xbox Products Slider
+    const xboxSwiper = new Swiper('.xboxSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 3800,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.xboxSwiper .swiper-button-next',
+            prevEl: '.xboxSwiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.xboxSwiper .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
