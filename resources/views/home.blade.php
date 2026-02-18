@@ -315,7 +315,9 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <h2 class="mb-3"><i class="fas fa-gamepad me-3"></i>NINTENDO SWITCH 2</h2>
+                <h2 class="mb-3">
+                    <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" style="width: 36px; height: 36px; margin-right: 1rem; vertical-align: middle;">NINTENDO SWITCH 2
+                </h2>
                 <p class="mb-4">Máy chơi game cầm tay lai mới nhất của Nintendo - Linh hoạt mọi lúc mọi nơi</p>
                 <a href="{{ route('products.index', ['platform' => 'Nintendo Switch']) }}" class="btn btn-light px-4">
                     Xem thêm <i class="fas fa-arrow-right ms-2"></i>
@@ -509,7 +511,7 @@
 @if($nintendoProducts->count() > 0)
 <section class="container my-5">
     <h2 class="section-title">
-        <i class="fas fa-gamepad text-danger me-2"></i> Nintendo Switch
+        <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" style="width: 28px; height: 28px; margin-right: 0.5rem; vertical-align: middle;"> Nintendo Switch
     </h2>
     <div class="product-slider">
         <div class="swiper nintendoSwiper">
