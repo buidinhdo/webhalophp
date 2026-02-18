@@ -100,6 +100,8 @@
         border-radius: 50%;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         transition: all 0.3s ease;
+        z-index: 20;
+        cursor: pointer;
     }
     .product-slider .swiper-button-next:after,
     .product-slider .swiper-button-prev:after {
@@ -116,9 +118,15 @@
     .product-slider .swiper-button-prev:hover:after {
         color: white;
     }
+    .product-slider .swiper-button-disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
     .product-slider .swiper-pagination {
         position: relative;
         margin-top: 25px;
+        z-index: 10;
     }
     .product-slider .swiper-pagination-bullet {
         width: 10px;
@@ -465,11 +473,11 @@ document.addEventListener('DOMContentLoaded', function() {
             pauseOnMouseEnter: true,
         },
         navigation: {
-            nextEl: '.featuredSwiper ~ .swiper-button-next',
-            prevEl: '.featuredSwiper ~ .swiper-button-prev',
+            nextEl: '.featuredSwiper .swiper-button-next',
+            prevEl: '.featuredSwiper .swiper-button-prev',
         },
         pagination: {
-            el: '.featuredSwiper ~ .swiper-pagination',
+            el: '.featuredSwiper .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
@@ -500,11 +508,11 @@ document.addEventListener('DOMContentLoaded', function() {
             pauseOnMouseEnter: true,
         },
         navigation: {
-            nextEl: '.newSwiper ~ .swiper-button-next',
-            prevEl: '.newSwiper ~ .swiper-button-prev',
+            nextEl: '.newSwiper .swiper-button-next',
+            prevEl: '.newSwiper .swiper-button-prev',
         },
         pagination: {
-            el: '.newSwiper ~ .swiper-pagination',
+            el: '.newSwiper .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
@@ -535,11 +543,11 @@ document.addEventListener('DOMContentLoaded', function() {
             pauseOnMouseEnter: true,
         },
         navigation: {
-            nextEl: '.preorderSwiper ~ .swiper-button-next',
-            prevEl: '.preorderSwiper ~ .swiper-button-prev',
+            nextEl: '.preorderSwiper .swiper-button-next',
+            prevEl: '.preorderSwiper .swiper-button-prev',
         },
         pagination: {
-            el: '.preorderSwiper ~ .swiper-pagination',
+            el: '.preorderSwiper .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
