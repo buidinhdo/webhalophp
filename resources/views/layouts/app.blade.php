@@ -772,7 +772,7 @@
                             <i class="fab fa-facebook" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
                             <span style="flex: 1; text-align: left;">HALO.VN</span>
                         </a>
-                        <a href="#" target="_blank" class="btn text-white" style="background: #0088cc; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                        <a href="https://www.facebook.com/groups/ps5vietnam/?locale=vi_VN" target="_blank" class="btn text-white" style="background: #0088cc; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
                             <i class="fas fa-users" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
                             <span style="flex: 1; text-align: left;">HỘI PS5 VIỆT NAM</span>
                         </a>
