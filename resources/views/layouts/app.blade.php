@@ -768,17 +768,21 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h6 class="fw-bold">THEO DÕI HALO TẠI</h6>
                     <div class="d-flex flex-column gap-2">
-                        <a href="https://www.facebook.com/halo.vn" target="_blank" class="btn btn-primary text-white d-flex align-items-center" style="background: #1877f2; border: none; text-align: left;">
-                            <i class="fab fa-facebook" style="width: 20px; font-size: 16px; text-align: center; margin-right: 10px; display: inline-block;"></i> HALO.VN
+                        <a href="https://www.facebook.com/halo.vn" target="_blank" class="btn btn-primary text-white" style="background: #1877f2; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                            <i class="fab fa-facebook" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
+                            <span style="flex: 1; text-align: left;">HALO.VN</span>
                         </a>
-                        <a href="#" target="_blank" class="btn text-white d-flex align-items-center" style="background: #0088cc; border: none; text-align: left;">
-                            <i class="fas fa-users" style="width: 20px; font-size: 16px; text-align: center; margin-right: 10px; display: inline-block;"></i> HỘI PS5 VIỆT NAM
+                        <a href="#" target="_blank" class="btn text-white" style="background: #0088cc; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                            <i class="fas fa-users" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
+                            <span style="flex: 1; text-align: left;">HỘI PS5 VIỆT NAM</span>
                         </a>
-                        <a href="#" target="_blank" class="btn text-white d-flex align-items-center" style="background: #0068ff; border: none; text-align: left;">
-                            <i class="fas fa-comments" style="width: 20px; font-size: 16px; text-align: center; margin-right: 10px; display: inline-block;"></i> HALO SHOP
+                        <a href="#" target="_blank" class="btn text-white" style="background: #0068ff; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                            <i class="fas fa-comments" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
+                            <span style="flex: 1; text-align: left;">HALO SHOP</span>
                         </a>
-                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white d-flex align-items-center" style="border: none; text-align: left;">
-                            <i class="fab fa-youtube" style="width: 20px; font-size: 16px; text-align: center; margin-right: 10px; display: inline-block;"></i> HALOSHOP.VN
+                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white" style="border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                            <i class="fab fa-youtube" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
+                            <span style="flex: 1; text-align: left;">HALOSHOP.VN</span>
                         </a>
                     </div>
                 </div>
