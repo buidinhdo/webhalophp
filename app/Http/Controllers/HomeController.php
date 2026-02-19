@@ -64,27 +64,36 @@ class HomeController extends Controller
             ->get();
             
         // Get genres with representative products
+        // This will automatically update when new products are added
         $genreCollections = Product::active()
             ->whereNotNull('genre')
+            ->where('genre', '!=', '')
             ->select('genre')
-            ->distinct()
+            ->selectRaw('COUNT(*) as product_count')
+            ->selectRaw('MAX(id) as latest_product_id')
+            ->groupBy('genre')
+            ->orderByDesc('product_count') // Show genres with most products first
             ->get()
             ->map(function($item) {
-                $genre = $item->genre;
+                // Get a representative product for the genre image
                 $product = Product::active()
-                    ->where('genre', $genre)
+                    ->where('genre', $item->genre)
+                    ->where('image', '!=', '')
+                    ->whereNotNull('image')
                     ->inRandomOrder()
                     ->first();
                 
                 return [
-                    'genre' => $genre,
+                    'genre' => $item->genre,
                     'image' => $product ? $product->image : null,
-                    'product_count' => Product::active()->where('genre', $genre)->count()
+                    'product_count' => $item->product_count
                 ];
             })
             ->filter(function($item) {
-                return $item['image'] !== null;
-            });
+                // Only show genres that have at least one product with image
+                return $item['image'] !== null && $item['product_count'] > 0;
+            })
+            ->values(); // Reset array keys
             
         $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
