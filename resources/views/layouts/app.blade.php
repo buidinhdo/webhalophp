@@ -734,27 +734,71 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
-                    <h5><img src="{{ asset('images/logo/logohalo.png') }}" alt="HaloShop" style="height: 30px;"></h5>
-                    <p>Cửa hàng game và thiết bị công nghệ hàng đầu Việt Nam</p>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5><img src="{{ asset('images/logo/logohalo.png') }}" alt="HaloShop" style="height: 35px;"></h5>
+                    <p class="mt-3">HALO Shop cửa hàng Game Console cao cấp số 1 tại Tp.HCM. Chuyên kinh doanh về PlayStation, Nintendo Switch, XBox và các hệ máy handheld.</p>
+                    
+                    <h6 class="mt-4 fw-bold">MUA HÀNG - GÓP Ý</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Hotline:</strong> <span style="color: #ffc107;">02873068666</span></li>
+                        <li class="mb-2"><strong>E-mail:</strong> sales@halo.vn</li>
+                        <li class="mb-2"><strong>Website:</strong> haloshop.vn</li>
+                        <li class="mb-2"><strong>Gọi qua Zalo:</strong> HALO SHOP QA</li>
+                    </ul>
                 </div>
-                <div class="col-md-4">
-                    <h5>Liên hệ</h5>
-                    <p>
-                        <i class="fas fa-phone"></i> 1900 xxxx<br>
-                        <i class="fas fa-envelope"></i> contact@haloshop.vn<br>
-                        <i class="fas fa-map-marker-alt"></i> Hà Nội, Việt Nam
-                    </p>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="fw-bold">ĐỊA CHỈ</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">• 92 Pasteur, P. Sài Gòn, TP.HCM</li>
+                        <li class="mb-2">• 11 Nguyễn Hữu Cảnh, P. Thạnh Mỹ Tây, TP.HCM</li>
+                    </ul>
+                    
+                    <h6 class="mt-4 fw-bold">THỜI GIAN LÀM VIỆC</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">• Các ngày trong tuần (T2 - T7): 9h - 20h</li>
+                        <li class="mb-2">• Chủ nhật và ngày lễ: 9h - 19h</li>
+                    </ul>
+                    
+                    <div class="mt-3">
+                        <img src="{{ asset('images/logo/da-thong-bao.png') }}" alt="Đã thông báo Bộ Công Thương" style="height: 50px;">
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <h5>Theo dõi chúng tôi</h5>
-                    <p>
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-2x"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-2x"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-youtube fa-2x"></i></a>
-                    </p>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="fw-bold">THEO DÕI HALO TẠI</h6>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="https://www.facebook.com/halo.vn" target="_blank" class="btn btn-primary text-white" style="background: #1877f2; border: none; text-align: left;">
+                            <i class="fab fa-facebook me-2"></i> HALO.VN
+                        </a>
+                        <a href="#" target="_blank" class="btn text-white" style="background: #0088cc; border: none; text-align: left;">
+                            <i class="fas fa-users me-2"></i> HỘI PS5 VIỆT NAM
+                        </a>
+                        <a href="#" target="_blank" class="btn text-white" style="background: #0068ff; border: none; text-align: left;">
+                            <i class="fas fa-comments me-2"></i> HALO SHOP
+                        </a>
+                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white" style="border: none; text-align: left;">
+                            <i class="fab fa-youtube me-2"></i> HALOSHOP.VN
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="fw-bold">THÔNG TIN</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Quy định chung</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Mua hàng trả góp</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Quy định đặt cọc</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Quy định bảo hành</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Chính sách vận chuyển</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Chính sách đổi / trả hàng</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trung tâm bảo hành</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Tuyển dụng</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">FAQ</a></li>
+                    </ul>
                 </div>
             </div>
+            
             <hr style="border-color: rgba(255,255,255,0.1)">
             <div class="text-center">
                 <p>&copy; 2026 HaloShop. All rights reserved.</p>
