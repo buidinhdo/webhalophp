@@ -48,6 +48,13 @@
             background: #fff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 0;
+            overflow: visible;
+        }
+        
+        .navbar .container {
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
         }
         
         .navbar-brand {
@@ -64,18 +71,24 @@
         .navbar-expand-lg .navbar-collapse {
             display: flex !important;
             align-items: center;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
         
         .navbar-nav {
             flex-direction: row !important;
             align-items: center;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
         
         .navbar-nav .nav-item {
             display: inline-block;
             flex-shrink: 0;
+        }
+        
+        @media (min-width: 992px) {
+            .navbar-nav {
+                flex-wrap: nowrap;
+            }
         }
         
         .nav-link {
@@ -146,6 +159,26 @@
         
         .dropdown-toggle::after {
             margin-left: 5px;
+        }
+        
+        /* Auth Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 8px 20px;
+            border-radius: 25px;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 217, 255, 0.4);
+        }
+        
+        .navbar-nav .nav-item .btn-primary {
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
         /* Category Card Styles */
@@ -608,8 +641,8 @@
                 </ul>
                 
                 <!-- Form tìm kiếm -->
-                <form action="{{ route('products.index') }}" method="GET" class="d-none d-lg-flex mx-3">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ __('general.search_placeholder') }}" value="{{ request('search') }}" style="width: 200px; border-radius: 20px;">
+                <form action="{{ route('products.index') }}" method="GET" class="d-none d-lg-flex mx-2">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="{{ __('general.search_placeholder') }}" value="{{ request('search') }}" style="width: 180px; border-radius: 20px;">
                 </form>
                 
                 <ul class="navbar-nav ms-auto">
