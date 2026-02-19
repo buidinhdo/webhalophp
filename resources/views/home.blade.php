@@ -288,7 +288,12 @@
             <div class="swiper-wrapper">
                 @foreach($genreCollections as $collection)
                 <div class="swiper-slide">
-                    <a href="{{ route('products.index', ['genre' => $collection['genre']]) }}" class="genre-card">
+                    @php
+                        // Determine filter type: genre or platform
+                        $filterKey = $collection['type'] === 'platform' ? 'platform' : 'genre';
+                        $filterValue = $collection['genre'];
+                    @endphp
+                    <a href="{{ route('products.index', [$filterKey => $filterValue]) }}" class="genre-card">
                         <div class="genre-image-wrapper">
                             @if($collection['image'])
                                 <img src="{{ asset($collection['image']) }}" alt="{{ $collection['genre'] }}">

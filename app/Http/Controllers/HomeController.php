@@ -84,6 +84,7 @@ class HomeController extends Controller
                     ->first();
                 
                 return [
+                    'type' => 'genre',
                     'genre' => $item->genre,
                     'image' => $product ? $product->image : null,
                     'product_count' => $item->product_count
@@ -92,8 +93,39 @@ class HomeController extends Controller
             ->filter(function($item) {
                 // Only show genres that have at least one product with image
                 return $item['image'] !== null && $item['product_count'] > 0;
+            });
+            
+        // Get platform collections (Nintendo Switch, Xbox, etc.)
+        $platformCollections = Product::active()
+            ->whereNotNull('platform')
+            ->where('platform', '!=', '')
+            ->whereIn('platform', ['Nintendo Switch', 'Xbox']) // Only specific platforms
+            ->select('platform')
+            ->selectRaw('COUNT(*) as product_count')
+            ->groupBy('platform')
+            ->get()
+            ->map(function($item) {
+                // Get a representative product for the platform image
+                $product = Product::active()
+                    ->where('platform', $item->platform)
+                    ->where('image', '!=', '')
+                    ->whereNotNull('image')
+                    ->inRandomOrder()
+                    ->first();
+                
+                return [
+                    'type' => 'platform',
+                    'genre' => $item->platform, // Use genre field for display
+                    'image' => $product ? $product->image : null,
+                    'product_count' => $item->product_count
+                ];
             })
-            ->values(); // Reset array keys
+            ->filter(function($item) {
+                return $item['image'] !== null && $item['product_count'] > 0;
+            });
+            
+        // Merge genres and platforms
+        $genreCollections = $genreCollections->merge($platformCollections)->values();
             
         $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
