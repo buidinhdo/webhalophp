@@ -143,6 +143,102 @@
     .product-slider .swiper-slide {
         height: auto;
     }
+    
+    /* Genre Collections Styles */
+    .genre-collections-slider {
+        position: relative;
+        padding: 0 50px;
+    }
+    .genre-card {
+        display: block;
+        text-decoration: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 280px;
+    }
+    .genre-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+    .genre-image-wrapper {
+        position: relative;
+        height: 100%;
+        overflow: hidden;
+    }
+    .genre-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .genre-card:hover .genre-image-wrapper img {
+        transform: scale(1.1);
+    }
+    .genre-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 70%, transparent 100%);
+        padding: 30px 20px;
+        color: white;
+    }
+    .genre-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #FFD700;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .genre-count {
+        margin: 5px 0 0 0;
+        font-size: 14px;
+        opacity: 0.9;
+    }
+    .genre-collections-slider .swiper-button-next,
+    .genre-collections-slider .swiper-button-prev {
+        width: 45px;
+        height: 45px;
+        background: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: all 0.3s ease;
+    }
+    .genre-collections-slider .swiper-button-next:after,
+    .genre-collections-slider .swiper-button-prev:after {
+        font-size: 20px;
+        color: #333;
+        font-weight: bold;
+    }
+    .genre-collections-slider .swiper-button-next:hover,
+    .genre-collections-slider .swiper-button-prev:hover {
+        background: var(--primary-color);
+        transform: scale(1.1);
+    }
+    .genre-collections-slider .swiper-button-next:hover:after,
+    .genre-collections-slider .swiper-button-prev:hover:after {
+        color: white;
+    }
+    .genre-collections-slider .swiper-pagination {
+        position: relative;
+        margin-top: 25px;
+    }
+    .genre-collections-slider .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: #ccc;
+        opacity: 1;
+        transition: all 0.3s ease;
+    }
+    .genre-collections-slider .swiper-pagination-bullet-active {
+        background: var(--primary-color);
+        width: 25px;
+        border-radius: 5px;
+    }
 </style>
 @endsection
 
@@ -225,6 +321,46 @@
                             </p>
                         </div>
                     </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
+<!-- Game Collections / Genre Themes -->
+@if(isset($genreCollections) && $genreCollections->count() > 0)
+<section class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">
+            <i class="fas fa-gamepad text-primary me-2"></i> Chủ đề Game
+        </h2>
+        <a href="{{ route('products.index') }}" class="btn btn-outline-primary btn-sm">
+            Xem thêm <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="genre-collections-slider">
+        <div class="swiper genreSwiper">
+            <div class="swiper-wrapper">
+                @foreach($genreCollections as $collection)
+                <div class="swiper-slide">
+                    <a href="{{ route('products.index', ['genre' => $collection['genre']]) }}" class="genre-card">
+                        <div class="genre-image-wrapper">
+                            @if($collection['image'])
+                                <img src="{{ asset($collection['image']) }}" alt="{{ $collection['genre'] }}">
+                            @else
+                                <img src="https://via.placeholder.com/400x250?text={{ urlencode($collection['genre']) }}" alt="{{ $collection['genre'] }}">
+                            @endif
+                            <div class="genre-overlay">
+                                <h3 class="genre-title">{{ strtoupper($collection['genre']) }}</h3>
+                                <p class="genre-count">{{ $collection['product_count'] }} sản phẩm</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
                 @endforeach
             </div>
@@ -720,6 +856,41 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         pagination: {
             el: '.featuredSwiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+
+    // Genre Collections Slider
+    const genreSwiper = new Swiper('.genreSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.genre-collections-slider .swiper-button-next',
+            prevEl: '.genre-collections-slider .swiper-button-prev',
+        },
+        pagination: {
+            el: '.genre-collections-slider .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },

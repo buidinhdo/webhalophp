@@ -63,6 +63,29 @@ class HomeController extends Controller
             ->take(6)
             ->get();
             
+        // Get genres with representative products
+        $genreCollections = Product::active()
+            ->whereNotNull('genre')
+            ->select('genre')
+            ->distinct()
+            ->get()
+            ->map(function($item) {
+                $genre = $item->genre;
+                $product = Product::active()
+                    ->where('genre', $genre)
+                    ->inRandomOrder()
+                    ->first();
+                
+                return [
+                    'genre' => $genre,
+                    'image' => $product ? $product->image : null,
+                    'product_count' => Product::active()->where('genre', $genre)->count()
+                ];
+            })
+            ->filter(function($item) {
+                return $item['image'] !== null;
+            });
+            
         $categories = Category::where('is_active', true)
             ->whereNull('parent_id')
             ->orderBy('order')
@@ -82,6 +105,7 @@ class HomeController extends Controller
             'nintendoProducts',
             'xboxProducts',
             'collections',
+            'genreCollections',
             'categories',
             'posts'
         ));
