@@ -36,7 +36,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::where('is_active', true)->get();
-        return view('admin.products.create', compact('categories'));
+        $genres = Product::whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
+        $players = Product::whereNotNull('players')->where('players', '!=', '')->distinct()->orderByRaw('CAST(players AS UNSIGNED)')->pluck('players');
+        return view('admin.products.create', compact('categories', 'genres', 'players'));
     }
 
     public function store(Request $request)
@@ -76,7 +78,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::where('is_active', true)->get();
-        return view('admin.products.edit', compact('product', 'categories'));
+        $genres = Product::whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
+        $players = Product::whereNotNull('players')->where('players', '!=', '')->distinct()->orderByRaw('CAST(players AS UNSIGNED)')->pluck('players');
+        return view('admin.products.edit', compact('product', 'categories', 'genres', 'players'));
     }
 
     public function update(Request $request, Product $product)

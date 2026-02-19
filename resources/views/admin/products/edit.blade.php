@@ -53,18 +53,9 @@
                                 <label>Thể loại game</label>
                                 <select name="genre" class="form-control">
                                     <option value="">-- Chọn thể loại --</option>
-                                    <option value="Action" {{ old('genre', $product->genre) == 'Action' ? 'selected' : '' }}>Action (Hành động)</option>
-                                    <option value="Adventure" {{ old('genre', $product->genre) == 'Adventure' ? 'selected' : '' }}>Adventure (Phiêu lưu)</option>
-                                    <option value="RPG" {{ old('genre', $product->genre) == 'RPG' ? 'selected' : '' }}>RPG (Nhập vai)</option>
-                                    <option value="Shooting" {{ old('genre', $product->genre) == 'Shooting' ? 'selected' : '' }}>Shooting (Bắn súng)</option>
-                                    <option value="Sports" {{ old('genre', $product->genre) == 'Sports' ? 'selected' : '' }}>Sports (Thể thao)</option>
-                                    <option value="Racing" {{ old('genre', $product->genre) == 'Racing' ? 'selected' : '' }}>Racing (Đua xe)</option>
-                                    <option value="Fighting" {{ old('genre', $product->genre) == 'Fighting' ? 'selected' : '' }}>Fighting (Đối kháng)</option>
-                                    <option value="Simulation" {{ old('genre', $product->genre) == 'Simulation' ? 'selected' : '' }}>Simulation (Mô phỏng)</option>
-                                    <option value="Strategy" {{ old('genre', $product->genre) == 'Strategy' ? 'selected' : '' }}>Strategy (Chiến thuật)</option>
-                                    <option value="Horror" {{ old('genre', $product->genre) == 'Horror' ? 'selected' : '' }}>Horror (Kinh dị)</option>
-                                    <option value="Puzzle" {{ old('genre', $product->genre) == 'Puzzle' ? 'selected' : '' }}>Puzzle (Giải đố)</option>
-                                    <option value="Music" {{ old('genre', $product->genre) == 'Music' ? 'selected' : '' }}>Music (Âm nhạc)</option>
+                                    @foreach($genres as $genre)
+                                        <option value="{{ $genre }}" {{ old('genre', $product->genre) == $genre ? 'selected' : '' }}>{{ $genre }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -73,14 +64,9 @@
                                 <label>Số người chơi</label>
                                 <select name="players" class="form-control">
                                     <option value="">-- Chọn số người chơi --</option>
-                                    <option value="1" {{ old('players', $product->players) == '1' ? 'selected' : '' }}>1 người chơi</option>
-                                    <option value="2" {{ old('players', $product->players) == '2' ? 'selected' : '' }}>2 người chơi</option>
-                                    <option value="3" {{ old('players', $product->players) == '3' ? 'selected' : '' }}>3 người chơi</option>
-                                    <option value="4" {{ old('players', $product->players) == '4' ? 'selected' : '' }}>4 người chơi</option>
-                                    <option value="5" {{ old('players', $product->players) == '5' ? 'selected' : '' }}>5 người chơi</option>
-                                    <option value="6" {{ old('players', $product->players) == '6' ? 'selected' : '' }}>6 người chơi</option>
-                                    <option value="7" {{ old('players', $product->players) == '7' ? 'selected' : '' }}>7 người chơi</option>
-                                    <option value="8" {{ old('players', $product->players) == '8' ? 'selected' : '' }}>8 người chơi</option>
+                                    @foreach($players as $player)
+                                        <option value="{{ $player }}" {{ old('players', $product->players) == $player ? 'selected' : '' }}>{{ $player }} người chơi</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
