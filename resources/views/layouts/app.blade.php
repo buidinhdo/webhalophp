@@ -44,17 +44,18 @@
             font-size: 14px;
         }
         
+        .top-bar .container,
+        .navbar .container {
+            max-width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+        
         .navbar {
             background: #fff;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 15px 0;
             overflow: visible;
-        }
-        
-        .navbar .container {
-            max-width: 100%;
-            padding-right: 15px;
-            padding-left: 15px;
         }
         
         .navbar-brand {
@@ -65,6 +66,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-left: 0 !important;
+            padding-left: 0 !important;
         }
         
         /* Navbar Menu */
@@ -588,11 +591,11 @@
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="container">
-            <div class="row">
-                <div class="col-md-6">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
                     <i class="fas fa-phone-alt me-2"></i> Hotline: 1900 xxxx
                 </div>
-                <div class="col-md-6 text-end">
+                <div>
                     <i class="fas fa-map-marker-alt me-2"></i> Hà Nội - TP.HCM
                 </div>
             </div>
