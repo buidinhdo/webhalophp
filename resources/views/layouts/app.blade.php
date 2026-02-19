@@ -768,17 +768,17 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                     <h6 class="fw-bold">THEO DÕI HALO TẠI</h6>
                     <div class="d-flex flex-column gap-2">
-                        <a href="https://www.facebook.com/halo.vn" target="_blank" class="btn btn-primary text-white" style="background: #1877f2; border: none; text-align: left;">
-                            <i class="fab fa-facebook me-2"></i> HALO.VN
+                        <a href="https://www.facebook.com/halo.vn" target="_blank" class="btn btn-primary text-white d-flex align-items-center" style="background: #1877f2; border: none; text-align: left;">
+                            <i class="fab fa-facebook" style="width: 20px; text-align: center; margin-right: 10px;"></i> HALO.VN
                         </a>
-                        <a href="#" target="_blank" class="btn text-white" style="background: #0088cc; border: none; text-align: left;">
-                            <i class="fas fa-users me-2"></i> HỘI PS5 VIỆT NAM
+                        <a href="#" target="_blank" class="btn text-white d-flex align-items-center" style="background: #0088cc; border: none; text-align: left;">
+                            <i class="fas fa-users" style="width: 20px; text-align: center; margin-right: 10px;"></i> HỘI PS5 VIỆT NAM
                         </a>
-                        <a href="#" target="_blank" class="btn text-white" style="background: #0068ff; border: none; text-align: left;">
-                            <i class="fas fa-comments me-2"></i> HALO SHOP
+                        <a href="#" target="_blank" class="btn text-white d-flex align-items-center" style="background: #0068ff; border: none; text-align: left;">
+                            <i class="fas fa-comments" style="width: 20px; text-align: center; margin-right: 10px;"></i> HALO SHOP
                         </a>
-                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white" style="border: none; text-align: left;">
-                            <i class="fab fa-youtube me-2"></i> HALOSHOP.VN
+                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white d-flex align-items-center" style="border: none; text-align: left;">
+                            <i class="fab fa-youtube" style="width: 20px; text-align: center; margin-right: 10px;"></i> HALOSHOP.VN
                         </a>
                     </div>
                 </div>
