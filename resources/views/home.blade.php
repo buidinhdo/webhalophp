@@ -272,6 +272,46 @@
     </button>
 </div>
 
+<!-- Game Collections / Genre Themes -->
+@if(isset($genreCollections) && $genreCollections->count() > 0)
+<section class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="section-title mb-0">
+            <i class="fab fa-playstation text-primary me-2"></i> Chủ đề Game
+        </h2>
+        <a href="{{ route('products.index') }}" class="btn btn-outline-primary btn-sm">
+            Xem thêm <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="genre-collections-slider">
+        <div class="swiper genreSwiper">
+            <div class="swiper-wrapper">
+                @foreach($genreCollections as $collection)
+                <div class="swiper-slide">
+                    <a href="{{ route('products.index', ['genre' => $collection['genre']]) }}" class="genre-card">
+                        <div class="genre-image-wrapper">
+                            @if($collection['image'])
+                                <img src="{{ asset($collection['image']) }}" alt="{{ $collection['genre'] }}">
+                            @else
+                                <img src="https://via.placeholder.com/400x250?text={{ urlencode($collection['genre']) }}" alt="{{ $collection['genre'] }}">
+                            @endif
+                            <div class="genre-overlay">
+                                <h3 class="genre-title">{{ strtoupper($collection['genre']) }}</h3>
+                                <p class="genre-count">{{ $collection['product_count'] }} sản phẩm</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- Featured Products -->
 @if($featuredProducts->count() > 0)
 <section class="container my-5">
@@ -321,46 +361,6 @@
                             </p>
                         </div>
                     </div>
-                </div>
-                @endforeach
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-</section>
-@endif
-
-<!-- Game Collections / Genre Themes -->
-@if(isset($genreCollections) && $genreCollections->count() > 0)
-<section class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="section-title mb-0">
-            <i class="fas fa-gamepad text-primary me-2"></i> Chủ đề Game
-        </h2>
-        <a href="{{ route('products.index') }}" class="btn btn-outline-primary btn-sm">
-            Xem thêm <i class="fas fa-arrow-right ms-1"></i>
-        </a>
-    </div>
-    <div class="genre-collections-slider">
-        <div class="swiper genreSwiper">
-            <div class="swiper-wrapper">
-                @foreach($genreCollections as $collection)
-                <div class="swiper-slide">
-                    <a href="{{ route('products.index', ['genre' => $collection['genre']]) }}" class="genre-card">
-                        <div class="genre-image-wrapper">
-                            @if($collection['image'])
-                                <img src="{{ asset($collection['image']) }}" alt="{{ $collection['genre'] }}">
-                            @else
-                                <img src="https://via.placeholder.com/400x250?text={{ urlencode($collection['genre']) }}" alt="{{ $collection['genre'] }}">
-                            @endif
-                            <div class="genre-overlay">
-                                <h3 class="genre-title">{{ strtoupper($collection['genre']) }}</h3>
-                                <p class="genre-count">{{ $collection['product_count'] }} sản phẩm</p>
-                            </div>
-                        </div>
-                    </a>
                 </div>
                 @endforeach
             </div>
