@@ -117,6 +117,37 @@
             margin-right: auto !important;
         }
         
+        /* Dropdown Menu Styles */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 5px;
+        }
+        
+        .dropdown-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            transition: all 0.3s;
+            color: #333;
+        }
+        
+        .dropdown-item:hover {
+            background-color: rgba(0, 217, 255, 0.1);
+            color: var(--primary-color);
+            padding-left: 25px;
+        }
+        
+        .dropdown-item.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        
+        .dropdown-toggle::after {
+            margin-left: 5px;
+        }
+
         /* Category Card Styles */
         .categories-scroll {
             overflow-x: auto;
@@ -549,8 +580,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">{{ __('general.home') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('products.index') }}">{{ __('general.products') }}</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ __('general.products') }}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+                            <li><a class="dropdown-item" href="{{ route('products.index') }}"><i class="fas fa-th-large me-2"></i>Tất cả sản phẩm</a></li>
+                            @if(isset($headerCategories) && $headerCategories->count() > 0)
+                                <li><hr class="dropdown-divider"></li>
+                                @foreach($headerCategories as $category)
+                                    <li><a class="dropdown-item" href="{{ route('products.index', ['category' => $category->slug]) }}">
+                                        <i class="fas fa-angle-right me-2"></i>{{ $category->name }}
+                                    </a></li>
+                                @endforeach
+                            @endif
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('news.index') }}">{{ __('general.news') }}</a>
