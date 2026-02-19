@@ -129,6 +129,17 @@
                             </select>
                         </div>
 
+                        <!-- Players -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Số người chơi</label>
+                            <select name="players" class="form-select">
+                                <option value="">Tất cả</option>
+                                @foreach($players as $player)
+                                    <option value="{{ $player }}" {{ request('players') == $player ? 'selected' : '' }}>{{ $player }} người</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <!-- Sort -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Sắp xếp</label>

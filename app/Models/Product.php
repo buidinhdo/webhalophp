@@ -26,6 +26,7 @@ class Product extends Model
         'release_date',
         'platform',
         'genre',
+        'players',
         'status'
     ];
     

@@ -67,6 +67,22 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số người chơi</label>
+                                <select name="players" class="form-control">
+                                    <option value="">-- Chọn số người chơi --</option>
+                                    <option value="1" {{ old('players') == '1' ? 'selected' : '' }}>1 người chơi</option>
+                                    <option value="2" {{ old('players') == '2' ? 'selected' : '' }}>2 người chơi</option>
+                                    <option value="3" {{ old('players') == '3' ? 'selected' : '' }}>3 người chơi</option>
+                                    <option value="4" {{ old('players') == '4' ? 'selected' : '' }}>4 người chơi</option>
+                                    <option value="5" {{ old('players') == '5' ? 'selected' : '' }}>5 người chơi</option>
+                                    <option value="6" {{ old('players') == '6' ? 'selected' : '' }}>6 người chơi</option>
+                                    <option value="7" {{ old('players') == '7' ? 'selected' : '' }}>7 người chơi</option>
+                                    <option value="8" {{ old('players') == '8' ? 'selected' : '' }}>8 người chơi</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
