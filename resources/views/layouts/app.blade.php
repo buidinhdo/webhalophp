@@ -578,11 +578,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">{{ __('general.home') }}</a>
+                        <a class="nav-link" href="{{ route('home') }}"><i class="fas fa-home me-2"></i>{{ __('general.home') }}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ __('general.products') }}
+                            <i class="fas fa-gamepad me-2"></i>{{ __('general.products') }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="productsDropdown">
                             <li><a class="dropdown-item" href="{{ route('products.index') }}"><i class="fas fa-th-large me-2"></i>Tất cả sản phẩm</a></li>
@@ -597,13 +597,13 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('news.index') }}">{{ __('general.news') }}</a>
+                        <a class="nav-link" href="{{ route('news.index') }}"><i class="fas fa-newspaper me-2"></i>{{ __('general.news') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('contact') }}">{{ __('general.contact') }}</a>
+                        <a class="nav-link" href="{{ route('contact') }}"><i class="fas fa-envelope me-2"></i>{{ __('general.contact') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('about') }}">{{ __('general.about') }}</a>
+                        <a class="nav-link" href="{{ route('about') }}"><i class="fas fa-info-circle me-2"></i>{{ __('general.about') }}</a>
                     </li>
                 </ul>
                 
