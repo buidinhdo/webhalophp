@@ -593,7 +593,7 @@
         <div class="container">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <i class="fas fa-phone-alt me-2"></i> Hotline: 1900 xxxx
+                    <i class="fas fa-phone-alt me-2"></i> Hotline: 028 7306 8666
                 </div>
                 <div>
                     <i class="fas fa-map-marker-alt me-2"></i> Hà Nội - TP.HCM
