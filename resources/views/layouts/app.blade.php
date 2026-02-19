@@ -38,7 +38,10 @@
         
         /* Header Styles */
         .top-bar {
-            display: none;
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 10px 0;
+            font-size: 14px;
         }
         
         .navbar {
@@ -62,30 +65,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-right: 0;
-        }
-        
-        .hotline-info {
-            display: flex;
-            align-items: center;
-            margin-left: 20px;
-            padding-left: 20px;
-            border-left: 2px solid #e0e0e0;
-            color: #333;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .hotline-info i {
-            color: var(--primary-color);
-            margin-right: 8px;
-            font-size: 16px;
-        }
-        
-        @media (max-width: 991px) {
-            .hotline-info {
-                display: none;
-            }
         }
         
         /* Navbar Menu */
@@ -626,10 +605,6 @@
             <a class="navbar-brand" href="{{ route('home') }}">
                 <img src="{{ asset('images/logo/logohalo.png') }}" alt="HaloShop" style="height: 40px;">
             </a>
-            <div class="hotline-info d-none d-lg-flex">
-                <i class="fas fa-phone-alt"></i>
-                <span>Hotline: <strong>1900 xxxx</strong></span>
-            </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
