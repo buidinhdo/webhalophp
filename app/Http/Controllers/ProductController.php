@@ -26,10 +26,6 @@ class ProductController extends Controller
             $query->where('genre', $request->genre);
         }
         
-        if ($request->has('players')) {
-            $query->where('players', $request->players);
-        }
-        
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -63,9 +59,8 @@ class ProductController extends Controller
         $products = $query->paginate(20);
         $categories = Category::where('is_active', true)->orderBy('order')->get();
         $genres = Product::active()->whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
-        $players = Product::active()->whereNotNull('players')->where('players', '!=', '')->distinct()->orderByRaw('CAST(players AS UNSIGNED)')->pluck('players');
         
-        return view('products.index', compact('products', 'categories', 'genres', 'players'));
+        return view('products.index', compact('products', 'categories', 'genres'));
     }
     
     public function show($slug)

@@ -58,17 +58,6 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Số người chơi</label>
-                                <select name="players" class="form-control">
-                                    <option value="">-- Chọn số người chơi --</option>
-                                    @foreach($players as $player)
-                                        <option value="{{ $player }}" {{ old('players') == $player ? 'selected' : '' }}>{{ $player }} người chơi</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="row">
