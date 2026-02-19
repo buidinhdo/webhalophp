@@ -277,7 +277,7 @@
 <section class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="section-title mb-0">
-            <i class="fab fa-playstation text-primary me-2"></i> Chủ đề Game
+            <i class="fab fa-playstation text-primary me-2"></i> Bộ sưu tập
         </h2>
         <a href="{{ route('products.index') }}" class="btn btn-outline-primary btn-sm">
             Xem thêm <i class="fas fa-arrow-right ms-1"></i>
