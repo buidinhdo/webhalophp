@@ -776,11 +776,11 @@
                             <i class="fas fa-users" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
                             <span style="flex: 1; text-align: left;">HỘI PS5 VIỆT NAM</span>
                         </a>
-                        <a href="#" target="_blank" class="btn text-white" style="background: #0068ff; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                        <a href="javascript:void(0);" onclick="toggleChatbot()" class="btn text-white" style="background: #0068ff; border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px; cursor: pointer;">
                             <i class="fas fa-comments" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
                             <span style="flex: 1; text-align: left;">HALO SHOP</span>
                         </a>
-                        <a href="https://www.youtube.com/@haloshopvn" target="_blank" class="btn btn-danger text-white" style="border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
+                        <a href="https://www.youtube.com/@HaLoShopGame" target="_blank" class="btn btn-danger text-white" style="border: none; display: flex; align-items: center; justify-content: flex-start; padding: 10px 15px;">
                             <i class="fab fa-youtube" style="width: 24px; font-size: 18px; display: flex; align-items: center; justify-content: center; margin-right: 12px;"></i> 
                             <span style="flex: 1; text-align: left;">HALOSHOP.VN</span>
                         </a>
