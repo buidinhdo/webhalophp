@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Models\Category;
+use App\Models\Product;
+use App\Observers\ProductObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Đăng ký ProductObserver để tự động gán genre
+        Product::observe(ProductObserver::class);
+
         // Share categories with all views
         View::composer('*', function ($view) {
             $headerCategories = Category::where('is_active', true)
