@@ -7,6 +7,14 @@
     .product-image-wrapper {
         position: relative;
         overflow: hidden;
+        background-color: #f8f9fa;
+    }
+    .product-card .card-img-top {
+        height: 320px;
+        object-fit: contain;
+        background-color: #f8f9fa;
+        padding: 10px;
+        width: 100%;
     }
     .quick-view-overlay {
         position: absolute;
