@@ -36,15 +36,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Mô tả</label>
-                        <textarea name="description" id="description" rows="3" class="form-control @error('description') is-invalid @enderror" 
-                                  placeholder="Mô tả ngắn về thể loại game này...">{{ old('description', $genre->description) }}</textarea>
-                        @error('description')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
                         <label for="order">Thứ tự</label>
                         <input type="number" name="order" id="order" class="form-control @error('order') is-invalid @enderror" 
                                value="{{ old('order', $genre->order) }}" min="0">
