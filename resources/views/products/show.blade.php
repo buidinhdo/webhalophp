@@ -339,7 +339,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $relatedProduct->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($relatedProduct->name, 50) }}</h5>
+                                <h5 class="card-title">{{ $relatedProduct->name }}</h5>
                             </a>
                             <p class="card-text">
                                 @if($relatedProduct->sale_price)

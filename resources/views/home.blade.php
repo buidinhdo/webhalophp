@@ -354,7 +354,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)
@@ -428,7 +428,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)
@@ -500,7 +500,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             @if($product->release_date)
                                 <p class="text-muted small mb-2">
@@ -565,7 +565,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)
@@ -625,7 +625,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)
@@ -685,7 +685,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)
@@ -745,7 +745,7 @@
                         </div>
                         <div class="card-body">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 45) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             <p class="card-text mb-3">
                                 @if($product->sale_price)

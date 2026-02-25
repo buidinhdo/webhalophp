@@ -40,7 +40,7 @@
                     @endif
                 </div>
                 <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ Str::limit($product->name, 60) }}</h5>
+                    <h5 class="card-title">{{ $product->name }}</h5>
                     
                     @if($product->platform)
                     <p class="text-muted small mb-2">

@@ -200,7 +200,7 @@
                         </div>
                         <div class="card-body d-flex flex-column">
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ Str::limit($product->name, 60) }}</h5>
+                                <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
                             
                             @if($product->platform)

@@ -54,7 +54,7 @@
                 
                 <div class="card-body">
                     <a href="{{ route('products.show', $wishlist->product->slug) }}" class="product-title-link">
-                        <h5 class="card-title">{{ Str::limit($wishlist->product->name, 45) }}</h5>
+                        <h5 class="card-title">{{ $wishlist->product->name }}</h5>
                     </a>
                     <p class="card-text mb-3">
                         @if($wishlist->product->sale_price)

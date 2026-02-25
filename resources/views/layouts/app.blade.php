@@ -314,9 +314,9 @@
             font-weight: 600;
             color: #333;
             margin-bottom: 0.75rem;
-            min-height: 48px;
+            min-height: 72px;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
