@@ -34,6 +34,21 @@ class ProductObserver
             return;
         }
 
+        // Lấy tất cả genres từ database
+        $genres = \App\Models\Genre::active()->get();
+
+        $productName = strtolower($product->name);
+
+        // Kiểm tra từng genre xem có khớp với tên sản phẩm không
+        foreach ($genres as $genre) {
+            $genreName = strtolower($genre->name);
+            if (str_contains($productName, $genreName)) {
+                $product->genre = $genre->name;
+                return;
+            }
+        }
+
+        // Nếu không tìm thấy genre phù hợp, kiểm tra một số từ khóa phổ biến
         $genreKeywords = [
             'Shooting' => ['shooting', 'fps', 'shooter', 'macross', 'call of duty', 'battlefield', 'warfare'],
             'Action' => ['action', 'adventure', 'combat'],
@@ -47,18 +62,23 @@ class ProductObserver
             'Puzzle' => ['puzzle', 'tetris', 'match'],
         ];
 
-        $productName = strtolower($product->name);
-
         foreach ($genreKeywords as $genre => $keywords) {
             foreach ($keywords as $keyword) {
                 if (str_contains($productName, strtolower($keyword))) {
-                    $product->genre = $genre;
-                    return;
+                    // Kiểm tra xem genre này có tồn tại trong database không
+                    $genreModel = \App\Models\Genre::where('name', $genre)->first();
+                    if ($genreModel) {
+                        $product->genre = $genreModel->name;
+                        return;
+                    }
                 }
             }
         }
 
         // Mặc định là Action nếu không tìm thấy genre phù hợp
-        $product->genre = 'Action';
+        $defaultGenre = \App\Models\Genre::where('name', 'Action')->first();
+        if ($defaultGenre) {
+            $product->genre = $defaultGenre->name;
+        }
     }
 }

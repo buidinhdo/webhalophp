@@ -138,6 +138,31 @@
                         </ul>
                     </li>
 
+                    <!-- Genres -->
+                    <li class="nav-item {{ request()->routeIs('admin.genres.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admin.genres.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-gamepad"></i>
+                            <p>
+                                Thể loại game
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.genres.index') }}" class="nav-link {{ request()->routeIs('admin.genres.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.genres.create') }}" class="nav-link {{ request()->routeIs('admin.genres.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm mới</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <!-- Posts -->
                     <li class="nav-item {{ request()->routeIs('admin.posts.*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Post;
+use App\Models\Genre;
 
 class HomeController extends Controller
 {
@@ -64,20 +65,20 @@ class HomeController extends Controller
             ->get();
             
         // Get genres with representative products
-        // This will automatically update when new products are added
-        $genreCollections = Product::active()
-            ->whereNotNull('genre')
-            ->where('genre', '!=', '')
-            ->select('genre')
-            ->selectRaw('COUNT(*) as product_count')
-            ->selectRaw('MAX(id) as latest_product_id')
-            ->groupBy('genre')
-            ->orderByDesc('product_count') // Show genres with most products first
+        // Only show active genres from genres table
+        $genreCollections = Genre::active()
+            ->orderBy('order')
+            ->orderBy('name')
             ->get()
-            ->map(function($item) {
+            ->map(function($genre) {
+                // Count products for this genre
+                $productCount = Product::active()
+                    ->where('genre', $genre->name)
+                    ->count();
+                
                 // Get a representative product for the genre image
                 $product = Product::active()
-                    ->where('genre', $item->genre)
+                    ->where('genre', $genre->name)
                     ->where('image', '!=', '')
                     ->whereNotNull('image')
                     ->inRandomOrder()
@@ -85,9 +86,10 @@ class HomeController extends Controller
                 
                 return [
                     'type' => 'genre',
-                    'genre' => $item->genre,
+                    'genre' => $genre->name,
                     'image' => $product ? $product->image : null,
-                    'product_count' => $item->product_count
+                    'product_count' => $productCount,
+                    'icon' => $genre->icon
                 ];
             })
             ->filter(function($item) {

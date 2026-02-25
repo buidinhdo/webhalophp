@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ReviewController;
+use App\Http\Controllers\Admin\GenreController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -32,6 +33,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Categories Management
     Route::resource('categories', CategoryController::class);
     Route::post('categories/{category}/toggle-active', [CategoryController::class, 'toggleActive'])->name('categories.toggle-active');
+    
+    // Genres Management
+    Route::resource('genres', GenreController::class);
+    Route::patch('genres/{genre}/toggle', [GenreController::class, 'toggleActive'])->name('genres.toggle');
     
     // Orders Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
