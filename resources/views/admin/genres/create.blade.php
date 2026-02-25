@@ -41,19 +41,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="icon">Icon (Font Awesome)</label>
-                        <input type="text" name="icon" id="icon" class="form-control @error('icon') is-invalid @enderror" 
-                               value="{{ old('icon') }}" placeholder="VD: fas fa-gamepad">
-                        @error('icon')
-                            <span class="invalid-feedback">{{ $message }}</span>
-                        @enderror
-                        <small class="form-text text-muted">
-                            Nhập class Font Awesome. 
-                            <a href="https://fontawesome.com/icons" target="_blank">Xem danh sách icon</a>
-                        </small>
-                    </div>
-
-                    <div class="form-group">
                         <label for="order">Thứ tự</label>
                         <input type="number" name="order" id="order" class="form-control @error('order') is-invalid @enderror" 
                                value="{{ old('order', 0) }}" min="0">
@@ -92,23 +79,7 @@
             </div>
             <div class="card-body">
                 <p><strong>Tên thể loại:</strong> Tên chính xác phải khớp với genre trong sản phẩm để lọc được.</p>
-                <p><strong>Icon:</strong> Có thể để trống hoặc dùng Font Awesome icon.</p>
                 <p class="mb-0"><strong>Thứ tự:</strong> Thể loại có thứ tự nhỏ sẽ hiển thị trước trong danh sách.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">Ví dụ Icon</h3>
-            </div>
-            <div class="card-body">
-                <ul class="list-unstyled">
-                    <li><i class="fas fa-crosshairs"></i> <code>fas fa-crosshairs</code> - Shooting</li>
-                    <li><i class="fas fa-fist-raised"></i> <code>fas fa-fist-raised</code> - Fighting</li>
-                    <li><i class="fas fa-hat-wizard"></i> <code>fas fa-hat-wizard</code> - RPG</li>
-                    <li><i class="fas fa-car"></i> <code>fas fa-car</code> - Racing</li>
-                    <li><i class="fas fa-football-ball"></i> <code>fas fa-football-ball</code> - Sports</li>
-                </ul>
             </div>
         </div>
     </div>

@@ -26,7 +26,6 @@
                     <th width="60">STT</th>
                     <th>Tên thể loại</th>
                     <th>Slug</th>
-                    <th>Icon</th>
                     <th width="120">Số sản phẩm</th>
                     <th width="100">Trạng thái</th>
                     <th width="80">Thứ tự</th>
@@ -39,13 +38,6 @@
                     <td>{{ $genres->firstItem() + $index }}</td>
                     <td><strong>{{ $genre->name }}</strong></td>
                     <td><code>{{ $genre->slug }}</code></td>
-                    <td>
-                        @if($genre->icon)
-                            <i class="{{ $genre->icon }}"></i> {{ $genre->icon }}
-                        @else
-                            <span class="text-muted">Chưa có</span>
-                        @endif
-                    </td>
                     <td>
                         <span class="badge badge-info">
                             {{ \App\Models\Product::where('genre', $genre->name)->count() }} sản phẩm
@@ -83,7 +75,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8" class="text-center">Chưa có thể loại nào</td>
+                    <td colspan="7" class="text-center">Chưa có thể loại nào</td>
                 </tr>
                 @endforelse
             </tbody>
