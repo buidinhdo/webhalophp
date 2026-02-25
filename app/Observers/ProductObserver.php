@@ -7,21 +7,23 @@ use App\Models\Product;
 class ProductObserver
 {
     /**
-     * Tự động gán genre khi tạo sản phẩm mới
+     * Tự động gán genre khi tạo sản phẩm mới (chỉ khi genre rỗng)
      */
     public function creating(Product $product)
     {
-        $this->autoAssignGenre($product);
-    }
-
-    /**
-     * Tự động gán genre khi cập nhật sản phẩm (nếu genre rỗng)
-     */
-    public function updating(Product $product)
-    {
+        // Chỉ tự động gán nếu genre chưa được set
         if (empty($product->genre) || $product->genre === '') {
             $this->autoAssignGenre($product);
         }
+    }
+
+    /**
+     * KHÔNG tự động gán genre khi cập nhật
+     * Cho phép admin tự do chọn genre từ dropdown
+     */
+    public function updating(Product $product)
+    {
+        // Không làm gì cả - để admin tự quản lý genre
     }
 
     /**
