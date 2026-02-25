@@ -22,12 +22,12 @@
     <!-- Filter Form -->
     <div class="card-body border-bottom">
         <form action="{{ route('admin.products.index') }}" method="GET" class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <input type="text" name="search" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('search') }}">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <select name="category_id" class="form-control">
-                    <option value="">-- Tất cả danh mục --</option>
+                    <option value="">-- Danh mục --</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
@@ -35,18 +35,31 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
+                <select name="genre" class="form-control">
+                    <option value="">-- Thể loại --</option>
+                    @foreach($genres as $genre)
+                        <option value="{{ $genre }}" {{ request('genre') == $genre ? 'selected' : '' }}>
+                            {{ $genre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
                 <select name="status" class="form-control">
-                    <option value="">-- Tất cả trạng thái --</option>
+                    <option value="">-- Trạng thái --</option>
                     <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Đang bán</option>
                     <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Ngừng bán</option>
                     <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Hết hàng</option>
                 </select>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary btn-block">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Lọc
                 </button>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </a>
             </div>
         </form>
     </div>

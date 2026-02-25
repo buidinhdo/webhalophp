@@ -27,16 +27,21 @@ class ProductController extends Controller
             $query->where('status', $request->status);
         }
         
+        if ($request->has('genre')) {
+            $query->where('genre', $request->genre);
+        }
+        
         $products = $query->latest()->paginate(20);
         $categories = Category::all();
+        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         
-        return view('admin.products.index', compact('products', 'categories'));
+        return view('admin.products.index', compact('products', 'categories', 'genres'));
     }
 
     public function create()
     {
         $categories = Category::where('is_active', true)->get();
-        $genres = Product::whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
+        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         return view('admin.products.create', compact('categories', 'genres'));
     }
 
@@ -77,7 +82,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::where('is_active', true)->get();
-        $genres = Product::whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
+        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         return view('admin.products.edit', compact('product', 'categories', 'genres'));
     }
 

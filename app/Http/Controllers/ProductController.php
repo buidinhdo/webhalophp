@@ -58,7 +58,7 @@ class ProductController extends Controller
         
         $products = $query->paginate(20);
         $categories = Category::where('is_active', true)->orderBy('order')->get();
-        $genres = Product::active()->whereNotNull('genre')->where('genre', '!=', '')->distinct()->orderBy('genre')->pluck('genre');
+        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         
         return view('products.index', compact('products', 'categories', 'genres'));
     }
