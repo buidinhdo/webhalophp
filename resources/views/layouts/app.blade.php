@@ -631,7 +631,7 @@
                                         @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains(strtolower($category->name), 'ps5'))
                                             <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
                                         @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
-                                            <span class="me-2">🎮</span>
+                                            <span class="badge bg-danger me-2" style="font-size: 0.7rem; padding: 0.25rem 0.4rem;">NS</span>
                                         @elseif(str_contains(strtolower($category->name), 'xbox'))
                                             <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
                                         @else

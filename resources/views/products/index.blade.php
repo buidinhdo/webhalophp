@@ -113,7 +113,7 @@
                                 <option value="">Tất cả</option>
                                 <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>🎮 PlayStation 4</option>
                                 <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>🎮 PlayStation 5</option>
-                                <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>🎮 Nintendo Switch</option>
+                                <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>🟥 Nintendo Switch</option>
                                 <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>🎮 Xbox</option>
                             </select>
                         </div>
@@ -163,7 +163,7 @@
                             @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains($category->slug, 'playstation-5'))
                                 <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
                             @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
-                                <span class="me-2">🎮</span>
+                                <span class="badge bg-danger me-2" style="font-size: 0.7rem; padding: 0.25rem 0.4rem;">NS</span>
                             @elseif(str_contains(strtolower($category->name), 'xbox'))
                                 <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
                             @else
