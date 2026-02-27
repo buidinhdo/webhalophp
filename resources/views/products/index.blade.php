@@ -111,10 +111,10 @@
                             <label class="form-label fw-bold">Nền tảng</label>
                             <select name="platform" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>PS4</option>
-                                <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>PS5</option>
-                                <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>Nintendo Switch</option>
-                                <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>Xbox</option>
+                                <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>🎮 PlayStation 4</option>
+                                <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>🎮 PlayStation 5</option>
+                                <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>🎮 Nintendo Switch</option>
+                                <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>🎮 Xbox</option>
                             </select>
                         </div>
 
@@ -153,8 +153,22 @@
                     <hr>
                     <h6 class="fw-bold">Danh mục</h6>
                     <div class="list-group">
+                        <a href="{{ route('products.index') }}" class="list-group-item list-group-item-action {{ !request('category') ? 'active' : '' }}">
+                            <i class="fas fa-th-large me-2"></i>Tất cả sản phẩm
+                        </a>
                         @foreach($categories as $category)
                         <a href="{{ route('categories.show', $category->slug) }}" class="list-group-item list-group-item-action">
+                            @if(str_contains(strtolower($category->name), 'playstation 4') || str_contains($category->slug, 'playstation-4'))
+                                <i class="fab fa-playstation me-2" style="color: #003087;"></i>
+                            @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains($category->slug, 'playstation-5'))
+                                <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
+                            @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
+                                <span class="me-2">🎮</span>
+                            @elseif(str_contains(strtolower($category->name), 'xbox'))
+                                <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
+                            @else
+                                <i class="fas fa-angle-right me-2"></i>
+                            @endif
                             {{ $category->name }}
                         </a>
                         @endforeach

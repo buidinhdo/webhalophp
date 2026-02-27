@@ -626,7 +626,18 @@
                                 <li><hr class="dropdown-divider"></li>
                                 @foreach($headerCategories as $category)
                                     <li><a class="dropdown-item" href="{{ route('products.index', ['category' => $category->slug]) }}">
-                                        <i class="fas fa-angle-right me-2"></i>{{ $category->name }}
+                                        @if(str_contains(strtolower($category->name), 'playstation 4') || str_contains(strtolower($category->name), 'ps4'))
+                                            <i class="fab fa-playstation me-2" style="color: #003087;"></i>
+                                        @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains(strtolower($category->name), 'ps5'))
+                                            <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
+                                        @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
+                                            <span class="me-2">🎮</span>
+                                        @elseif(str_contains(strtolower($category->name), 'xbox'))
+                                            <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
+                                        @else
+                                            <i class="fas fa-angle-right me-2"></i>
+                                        @endif
+                                        {{ $category->name }}
                                     </a></li>
                                 @endforeach
                             @endif

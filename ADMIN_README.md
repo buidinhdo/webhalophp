@@ -4,7 +4,7 @@
 
 - **URL**: http://127.0.0.1:8000/admin/dashboard
 - **Email**: admin@haloshop.com
-- **Password**: admin123
+- **Password**: 123456
 
 ## Chức năng đã tạo
 
