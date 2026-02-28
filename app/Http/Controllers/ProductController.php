@@ -12,21 +12,21 @@ class ProductController extends Controller
     {
         $query = Product::active();
         
-        if ($request->has('category')) {
+        if ($request->has('category') && $request->category != '') {
             $query->whereHas('category', function($q) use ($request) {
                 $q->where('slug', $request->category);
             });
         }
         
-        if ($request->has('platform')) {
+        if ($request->has('platform') && $request->platform != '') {
             $query->whereRaw('LOWER(platform) = ?', [strtolower($request->platform)]);
         }
         
-        if ($request->has('genre')) {
+        if ($request->has('genre') && $request->genre != '') {
             $query->where('genre', $request->genre);
         }
         
-        if ($request->has('search')) {
+        if ($request->has('search') && $request->search != '') {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 // Tìm kiếm không phân biệt hoa thường
