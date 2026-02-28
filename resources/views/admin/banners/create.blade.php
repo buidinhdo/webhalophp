@@ -59,26 +59,6 @@
                             <small class="text-muted">Kích thước đề xuất: 1920x600px. Tối đa 5MB.</small>
                             <div id="imagePreview" class="mt-2"></div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="button_text" class="form-label">Text Button</label>
-                                <input type="text" class="form-control @error('button_text') is-invalid @enderror" 
-                                       id="button_text" name="button_text" value="{{ old('button_text') }}" placeholder="Xem ngay">
-                                @error('button_text')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="button_link" class="form-label">Link Button</label>
-                                <input type="text" class="form-control @error('button_link') is-invalid @enderror" 
-                                       id="button_link" name="button_link" value="{{ old('button_link') }}" placeholder="/san-pham">
-                                @error('button_link')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
                     </div>
 
                     <div class="col-md-4">
