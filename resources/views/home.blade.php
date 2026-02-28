@@ -252,7 +252,7 @@
 
 @section('content')
 <!-- Hero Slider -->
-<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+<div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="hover">
     @if($banners->count() > 1)
     <div class="carousel-indicators">
         @foreach($banners as $index => $banner)

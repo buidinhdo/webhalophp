@@ -14,10 +14,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Get active banners ordered by order field
+        // Get active banners ordered by order field and creation time
         $banners = Banner::active()
             ->orderBy('order')
-            ->orderBy('id', 'desc')
+            ->orderBy('id', 'asc')
             ->get();
             
         $featuredProducts = Product::featured()

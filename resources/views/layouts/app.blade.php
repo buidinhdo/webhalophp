@@ -379,6 +379,21 @@
             margin-bottom: 60px;
         }
         
+        .hero-carousel .carousel-item {
+            transition: transform 0.6s ease-in-out;
+        }
+        
+        .hero-carousel .carousel-control-prev,
+        .hero-carousel .carousel-control-next {
+            width: 5%;
+            opacity: 0.8;
+        }
+        
+        .hero-carousel .carousel-control-prev:hover,
+        .hero-carousel .carousel-control-next:hover {
+            opacity: 1;
+        }
+        
         .hero-slide {
             min-height: 500px;
             display: flex;
