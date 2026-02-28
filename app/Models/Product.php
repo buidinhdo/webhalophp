@@ -63,6 +63,11 @@ class Product extends Model
         return $this->hasMany(Review::class);
     }
     
+    public function approvedReviews()
+    {
+        return $this->hasMany(Review::class)->where('status', 'approved');
+    }
+    
     public function getDisplayPriceAttribute()
     {
         return $this->sale_price ?? $this->price;

@@ -109,13 +109,28 @@
                         <!-- Platform -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Nền tảng</label>
-                            <select name="platform" class="form-select">
-                                <option value="">Tất cả</option>
-                                <option value="PS4" {{ request('platform') == 'PS4' ? 'selected' : '' }}>🎮 PlayStation 4</option>
-                                <option value="PS5" {{ request('platform') == 'PS5' ? 'selected' : '' }}>🎮 PlayStation 5</option>
-                                <option value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'selected' : '' }}>🟥 Nintendo Switch</option>
-                                <option value="Xbox" {{ request('platform') == 'Xbox' ? 'selected' : '' }}>🎮 Xbox</option>
-                            </select>
+                            <div class="list-group">
+                                <label class="list-group-item list-group-item-action {{ !request('platform') ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="" {{ !request('platform') ? 'checked' : '' }} style="display: none;">
+                                    <i class="fas fa-th-large me-2"></i>Tất cả
+                                </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'PS4' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="PS4" {{ request('platform') == 'PS4' ? 'checked' : '' }} style="display: none;">
+                                    <i class="fab fa-playstation me-2" style="color: #003087;"></i>PlayStation 4
+                                </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'PS5' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="PS5" {{ request('platform') == 'PS5' ? 'checked' : '' }} style="display: none;">
+                                    <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>PlayStation 5
+                                </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'Nintendo Switch' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="Nintendo Switch" {{ request('platform') == 'Nintendo Switch' ? 'checked' : '' }} style="display: none;">
+                                    <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">Nintendo Switch
+                                </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'Xbox' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="Xbox" {{ request('platform') == 'Xbox' ? 'checked' : '' }} style="display: none;">
+                                    <i class="fab fa-xbox me-2" style="color: #107c10;"></i>Xbox
+                                </label>
+                            </div>
                         </div>
 
                         <!-- Genre -->

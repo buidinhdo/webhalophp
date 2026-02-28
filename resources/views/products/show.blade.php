@@ -231,10 +231,10 @@
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">
                         <i class="fas fa-star"></i> Đánh giá sản phẩm
-                        @if($product->reviews->count() > 0)
+                        @if($product->reviews->where('status', 'approved')->count() > 0)
                             <span class="badge bg-warning text-dark ms-2">
-                                {{ number_format($product->reviews->avg('rating'), 1) }} <i class="fas fa-star"></i>
-                                ({{ $product->reviews->count() }} đánh giá)
+                                {{ number_format($product->reviews->where('status', 'approved')->avg('rating'), 1) }} <i class="fas fa-star"></i>
+                                ({{ $product->reviews->where('status', 'approved')->count() }} đánh giá)
                             </span>
                         @endif
                     </h4>
@@ -278,10 +278,10 @@
                     @endauth
 
                     <!-- Danh sách đánh giá -->
-                    @if($product->reviews->count() > 0)
+                    @if($product->reviews->where('status', 'approved')->count() > 0)
                         <hr>
                         <h5 class="mb-3">Các đánh giá</h5>
-                        @foreach($product->reviews as $review)
+                        @foreach($product->reviews->where('status', 'approved') as $review)
                             <div class="review-item mb-3 p-3 border rounded">
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
