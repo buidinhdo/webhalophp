@@ -33,24 +33,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="subtitle" class="form-label">Phụ đề</label>
-                            <input type="text" class="form-control @error('subtitle') is-invalid @enderror" 
-                                   id="subtitle" name="subtitle" value="{{ old('subtitle', $banner->subtitle) }}">
-                            @error('subtitle')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Mô tả</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" 
-                                      id="description" name="description" rows="3">{{ old('description', $banner->description) }}</textarea>
-                            @error('description')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
                             <label for="image" class="form-label">Ảnh Banner</label>
                             @if($banner->image)
                                 <div class="mb-2">
