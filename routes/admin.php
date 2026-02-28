@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\GenreController;
+use App\Http\Controllers\Admin\BannerController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -37,6 +38,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Genres Management
     Route::resource('genres', GenreController::class);
     Route::patch('genres/{genre}/toggle', [GenreController::class, 'toggleActive'])->name('genres.toggle');
+    
+    // Banners Management
+    Route::resource('banners', BannerController::class);
+    Route::patch('banners/{banner}/toggle-active', [BannerController::class, 'toggleActive'])->name('banners.toggle-active');
     
     // Orders Management
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);

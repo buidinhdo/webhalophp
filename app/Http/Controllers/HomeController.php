@@ -8,11 +8,18 @@ use App\Models\Category;
 use App\Models\Collection;
 use App\Models\Post;
 use App\Models\Genre;
+use App\Models\Banner;
 
 class HomeController extends Controller
 {
     public function index()
     {
+        // Get active banners ordered by order field
+        $banners = Banner::active()
+            ->orderBy('order')
+            ->orderBy('id', 'desc')
+            ->get();
+            
         $featuredProducts = Product::featured()
             ->active()
             ->latest()
@@ -140,6 +147,7 @@ class HomeController extends Controller
             ->get();
             
         return view('home', compact(
+            'banners',
             'featuredProducts',
             'newProducts',
             'preorderProducts',

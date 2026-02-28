@@ -163,6 +163,31 @@
                         </ul>
                     </li>
 
+                    <!-- Banners -->
+                    <li class="nav-item {{ request()->routeIs('admin.banners.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-image"></i>
+                            <p>
+                                Banner
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.banners.index') }}" class="nav-link {{ request()->routeIs('admin.banners.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.banners.create') }}" class="nav-link {{ request()->routeIs('admin.banners.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm mới</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <!-- Posts -->
                     <li class="nav-item {{ request()->routeIs('admin.posts.*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->routeIs('admin.posts.*') ? 'active' : '' }}">

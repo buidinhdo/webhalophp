@@ -253,31 +253,50 @@
 @section('content')
 <!-- Hero Slider -->
 <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+    @if($banners->count() > 1)
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        @foreach($banners as $index => $banner)
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></button>
+        @endforeach
     </div>
+    @endif
     <div class="carousel-inner">
+        @forelse($banners as $index => $banner)
+        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+            <div class="hero-slide" style="background: url('{{ asset($banner->image) }}') center/cover no-repeat;">
+                @if($banner->title || $banner->subtitle || $banner->description)
+                <div class="carousel-caption d-none d-md-block">
+                    @if($banner->subtitle)
+                    <p class="text-uppercase mb-2">{{ $banner->subtitle }}</p>
+                    @endif
+                    @if($banner->title)
+                    <h1 class="display-4 fw-bold">{{ $banner->title }}</h1>
+                    @endif
+                    @if($banner->description)
+                    <p class="lead">{{ $banner->description }}</p>
+                    @endif
+                    @if($banner->button_text && $banner->button_link)
+                    <a href="{{ $banner->button_link }}" class="btn btn-primary btn-lg mt-3">{{ $banner->button_text }}</a>
+                    @endif
+                </div>
+                @endif
+            </div>
+        </div>
+        @empty
         <div class="carousel-item active">
             <div class="hero-slide" style="background: url('{{ asset('images/banners/banner6.jpg') }}') center/cover no-repeat;">
             </div>
         </div>
-        <div class="carousel-item">
-            <div class="hero-slide" style="background: url('{{ asset('images/banners/banner3.jpg') }}') center/cover no-repeat;">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="hero-slide" style="background: url('{{ asset('images/banners/banner4.jpeg') }}') center/cover no-repeat;">
-            </div>
-        </div>
+        @endforelse
     </div>
+    @if($banners->count() > 1)
     <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
     <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
         <span class="carousel-control-next-icon"></span>
     </button>
+    @endif
 </div>
 
 <!-- Game Collections / Genre Themes -->
