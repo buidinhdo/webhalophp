@@ -395,14 +395,13 @@
         }
         
         .hero-slide {
-            height: 600px;
+            height: 700px;
             display: flex;
             align-items: center;
             padding: 80px 0;
-            background-size: contain !important;
+            background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
-            background-color: #1a1a1a;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
         }
