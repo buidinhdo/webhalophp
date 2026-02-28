@@ -263,12 +263,12 @@
     <div class="carousel-inner">
         @forelse($banners as $index => $banner)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-            <div class="hero-slide" style="background: url('{{ asset($banner->image) }}') center/cover no-repeat;">
+            <div class="hero-slide" style="background-image: url('{{ asset($banner->image) }}');">
             </div>
         </div>
         @empty
         <div class="carousel-item active">
-            <div class="hero-slide" style="background: url('{{ asset('images/banners/banner6.jpg') }}') center/cover no-repeat;">
+            <div class="hero-slide" style="background-image: url('{{ asset('images/banners/banner6.jpg') }}');">
             </div>
         </div>
         @endforelse
