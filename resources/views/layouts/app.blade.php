@@ -399,10 +399,9 @@
             display: flex;
             align-items: center;
             padding: 80px 0;
-            background-size: contain !important;
+            background-size: 100% 100% !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
-            background-color: #000;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
         }
