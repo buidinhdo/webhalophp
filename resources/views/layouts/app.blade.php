@@ -399,6 +399,11 @@
             display: flex;
             align-items: center;
             padding: 80px 0;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
         }
         
         /* Section Styles */
