@@ -264,22 +264,6 @@
         @forelse($banners as $index => $banner)
         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
             <div class="hero-slide" style="background: url('{{ asset($banner->image) }}') center/cover no-repeat;">
-                @if($banner->title || $banner->subtitle || $banner->description)
-                <div class="carousel-caption d-none d-md-block">
-                    @if($banner->subtitle)
-                    <p class="text-uppercase mb-2">{{ $banner->subtitle }}</p>
-                    @endif
-                    @if($banner->title)
-                    <h1 class="display-4 fw-bold">{{ $banner->title }}</h1>
-                    @endif
-                    @if($banner->description)
-                    <p class="lead">{{ $banner->description }}</p>
-                    @endif
-                    @if($banner->button_text && $banner->button_link)
-                    <a href="{{ $banner->button_link }}" class="btn btn-primary btn-lg mt-3">{{ $banner->button_text }}</a>
-                    @endif
-                </div>
-                @endif
             </div>
         </div>
         @empty

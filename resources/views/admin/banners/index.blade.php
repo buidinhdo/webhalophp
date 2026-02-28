@@ -28,7 +28,6 @@
                                 <th style="width: 80px;">ID</th>
                                 <th style="width: 120px;">Ảnh</th>
                                 <th>Tiêu đề</th>
-                                <th>Phụ đề</th>
                                 <th style="width: 100px;">Thứ tự</th>
                                 <th style="width: 120px;">Trạng thái</th>
                                 <th style="width: 200px;">Thao tác</th>
@@ -46,7 +45,6 @@
                                     @endif
                                 </td>
                                 <td>{{ $banner->title }}</td>
-                                <td>{{ $banner->subtitle ?? '-' }}</td>
                                 <td>{{ $banner->order }}</td>
                                 <td>
                                     <form action="{{ route('admin.banners.toggle-active', $banner) }}" method="POST" style="display: inline;">

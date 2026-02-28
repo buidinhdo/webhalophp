@@ -25,13 +25,8 @@ class BannerController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
             'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean'
         ]);
 
         if ($request->hasFile('image')) {
@@ -41,7 +36,7 @@ class BannerController extends Controller
             $validated['image'] = 'images/banners/' . $filename;
         }
 
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
         $validated['order'] = $request->order ?? 0;
 
         Banner::create($validated);
@@ -58,13 +53,8 @@ class BannerController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
             'order' => 'nullable|integer|min:0',
-            'is_active' => 'boolean'
         ]);
 
         if ($request->hasFile('image')) {
@@ -79,7 +69,7 @@ class BannerController extends Controller
             $validated['image'] = 'images/banners/' . $filename;
         }
 
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
         $validated['order'] = $request->order ?? 0;
 
         $banner->update($validated);
