@@ -93,6 +93,10 @@ class HomeController extends Controller
                 }
             })
             ->active()
+            ->orderByRaw("CASE 
+                WHEN LOWER(name) NOT LIKE '%xbox 360%' AND LOWER(name) NOT LIKE '% - microsoft xbox 360%' THEN 0
+                ELSE 1 
+            END")
             ->latest()
             ->limit(12)
             ->get();
