@@ -170,7 +170,7 @@
                         </div>
                         <div class="custom-control custom-radio">
                             <input type="radio" class="custom-control-input category-quick-select" id="cat_gamecube" name="category_quick" value="nintendo-gamecube" data-category-name="Nintendo GameCube" {{ $currentCategorySlug == 'nintendo-gamecube' ? 'checked' : '' }}>
-                            <label class="custom-control-label" for="cat_gamecube"><img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" style="width: 18px; height: 18px;"> Nintendo GameCube</label>
+                            <label class="custom-control-label" for="cat_gamecube"><img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" style="width: 24px; height: 24px; vertical-align: middle;"> Nintendo GameCube</label>
                         </div>
                         <small class="form-text text-muted">Hoặc chọn từ danh mục bên trên</small>
                     </div>

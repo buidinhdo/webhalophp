@@ -657,7 +657,7 @@
                                         @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
                                             <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 18px; height: 18px; vertical-align: middle;">
                                         @elseif(str_contains(strtolower($category->name), 'gamecube') || str_contains($category->slug, 'nintendo-gamecube'))
-                                            <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 18px; height: 18px; vertical-align: middle;">
+                                            <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 24px; height: 24px; vertical-align: middle;">
                                         @elseif(str_contains(strtolower($category->name), 'xbox'))
                                             <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
                                         @else
