@@ -53,7 +53,6 @@ class HomeController extends Controller
             })
             ->active()
             ->latest()
-            ->limit(12)
             ->get();
             
         $ps5Products = Product::where(function($query) use ($ps5Category) {
@@ -66,7 +65,6 @@ class HomeController extends Controller
             })
             ->active()
             ->latest()
-            ->limit(12)
             ->get();
             
         $nintendoProducts = Product::where(function($query) use ($nintendoCategory) {
@@ -81,7 +79,6 @@ class HomeController extends Controller
             })
             ->active()
             ->latest()
-            ->limit(12)
             ->get();
             
         $xboxProducts = Product::where(function($query) use ($xboxCategory) {
@@ -98,7 +95,6 @@ class HomeController extends Controller
                 ELSE 1 
             END")
             ->latest()
-            ->limit(12)
             ->get();
             
         $collections = Collection::where('is_active', true)
