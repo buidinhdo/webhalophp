@@ -1,40 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-  <defs>
-    <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#9B99D9;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#7B79C9;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="leftGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#3A3667;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4A4677;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="rightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#5A5687;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4A4677;stop-opacity:1" />
-    </linearGradient>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Red background like Nintendo style -->
+  <rect x="5" y="5" width="90" height="90" rx="8" fill="#6A31CA" stroke="#5628A8" stroke-width="2"/>
   
-  <!-- GameCube 3D Logo -->
-  <g transform="translate(100, 100)">
-    <!-- Top face (lighter purple) -->
-    <path d="M 0,-60 L 50,-30 L 50,0 L 0,30 L -50,0 L -50,-30 Z" 
-          fill="url(#topGradient)" stroke="#2A2647" stroke-width="2"/>
+  <!-- White "G" cube symbol -->
+  <g transform="translate(50, 50)">
+    <!-- Simplified cube representation -->
+    <path d="M 0,-20 L 15,-10 L 15,10 L 0,20 L -15,10 L -15,-10 Z" 
+          fill="white" opacity="0.95" stroke="#5628A8" stroke-width="1.5"/>
     
-    <!-- Left face (darkest) -->
-    <path d="M -50,-30 L -50,0 L 0,30 L 0,0 Z" 
-          fill="url(#leftGradient)" stroke="#2A2647" stroke-width="2"/>
-    
-    <!-- Right face (medium dark) -->
-    <path d="M 0,0 L 0,30 L 50,0 L 50,-30 Z" 
-          fill="url(#rightGradient)" stroke="#2A2647" stroke-width="2"/>
-    
-    <!-- G letter cutout -->
-    <g transform="translate(0, -15)">
-      <!-- Outer circle -->
-      <circle cx="0" cy="0" r="18" fill="white" opacity="0.95"/>
-      <!-- G shape -->
-      <path d="M 0,-14 A 14,14 0 0,0 0,14 L 8,14 L 8,2 L 4,2" 
-            stroke="#3A3667" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-    </g>
+    <!-- Inner detail -->
+    <path d="M 0,-20 L 0,20 M -15,-10 L 15,10 M -15,10 L 15,-10" 
+          stroke="#6A31CA" stroke-width="2" opacity="0.3"/>
   </g>
 </svg>
