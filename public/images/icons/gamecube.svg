@@ -1,20 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
   <defs>
-    <linearGradient id="gamecubeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8B89D9;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#6B6BB8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#3D3D7A;stop-opacity:1" />
+    <linearGradient id="topGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9B99D9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7B79C9;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leftGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3A3667;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4A4677;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="rightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#5A5687;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4A4677;stop-opacity:1" />
     </linearGradient>
   </defs>
-  <g transform="translate(25, 25)">
-    <!-- Top face -->
-    <path d="M 0,-15 L 12,-8 L 12,0 L 0,7 L -12,0 L -12,-8 Z" fill="url(#gamecubeGradient)" opacity="0.9"/>
-    <!-- Left face -->
-    <path d="M -12,-8 L -12,0 L 0,7 L 0,-1 Z" fill="#2D2D5F" opacity="0.9"/>
-    <!-- Right face -->
-    <path d="M 0,-1 L 0,7 L 12,0 L 12,-8 Z" fill="#4D4D8F" opacity="0.9"/>
-    <!-- G letter -->
-    <circle cx="0" cy="-5" r="4" fill="white" opacity="0.95"/>
-    <path d="M 0,-7.5 A 2.5,2.5 0 0,0 0,-2.5 L 1.5,-2.5" stroke="#3D3D7A" stroke-width="1" fill="none"/>
+  
+  <!-- GameCube 3D Logo -->
+  <g transform="translate(100, 100)">
+    <!-- Top face (lighter purple) -->
+    <path d="M 0,-60 L 50,-30 L 50,0 L 0,30 L -50,0 L -50,-30 Z" 
+          fill="url(#topGradient)" stroke="#2A2647" stroke-width="2"/>
+    
+    <!-- Left face (darkest) -->
+    <path d="M -50,-30 L -50,0 L 0,30 L 0,0 Z" 
+          fill="url(#leftGradient)" stroke="#2A2647" stroke-width="2"/>
+    
+    <!-- Right face (medium dark) -->
+    <path d="M 0,0 L 0,30 L 50,0 L 50,-30 Z" 
+          fill="url(#rightGradient)" stroke="#2A2647" stroke-width="2"/>
+    
+    <!-- G letter cutout -->
+    <g transform="translate(0, -15)">
+      <!-- Outer circle -->
+      <circle cx="0" cy="0" r="18" fill="white" opacity="0.95"/>
+      <!-- G shape -->
+      <path d="M 0,-14 A 14,14 0 0,0 0,14 L 8,14 L 8,2 L 4,2" 
+            stroke="#3A3667" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    </g>
   </g>
 </svg>

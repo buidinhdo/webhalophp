@@ -903,7 +903,7 @@
 @if($gamecubeProducts->count() > 0)
 <section class="container my-5">
     <h2 class="section-title">
-        <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 32px; height: 32px; vertical-align: middle;"> Nintendo GameCube
+        <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" style="width: 28px; height: 28px; margin-right: 0.5rem; vertical-align: middle;"> Nintendo GameCube
     </h2>
     <div class="product-slider">
         <div class="swiper gamecubeSwiper">
