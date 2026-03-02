@@ -37,12 +37,42 @@ class HomeController extends Controller
             ->get();
             
         // Fetch products by platform categories
+        $ps2Category = Category::where('slug', 'playstation-2')->first();
+        $ps3Category = Category::where('slug', 'playstation-3')->first();
         $ps4Category = Category::where('slug', 'ps4')->first();
         $ps5Category = Category::where('slug', 'ps5')->first();
         $nintendoCategory = Category::where('slug', 'nintendo-switch')->first();
         $xboxCategory = Category::where('slug', 'xbox')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
+        $ps2Products = Product::where(function($query) use ($ps2Category) {
+                if ($ps2Category) {
+                    $query->where('category_id', $ps2Category->id)
+                          ->orWhereRaw('LOWER(platform) = ?', ['ps2'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 2%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) = ?', ['ps2'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 2%']);
+                }
+            })
+            ->active()
+            ->latest()
+            ->get();
+            
+        $ps3Products = Product::where(function($query) use ($ps3Category) {
+                if ($ps3Category) {
+                    $query->where('category_id', $ps3Category->id)
+                          ->orWhereRaw('LOWER(platform) = ?', ['ps3'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 3%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) = ?', ['ps3'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 3%']);
+                }
+            })
+            ->active()
+            ->latest()
+            ->get();
+        
         $ps4Products = Product::where(function($query) use ($ps4Category) {
                 if ($ps4Category) {
                     $query->where('category_id', $ps4Category->id)
@@ -182,6 +212,8 @@ class HomeController extends Controller
             'featuredProducts',
             'newProducts',
             'preorderProducts',
+            'ps2Products',
+            'ps3Products',
             'ps4Products',
             'ps5Products',
             'nintendoProducts',
