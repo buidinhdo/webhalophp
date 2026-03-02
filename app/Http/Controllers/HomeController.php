@@ -42,29 +42,60 @@ class HomeController extends Controller
         $nintendoCategory = Category::where('slug', 'nintendo-switch')->first();
         $xboxCategory = Category::where('slug', 'xbox')->first();
         
-        $ps4Products = $ps4Category ? Product::where('category_id', $ps4Category->id)
+        // Fetch by category OR platform to include all related products (games + accessories)
+        $ps4Products = Product::where(function($query) use ($ps4Category) {
+                if ($ps4Category) {
+                    $query->where('category_id', $ps4Category->id)
+                          ->orWhereRaw('LOWER(platform) = ?', ['ps4']);
+                } else {
+                    $query->whereRaw('LOWER(platform) = ?', ['ps4']);
+                }
+            })
             ->active()
             ->latest()
             ->limit(12)
-            ->get() : collect();
+            ->get();
             
-        $ps5Products = $ps5Category ? Product::where('category_id', $ps5Category->id)
+        $ps5Products = Product::where(function($query) use ($ps5Category) {
+                if ($ps5Category) {
+                    $query->where('category_id', $ps5Category->id)
+                          ->orWhereRaw('LOWER(platform) = ?', ['ps5']);
+                } else {
+                    $query->whereRaw('LOWER(platform) = ?', ['ps5']);
+                }
+            })
             ->active()
             ->latest()
             ->limit(12)
-            ->get() : collect();
+            ->get();
             
-        $nintendoProducts = $nintendoCategory ? Product::where('category_id', $nintendoCategory->id)
+        $nintendoProducts = Product::where(function($query) use ($nintendoCategory) {
+                if ($nintendoCategory) {
+                    $query->where('category_id', $nintendoCategory->id)
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%nintendo%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%switch%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) LIKE ?', ['%nintendo%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%switch%']);
+                }
+            })
             ->active()
             ->latest()
             ->limit(12)
-            ->get() : collect();
+            ->get();
             
-        $xboxProducts = $xboxCategory ? Product::where('category_id', $xboxCategory->id)
+        $xboxProducts = Product::where(function($query) use ($xboxCategory) {
+                if ($xboxCategory) {
+                    $query->where('category_id', $xboxCategory->id)
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%xbox%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) LIKE ?', ['%xbox%']);
+                }
+            })
             ->active()
             ->latest()
             ->limit(12)
-            ->get() : collect();
+            ->get();
             
         $collections = Collection::where('is_active', true)
             ->latest()
