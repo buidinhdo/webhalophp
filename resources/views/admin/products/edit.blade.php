@@ -32,7 +32,7 @@
                                 <select name="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
                                     <option value="">-- Chọn danh mục --</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                        <option value="{{ $category->id }}" data-slug="{{ $category->slug }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
                                             {{ $category->name }}
                                         </option>
                                     @endforeach
@@ -185,11 +185,10 @@ $(document).ready(function() {
     $('.category-quick-select').on('change', function() {
         if ($(this).is(':checked')) {
             var categorySlug = $(this).val();
-            var categoryName = $(this).data('category-name');
             
-            // Find and select the matching category in dropdown
+            // Find and select the matching category in dropdown by slug
             $('select[name="category_id"] option').each(function() {
-                if ($(this).text().trim() === categoryName) {
+                if ($(this).data('slug') === categorySlug) {
                     $('select[name="category_id"]').val($(this).val());
                     return false;
                 }
