@@ -543,7 +543,7 @@
 @if($ps2Products->count() > 0)
 <section class="container my-5">
     <h2 class="section-title">
-        <i class="fab fa-playstation me-2" style="color: #003087;"></i> PlayStation 2
+        <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 32px; height: 32px; vertical-align: middle;"> PlayStation 2
     </h2>
     <div class="product-slider">
         <div class="swiper ps2Swiper">
@@ -603,7 +603,7 @@
 @if($ps3Products->count() > 0)
 <section class="container my-5">
     <h2 class="section-title">
-        <i class="fab fa-playstation me-2" style="color: #0051a8;"></i> PlayStation 3
+        <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 32px; height: 32px; vertical-align: middle;"> PlayStation 3
     </h2>
     <div class="product-slider">
         <div class="swiper ps3Swiper">

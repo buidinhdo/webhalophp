@@ -116,11 +116,11 @@
                                 </label>
                                 <label class="list-group-item list-group-item-action {{ request('platform') == 'PS2' ? 'active' : '' }}" style="cursor: pointer;">
                                     <input type="radio" name="platform" value="PS2" {{ request('platform') == 'PS2' ? 'checked' : '' }} style="display: none;">
-                                    <i class="fab fa-playstation me-2" style="color: #003087;"></i>PlayStation 2
+                                    <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">PlayStation 2
                                 </label>
                                 <label class="list-group-item list-group-item-action {{ request('platform') == 'PS3' ? 'active' : '' }}" style="cursor: pointer;">
                                     <input type="radio" name="platform" value="PS3" {{ request('platform') == 'PS3' ? 'checked' : '' }} style="display: none;">
-                                    <i class="fab fa-playstation me-2" style="color: #0051a8;"></i>PlayStation 3
+                                    <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">PlayStation 3
                                 </label>
                                 <label class="list-group-item list-group-item-action {{ request('platform') == 'PS4' ? 'active' : '' }}" style="cursor: pointer;">
                                     <input type="radio" name="platform" value="PS4" {{ request('platform') == 'PS4' ? 'checked' : '' }} style="display: none;">
@@ -182,9 +182,9 @@
                         @foreach($categories as $category)
                         <a href="{{ route('categories.show', $category->slug) }}" class="list-group-item list-group-item-action">
                             @if(str_contains(strtolower($category->name), 'playstation 2') || str_contains($category->slug, 'playstation-2'))
-                                <i class="fab fa-playstation me-2" style="color: #003087;"></i>
+                                <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'playstation 3') || str_contains($category->slug, 'playstation-3'))
-                                <i class="fab fa-playstation me-2" style="color: #0051a8;"></i>
+                                <img src="{{ asset('images/icons/playstation.svg') }}" alt="PlayStation" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'playstation 4') || str_contains($category->slug, 'playstation-4'))
                                 <i class="fab fa-playstation me-2" style="color: #003087;"></i>
                             @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains($category->slug, 'playstation-5'))
