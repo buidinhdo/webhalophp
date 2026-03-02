@@ -138,6 +138,10 @@
                                     <input type="radio" name="platform" value="Xbox" {{ request('platform') == 'Xbox' ? 'checked' : '' }} style="display: none;">
                                     <i class="fab fa-xbox me-2" style="color: #107c10;"></i>Xbox
                                 </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'GameCube' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="GameCube" {{ request('platform') == 'GameCube' ? 'checked' : '' }} style="display: none;">
+                                    <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">Nintendo GameCube
+                                </label>
                             </div>
                         </div>
 
@@ -191,6 +195,8 @@
                                 <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
                             @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
                                 <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
+                            @elseif(str_contains(strtolower($category->name), 'gamecube') || str_contains($category->slug, 'nintendo-gamecube'))
+                                <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'xbox'))
                                 <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
                             @else
