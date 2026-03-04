@@ -135,6 +135,10 @@
                     <div class="form-group">
                         <label>Danh mục nhanh</label>
                         <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_ps1" name="category_quick" value="playstation-1" data-category-name="PlayStation 1">
+                            <label class="custom-control-label" for="cat_ps1"><i class="fab fa-playstation" style="color: #003087;"></i> PlayStation 1</label>
+                        </div>
+                        <div class="custom-control custom-radio">
                             <input type="radio" class="custom-control-input category-quick-select" id="cat_ps2" name="category_quick" value="playstation-2" data-category-name="PlayStation 2">
                             <label class="custom-control-label" for="cat_ps2"><i class="fab fa-playstation" style="color: #003087;"></i> PlayStation 2</label>
                         </div>

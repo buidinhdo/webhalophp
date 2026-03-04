@@ -145,6 +145,10 @@
                             $currentCategorySlug = $product->category ? $product->category->slug : '';
                         @endphp
                         <div class="custom-control custom-radio">
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_ps1" name="category_quick" value="playstation-1" data-category-name="PlayStation 1" {{ $currentCategorySlug == 'playstation-1' || $currentCategorySlug == 'ps1' ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="cat_ps1"><i class="fab fa-playstation" style="color: #003087;"></i> PlayStation 1</label>
+                        </div>
+                        <div class="custom-control custom-radio">
                             <input type="radio" class="custom-control-input category-quick-select" id="cat_ps2" name="category_quick" value="playstation-2" data-category-name="PlayStation 2" {{ $currentCategorySlug == 'playstation-2' ? 'checked' : '' }}>
                             <label class="custom-control-label" for="cat_ps2"><i class="fab fa-playstation" style="color: #003087;"></i> PlayStation 2</label>
                         </div>

@@ -37,6 +37,7 @@ class HomeController extends Controller
             ->get();
             
         // Fetch products by platform categories
+        $ps1Category = Category::where('slug', 'playstation-1')->orWhere('slug', 'ps1')->first();
         $ps2Category = Category::where('slug', 'playstation-2')->first();
         $ps3Category = Category::where('slug', 'playstation-3')->first();
         $ps4Category = Category::where('slug', 'ps4')->first();
@@ -47,6 +48,22 @@ class HomeController extends Controller
         $wiiCategory = Category::where('slug', 'wii')->orWhere('slug', 'nintendo-wii')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
+        $ps1Products = Product::where(function($query) use ($ps1Category) {
+                if ($ps1Category) {
+                    $query->where('category_id', $ps1Category->id)
+                          ->orWhereRaw('LOWER(platform) = ?', ['ps1'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 1%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation one%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) = ?', ['ps1'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation 1%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%playstation one%']);
+                }
+            })
+            ->active()
+            ->latest()
+            ->get();
+            
         $ps2Products = Product::where(function($query) use ($ps2Category) {
                 if ($ps2Category) {
                     $query->where('category_id', $ps2Category->id)
@@ -238,6 +255,7 @@ class HomeController extends Controller
             'featuredProducts',
             'newProducts',
             'preorderProducts',
+            'ps1Products',
             'ps2Products',
             'ps3Products',
             'ps4Products',

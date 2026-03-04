@@ -646,7 +646,9 @@
                                 <li><hr class="dropdown-divider"></li>
                                 @foreach($headerCategories as $category)
                                     <li><a class="dropdown-item" href="{{ route('products.index', ['category' => $category->slug]) }}">
-                                        @if(str_contains(strtolower($category->name), 'playstation 2') || str_contains($category->slug, 'playstation-2'))
+                                        @if(str_contains(strtolower($category->name), 'playstation 1') || str_contains($category->slug, 'playstation-1') || str_contains($category->slug, 'ps1'))
+                                            <i class="fab fa-playstation me-2" style="color: #003087;"></i>
+                                        @elseif(str_contains(strtolower($category->name), 'playstation 2') || str_contains($category->slug, 'playstation-2'))
                                             <i class="fab fa-playstation me-2" style="color: #003087;"></i>
                                         @elseif(str_contains(strtolower($category->name), 'playstation 3') || str_contains($category->slug, 'playstation-3'))
                                             <i class="fab fa-playstation me-2" style="color: #0051a8;"></i>
