@@ -163,8 +163,8 @@
                             <label class="custom-control-label" for="cat_gamecube"><img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" style="width: 24px; height: 24px; vertical-align: middle;"> Nintendo GameCube</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input category-quick-select" id="cat_wii" name="category_quick" value="wii" data-category-name="Nintendo Wii">
-                            <label class="custom-control-label" for="cat_wii"><img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" style="width: 24px; height: 24px; vertical-align: middle;"> Nintendo Wii</label>
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_wii" name="category_quick" value="wii" data-category-name="Wii">
+                            <label class="custom-control-label" for="cat_wii"><img src="{{ asset('images/icons/wii.svg') }}" alt="Wii" style="width: 24px; height: 24px; vertical-align: middle;"> Wii</label>
                         </div>
                         <small class="form-text text-muted">Hoặc chọn từ danh mục bên trên</small>
                     </div>
