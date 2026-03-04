@@ -30,7 +30,18 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $headerCategories = Category::where('is_active', true)
                 ->whereNull('parent_id')
-                ->orderBy('order')
+                ->orderByRaw("CASE 
+                    WHEN slug = 'playstation-1' OR slug = 'ps1' THEN 1
+                    WHEN slug = 'playstation-2' THEN 2
+                    WHEN slug = 'playstation-3' THEN 3
+                    WHEN slug = 'ps4' THEN 4
+                    WHEN slug = 'ps5' THEN 5
+                    WHEN slug = 'nintendo-switch' THEN 6
+                    WHEN slug = 'xbox' THEN 7
+                    WHEN slug = 'nintendo-gamecube' THEN 8
+                    WHEN slug = 'wii' OR slug = 'nintendo-wii' THEN 9
+                    ELSE 10
+                END")
                 ->get();
             $view->with('headerCategories', $headerCategories);
         });
