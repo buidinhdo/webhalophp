@@ -44,6 +44,7 @@ class HomeController extends Controller
         $nintendoCategory = Category::where('slug', 'nintendo-switch')->first();
         $xboxCategory = Category::where('slug', 'xbox')->first();
         $gamecubeCategory = Category::where('slug', 'nintendo-gamecube')->first();
+        $wiiCategory = Category::where('slug', 'wii')->orWhere('slug', 'nintendo-wii')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
         $ps2Products = Product::where(function($query) use ($ps2Category) {
@@ -134,6 +135,18 @@ class HomeController extends Controller
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%gamecube%']);
                 } else {
                     $query->whereRaw('LOWER(platform) LIKE ?', ['%gamecube%']);
+                }
+            })
+            ->active()
+            ->latest()
+            ->get();
+            
+        $wiiProducts = Product::where(function($query) use ($wiiCategory) {
+                if ($wiiCategory) {
+                    $query->where('category_id', $wiiCategory->id)
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%wii%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) LIKE ?', ['%wii%']);
                 }
             })
             ->active()
@@ -232,6 +245,7 @@ class HomeController extends Controller
             'nintendoProducts',
             'xboxProducts',
             'gamecubeProducts',
+            'wiiProducts',
             'collections',
             'genreCollections',
             'categories',

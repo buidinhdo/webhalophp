@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <defs>
+    <style>
+      .wii-text { fill: #8B8B8B; font-family: Arial, sans-serif; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- "W" letter -->
+  <path d="M 15,15 L 25,65 L 35,30 L 45,65 L 55,15 L 70,15 L 55,75 L 40,35 L 25,75 L 10,15 Z" fill="#8B8B8B"/>
+  
+  <!-- First "i" -->
+  <g>
+    <!-- Dot -->
+    <circle cx="90" cy="20" r="6" fill="#8B8B8B"/>
+    <!-- Stem -->
+    <rect x="83" y="35" width="14" height="40" rx="7" fill="#8B8B8B"/>
+  </g>
+  
+  <!-- Second "i" -->
+  <g>
+    <!-- Dot -->
+    <circle cx="120" cy="20" r="6" fill="#8B8B8B"/>
+    <!-- Stem -->
+    <rect x="113" y="35" width="14" height="40" rx="7" fill="#8B8B8B"/>
+  </g>
+  
+  <!-- TM symbol -->
+  <text x="135" y="25" font-size="10" fill="#8B8B8B" font-family="Arial">TM</text>
+</svg>

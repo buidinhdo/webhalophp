@@ -959,6 +959,66 @@
 </section>
 @endif
 
+<!-- Nintendo Wii Products -->
+@if($wiiProducts->count() > 0)
+<section class="container my-5">
+    <h2 class="section-title">
+        <img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" style="width: 40px; height: 40px; margin-right: 0.5rem; vertical-align: middle;"> Nintendo Wii
+    </h2>
+    <div class="product-slider">
+        <div class="swiper wiiSwiper">
+            <div class="swiper-wrapper">
+                @foreach($wiiProducts as $product)
+                <div class="swiper-slide">
+                    <div class="card product-card position-relative">
+                        @if($product->sale_price)
+                            <span class="badge-sale">SALE</span>
+                        @endif
+                        @if($product->is_new)
+                            <span class="badge-new">NEW</span>
+                        @endif
+                        <div class="product-image-wrapper">
+                            @if($product->image)
+                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @else
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                            @endif
+                            @auth
+                            <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            @endauth
+                            <div class="quick-view-overlay" onclick="quickView({{ $product->id }})">
+                                <div class="quick-view-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                            </a>
+                            <p class="card-text mb-3">
+                                @if($product->sale_price)
+                                    <span class="old-price d-block">{{ number_format($product->price) }}₫</span>
+                                    <span class="price">{{ number_format($product->sale_price) }}₫</span>
+                                @else
+                                    <span class="price">{{ number_format($product->price) }}₫</span>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+@endif
+
 <!-- Apple Section -->
 <div class="category-banner" style="background: url('{{ asset('images/banners/banner9.jpg') }}') center/cover no-repeat;">
     <div class="container">
@@ -1402,6 +1462,40 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         pagination: {
             el: '.gamecubeSwiper .swiper-pagination',
+            clickable: true,
+            dynamicBullets: true,
+        },
+        breakpoints: {
+            576: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+            },
+            768: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+            },
+            992: {
+                slidesPerView: 4,
+                spaceBetween: 20,
+            }
+        }
+    });
+    
+    const wiiSwiper = new Swiper('.wiiSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true,
+        autoplay: {
+            delay: 4500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+        },
+        navigation: {
+            nextEl: '.wiiSwiper .swiper-button-next',
+            prevEl: '.wiiSwiper .swiper-button-prev',
+        },
+        pagination: {
+            el: '.wiiSwiper .swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
