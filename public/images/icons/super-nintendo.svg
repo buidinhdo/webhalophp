@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <defs>
+    <style>
+      .snes-bg { fill: #E60012; }
+      .snes-text { fill: #FFFFFF; font-family: Arial, sans-serif; font-weight: bold; }
+    </style>
+  </defs>
+  
+  <!-- Red background -->
+  <rect width="200" height="60" rx="3" class="snes-bg"/>
+  
+  <!-- SUPER NINTENDO text -->
+  <text x="100" y="25" font-size="16" text-anchor="middle" class="snes-text" letter-spacing="1">SUPER NINTENDO</text>
+  
+  <!-- ENTERTAINMENT SYSTEM text -->
+  <text x="100" y="42" font-size="8" text-anchor="middle" class="snes-text" letter-spacing="2">ENTERTAINMENT SYSTEM</text>
+</svg>

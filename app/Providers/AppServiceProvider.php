@@ -40,7 +40,8 @@ class AppServiceProvider extends ServiceProvider
                     WHEN slug = 'xbox' THEN 7
                     WHEN slug = 'nintendo-gamecube' THEN 8
                     WHEN slug = 'wii' OR slug = 'nintendo-wii' THEN 9
-                    ELSE 10
+                    WHEN slug = 'super-nintendo' OR slug = 'snes' THEN 10
+                    ELSE 11
                 END")
                 ->get();
             $view->with('headerCategories', $headerCategories);

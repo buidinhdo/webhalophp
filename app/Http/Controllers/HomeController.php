@@ -46,6 +46,7 @@ class HomeController extends Controller
         $xboxCategory = Category::where('slug', 'xbox')->first();
         $gamecubeCategory = Category::where('slug', 'nintendo-gamecube')->first();
         $wiiCategory = Category::where('slug', 'wii')->orWhere('slug', 'nintendo-wii')->first();
+        $snesCategory = Category::where('slug', 'super-nintendo')->orWhere('slug', 'snes')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
         $ps1Products = Product::where(function($query) use ($ps1Category) {
@@ -170,6 +171,20 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
+        $snesProducts = Product::where(function($query) use ($snesCategory) {
+                if ($snesCategory) {
+                    $query->where('category_id', $snesCategory->id)
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%super nintendo%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%snes%']);
+                } else {
+                    $query->whereRaw('LOWER(platform) LIKE ?', ['%super nintendo%'])
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%snes%']);
+                }
+            })
+            ->active()
+            ->latest()
+            ->get();
+            
         $collections = Collection::where('is_active', true)
             ->latest()
             ->take(6)
@@ -264,6 +279,7 @@ class HomeController extends Controller
             'xboxProducts',
             'gamecubeProducts',
             'wiiProducts',
+            'snesProducts',
             'collections',
             'genreCollections',
             'categories',

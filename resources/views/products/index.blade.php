@@ -150,6 +150,10 @@
                                     <input type="radio" name="platform" value="Wii" {{ request('platform') == 'Wii' ? 'checked' : '' }} style="display: none;">
                                     <img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">Nintendo Wii
                                 </label>
+                                <label class="list-group-item list-group-item-action {{ request('platform') == 'Super Nintendo' ? 'active' : '' }}" style="cursor: pointer;">
+                                    <input type="radio" name="platform" value="Super Nintendo" {{ request('platform') == 'Super Nintendo' ? 'checked' : '' }} style="display: none;">
+                                    <img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" class="me-2" style="width: 50px; height: 15px; vertical-align: middle;">Super Nintendo
+                                </label>
                             </div>
                         </div>
 
@@ -207,6 +211,8 @@
                                 <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'wii') || str_contains($category->slug, 'wii') || str_contains($category->slug, 'nintendo-wii'))
                                 <img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
+                            @elseif(str_contains(strtolower($category->name), 'super nintendo') || str_contains($category->slug, 'super-nintendo') || str_contains($category->slug, 'snes'))
+                                <img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" class="me-2" style="width: 50px; height: 15px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
                                 <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
                             @elseif(str_contains(strtolower($category->name), 'xbox'))
