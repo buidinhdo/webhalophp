@@ -222,11 +222,19 @@ $(document).ready(function() {
     
     // When dropdown changes, update radio button
     $('select[name="category_id"]').on('change', function() {
-        var selectedText = $(this).find('option:selected').text().trim();
+        var selectedSlug = $(this).find('option:selected').data('slug');
         $('.category-quick-select').prop('checked', false);
         
         $('.category-quick-select').each(function() {
-            if ($(this).data('category-name') === selectedText) {
+            var radioSlug = $(this).val();
+            // Handle slug variations (e.g., super-nintendo vs super-nintedo typo)
+            if (radioSlug === 'super-nintendo' && (selectedSlug === 'super-nintendo' || selectedSlug === 'super-nintedo' || selectedSlug === 'snes')) {
+                $(this).prop('checked', true);
+            } else if (radioSlug === 'playstation-1' && (selectedSlug === 'playstation-1' || selectedSlug === 'ps1')) {
+                $(this).prop('checked', true);
+            } else if (radioSlug === 'wii' && (selectedSlug === 'wii' || selectedSlug === 'nintendo-wii')) {
+                $(this).prop('checked', true);
+            } else if (radioSlug === selectedSlug) {
                 $(this).prop('checked', true);
             }
         });
