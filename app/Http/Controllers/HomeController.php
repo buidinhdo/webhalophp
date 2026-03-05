@@ -46,7 +46,7 @@ class HomeController extends Controller
         $xboxCategory = Category::where('slug', 'xbox')->first();
         $gamecubeCategory = Category::where('slug', 'nintendo-gamecube')->first();
         $wiiCategory = Category::where('slug', 'wii')->orWhere('slug', 'nintendo-wii')->first();
-        $snesCategory = Category::where('slug', 'super-nintendo')->orWhere('slug', 'snes')->first();
+        $snesCategory = Category::where('slug', 'super-nintendo')->orWhere('slug', 'snes')->orWhere('slug', 'super-nintedo')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
         $ps1Products = Product::where(function($query) use ($ps1Category) {

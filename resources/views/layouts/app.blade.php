@@ -660,7 +660,7 @@
                                             <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 24px; height: 24px; vertical-align: middle;">
                                         @elseif(str_contains(strtolower($category->name), 'wii') || str_contains($category->slug, 'wii') || str_contains($category->slug, 'nintendo-wii'))
                                             <img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" class="me-2" style="width: 24px; height: 24px; vertical-align: middle;">
-                                        @elseif(str_contains(strtolower($category->name), 'super nintendo') || str_contains($category->slug, 'super-nintendo') || str_contains($category->slug, 'snes'))
+                                        @elseif(str_contains(strtolower($category->name), 'super nintendo') || str_contains(strtolower($category->name), 'super nintedo') || str_contains($category->slug, 'super-nintendo') || str_contains($category->slug, 'super-nintedo') || str_contains($category->slug, 'snes'))
                                             <img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" class="me-2" style="width: 60px; height: 18px; vertical-align: middle;">
                                         @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
                                             <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 18px; height: 18px; vertical-align: middle;">

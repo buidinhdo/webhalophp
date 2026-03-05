@@ -181,7 +181,7 @@
                             <label class="custom-control-label" for="cat_wii"><img src="{{ asset('images/icons/wii.svg') }}" alt="Wii" style="width: 24px; height: 24px; vertical-align: middle;"> Wii</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input category-quick-select" id="cat_snes" name="category_quick" value="super-nintendo" data-category-name="Super Nintendo" {{ $currentCategorySlug == 'super-nintendo' || $currentCategorySlug == 'snes' ? 'checked' : '' }}>
+                            <input type="radio" class="custom-control-input category-quick-select" id="cat_snes" name="category_quick" value="super-nintendo" data-category-name="Super Nintendo" {{ $currentCategorySlug == 'super-nintendo' || $currentCategorySlug == 'snes' || $currentCategorySlug == 'super-nintedo' ? 'checked' : '' }}>
                             <label class="custom-control-label" for="cat_snes"><img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" style="width: 60px; height: 18px; vertical-align: middle;"> Super Nintendo</label>
                         </div>
                         <small class="form-text text-muted">Hoặc chọn từ danh mục bên trên</small>
