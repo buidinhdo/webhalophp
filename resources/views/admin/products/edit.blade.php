@@ -208,11 +208,25 @@ $(document).ready(function() {
     // Sync radio buttons with category dropdown
     $('.category-quick-select').on('change', function() {
         if ($(this).is(':checked')) {
-            var categorySlug = $(this).val();
+            var radioSlug = $(this).val();
             
             // Find and select the matching category in dropdown by slug
             $('select[name="category_id"] option').each(function() {
-                if ($(this).data('slug') === categorySlug) {
+                var optionSlug = $(this).data('slug');
+                var matched = false;
+                
+                // Handle slug variations
+                if (radioSlug === 'super-nintendo' && (optionSlug === 'super-nintendo' || optionSlug === 'super-nintedo' || optionSlug === 'snes')) {
+                    matched = true;
+                } else if (radioSlug === 'playstation-1' && (optionSlug === 'playstation-1' || optionSlug === 'ps1')) {
+                    matched = true;
+                } else if (radioSlug === 'wii' && (optionSlug === 'wii' || optionSlug === 'nintendo-wii')) {
+                    matched = true;
+                } else if (radioSlug === optionSlug) {
+                    matched = true;
+                }
+                
+                if (matched) {
                     $('select[name="category_id"]').val($(this).val());
                     return false;
                 }
@@ -239,6 +253,9 @@ $(document).ready(function() {
             }
         });
     });
+    
+    // Trigger on page load to sync radio button with selected category
+    $('select[name="category_id"]').trigger('change');
 });
 </script>
 @endpush
