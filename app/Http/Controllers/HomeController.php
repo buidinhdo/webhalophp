@@ -120,11 +120,11 @@ class HomeController extends Controller
         $nintendoProducts = Product::where(function($query) use ($nintendoCategory) {
                 if ($nintendoCategory) {
                     $query->where('category_id', $nintendoCategory->id)
-                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%nintendo%'])
-                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%switch%']);
+                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%nintendo switch%'])
+                          ->orWhereRaw('LOWER(platform) = ?', ['switch']);
                 } else {
-                    $query->whereRaw('LOWER(platform) LIKE ?', ['%nintendo%'])
-                          ->orWhereRaw('LOWER(platform) LIKE ?', ['%switch%']);
+                    $query->whereRaw('LOWER(platform) LIKE ?', ['%nintendo switch%'])
+                          ->orWhereRaw('LOWER(platform) = ?', ['switch']);
                 }
             })
             ->active()
