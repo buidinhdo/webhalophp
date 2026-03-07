@@ -57,6 +57,7 @@
                                         <option value="{{ $genre }}" {{ old('genre', $product->genre) == $genre ? 'selected' : '' }}>{{ $genre }}</option>
                                     @endforeach
                                 </select>
+                                <small class="form-text text-muted">Chỉ chọn thể loại nếu sản phẩm là <strong>game</strong>. Để trống nếu là máy game hoặc phụ kiện.</small>
                             </div>
                         </div>
                     </div>
