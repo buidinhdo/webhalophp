@@ -120,10 +120,13 @@ class ProductController extends Controller
                         'order' => $product->images()->count() + $index + 1
                     ]);
                 }
+                
+                return redirect()->route('admin.products.edit', $product->id)
+                    ->with('success', 'Ảnh phụ đã được cập nhật thành công!');
+            } else {
+                return redirect()->route('admin.products.edit', $product->id)
+                    ->with('error', 'Vui lòng chọn ảnh trước khi cập nhật!');
             }
-            
-            return redirect()->route('admin.products.edit', $product->id)
-                ->with('success', 'Ảnh phụ đã được cập nhật thành công!');
         }
         
         // Cập nhật toàn bộ sản phẩm
