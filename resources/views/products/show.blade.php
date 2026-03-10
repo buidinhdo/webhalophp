@@ -196,6 +196,116 @@
         border-radius: 20px;
         font-size: 14px;
     }
+    
+    .zoomable-image {
+        cursor: zoom-in;
+    }
+    
+    /* Gallery Slider Styles */
+    .gallery-slider-container {
+        position: relative;
+        margin-top: 1rem;
+        padding: 0 40px;
+    }
+    
+    .gallery-slider {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        gap: 10px;
+        padding: 5px 0;
+        scrollbar-width: thin;
+        scrollbar-color: #007bff #f0f0f0;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .gallery-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .gallery-slider::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+    
+    .gallery-slider::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 10px;
+    }
+    
+    .gallery-slider::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+    
+    .gallery-slide-item {
+        flex: 0 0 auto;
+        width: calc(25% - 7.5px);
+        min-width: 100px;
+    }
+    
+    .slider-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #007bff;
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #007bff;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    
+    .slider-nav-btn:hover:not(.disabled) {
+        background: #007bff;
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+    
+    .slider-nav-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    
+    .slider-prev {
+        left: 0;
+    }
+    
+    .slider-next {
+        right: 0;
+    }
+    
+    @media (max-width: 768px) {
+        .gallery-slide-item {
+            width: calc(33.33% - 6.67px);
+            min-width: 80px;
+        }
+        
+        .slider-nav-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+        
+        .gallery-slider-container {
+            padding: 0 35px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .gallery-slide-item {
+            width: calc(50% - 5px);
+        }
+    }
 </style>
 @endsection
 
