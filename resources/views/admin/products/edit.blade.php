@@ -118,27 +118,45 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Ảnh phụ hiện tại</label>
-                        @if($product->images->count() > 0)
-                            <div class="row mb-2">
-                                @foreach($product->images as $image)
-                                <div class="col-6 mb-2 position-relative">
-                                    <img src="{{ asset($image->image_path) }}" class="img-thumbnail" style="width: 100%; height: 80px; object-fit: cover;">
-                                    <span class="badge badge-secondary" style="font-size: 10px;">{{ $image->order }}</span>
-                                </div>
-                                @endforeach
+                    <!-- Gallery Images Management -->
+                    <div class="card mb-3" style="border: 2px solid #007bff;">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0"><i class="fas fa-images"></i> Quản lý ảnh phụ</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label><strong>Ảnh phụ hiện tại</strong></label>
+                                @if($product->images->count() > 0)
+                                    <div class="row mb-2">
+                                        @foreach($product->images as $image)
+                                        <div class="col-md-3 col-6 mb-3" id="gallery-image-{{ $image->id }}">
+                                            <div class="position-relative">
+                                                <img src="{{ asset($image->image_path) }}" class="img-thumbnail" style="width: 100%; height: 120px; object-fit: cover;">
+                                                <span class="badge badge-secondary position-absolute" style="top: 5px; left: 5px; font-size: 10px;">Thứ tự: {{ $image->order }}</span>
+                                                <button type="button" class="btn btn-danger btn-sm position-absolute delete-gallery-btn" 
+                                                        style="top: 5px; right: 5px; padding: 2px 8px;"
+                                                        data-image-id="{{ $image->id }}"
+                                                        data-product-id="{{ $product->id }}">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-muted small"><i class="fas fa-info-circle"></i> Chưa có ảnh phụ</p>
+                                @endif
                             </div>
-                        @else
-                            <p class="text-muted small">Chưa có ảnh phụ</p>
-                        @endif
-                    </div>
 
-                    <div class="form-group">
-                        <label>Thêm ảnh phụ mới <span class="badge badge-info">Nhiều ảnh</span></label>
-                        <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple id="gallery-images-input">
-                        <small class="form-text text-muted">Chọn nhiều ảnh cùng lúc (Ctrl+Click)</small>
-                        <div id="gallery-preview" class="row mt-2"></div>
+                            <hr>
+
+                            <div class="form-group mb-0">
+                                <label><strong>Thêm ảnh phụ mới</strong> <span class="badge badge-info"><i class="fas fa-layer-group"></i> Nhiều ảnh</span></label>
+                                <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple id="gallery-images-input">
+                                <small class="form-text text-muted"><i class="fas fa-info-circle"></i> Chọn nhiều ảnh cùng lúc (Ctrl+Click hoặc Shift+Click)</small>
+                                <div id="gallery-preview" class="row mt-2"></div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -317,6 +335,44 @@ $(document).ready(function() {
                 
                 reader.readAsDataURL(file);
             }
+        }
+    });
+    
+    // Delete gallery image handler
+    $('.delete-gallery-btn').on('click', function(e) {
+        e.preventDefault();
+        
+        const imageId = $(this).data('image-id');
+        const productId = $(this).data('product-id');
+        const imageElement = $('#gallery-image-' + imageId);
+        
+        if (confirm('Bạn có chắc muốn xóa ảnh này?')) {
+            $.ajax({
+                url: '/admin/products/' + productId + '/gallery/' + imageId,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Remove image element with fade effect
+                        imageElement.fadeOut(300, function() {
+                            $(this).remove();
+                            
+                            // Show message if no more images
+                            if ($('.delete-gallery-btn').length === 0) {
+                                $('.row.mb-2').html('<p class=\"text-muted small\"><i class=\"fas fa-info-circle\"></i> Chưa có ảnh phụ</p>');
+                            }
+                        });
+                        
+                        // Show success message
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Có lỗi xảy ra khi xóa ảnh!');
+                }
+            });
         }
     });
 });

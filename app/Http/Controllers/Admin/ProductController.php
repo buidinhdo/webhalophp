@@ -182,4 +182,23 @@ class ProductController extends Controller
             'is_featured' => $product->is_featured
         ]);
     }
+
+    public function deleteGalleryImage($productId, $imageId)
+    {
+        $product = Product::findOrFail($productId);
+        $image = $product->images()->findOrFail($imageId);
+        
+        // Delete image file
+        if (file_exists(public_path($image->image_path))) {
+            unlink(public_path($image->image_path));
+        }
+        
+        // Delete database record
+        $image->delete();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Đã xóa ảnh thành công!'
+        ]);
+    }
 }

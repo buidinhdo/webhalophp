@@ -30,6 +30,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Products Management
     Route::resource('products', ProductController::class);
     Route::post('products/{product}/toggle-featured', [ProductController::class, 'toggleFeatured'])->name('products.toggle-featured');
+    Route::delete('products/{product}/gallery/{image}', [ProductController::class, 'deleteGalleryImage'])->name('products.delete-gallery-image');
     
     // Categories Management
     Route::resource('categories', CategoryController::class);
