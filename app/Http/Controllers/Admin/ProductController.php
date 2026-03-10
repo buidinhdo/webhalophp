@@ -133,10 +133,12 @@ class ProductController extends Controller
                     ]);
                 }
                 
-                return redirect()->route('admin.products.edit', $product->id)
+                $page = $request->input('page', 1);
+                return redirect()->route('admin.products.edit', ['product' => $product->id, 'page' => $page])
                     ->with('success', 'Ảnh phụ đã được cập nhật thành công!');
             } else {
-                return redirect()->route('admin.products.edit', $product->id)
+                $page = $request->input('page', 1);
+                return redirect()->route('admin.products.edit', ['product' => $product->id, 'page' => $page])
                     ->with('error', 'Vui lòng chọn ảnh trước khi cập nhật!');
             }
         }
@@ -204,7 +206,8 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.products.index')
+        $page = $request->input('page', 1);
+        return redirect()->route('admin.products.index', ['page' => $page])
             ->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
 

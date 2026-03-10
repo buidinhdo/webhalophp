@@ -136,7 +136,7 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-info" title="Sửa">
+                            <a href="{{ route('admin.products.edit', ['product' => $product->id, 'page' => request()->get('page', 1)]) }}" class="btn btn-sm btn-info" title="Sửa">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?')">

@@ -46,6 +46,7 @@
     <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        <input type="hidden" name="page" value="{{ request()->get('page', 1) }}">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
