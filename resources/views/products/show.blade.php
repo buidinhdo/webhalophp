@@ -125,7 +125,7 @@
                 <div class="col-3">
                     <img src="{{ asset($product->image) }}" 
                          class="img-fluid rounded gallery-thumbnail" 
-                         style="cursor: pointer; border: 2px solid #007bff; opacity: 1;"
+                         style="cursor: pointer; border: 3px solid #007bff; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
                          data-image="{{ asset($product->image) }}"
                          alt="{{ $product->name }}">
                 </div>
@@ -136,7 +136,7 @@
                     <div class="col-3">
                         <img src="{{ asset($image->image_path) }}" 
                              class="img-fluid rounded gallery-thumbnail" 
-                             style="cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.3s;"
+                             style="cursor: pointer; border: 3px solid #e0e0e0; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
                              data-image="{{ asset($image->image_path) }}"
                              alt="{{ $product->name }}">
                     </div>
@@ -392,26 +392,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Reset all thumbnails
             thumbnails.forEach(function(thumb) {
-                thumb.style.border = '2px solid transparent';
-                thumb.style.opacity = '0.7';
+                thumb.style.border = '3px solid #e0e0e0';
             });
             
             // Highlight selected thumbnail
-            this.style.border = '2px solid #007bff';
-            this.style.opacity = '1';
+            this.style.border = '3px solid #007bff';
         });
         
-        // Hover effect
+        // Hover effect - slightly scale up
         thumbnail.addEventListener('mouseenter', function() {
-            if (this.style.opacity !== '1') {
-                this.style.opacity = '0.9';
-            }
+            this.style.transform = 'scale(1.05)';
         });
         
         thumbnail.addEventListener('mouseleave', function() {
-            if (this.style.opacity !== '1') {
-                this.style.opacity = '0.7';
-            }
+            this.style.transform = 'scale(1)';
         });
     });
 });
