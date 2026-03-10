@@ -2,11 +2,60 @@
 
 @section('title', 'Đăng ký - HaloShop')
 
+@section('styles')
+<style>
+    body {
+        background: url('{{ asset('images/banners/banner15.webp') }}') center/cover no-repeat fixed;
+        position: relative;
+    }
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.65);
+        z-index: -1;
+    }
+    .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 40px 0;
+    }
+    .auth-card {
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        border: none;
+        backdrop-filter: blur(10px);
+    }
+    .auth-card .card-header {
+        border-radius: 16px 16px 0 0 !important;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    }
+    .auth-card .card-body {
+        padding: 2rem;
+    }
+    @media (max-width: 768px) {
+        body::before {
+            background: rgba(0, 0, 0, 0.75);
+        }
+        .auth-container {
+            min-height: auto;
+            padding: 20px 0;
+        }
+    }
+</style>
+@endsection
+
 @section('content')
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7">
-            <div class="card shadow">
+<div class="container auth-container">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-8 col-lg-7">
+            <div class="card auth-card">
                 <div class="card-header bg-primary text-white text-center">
                     <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Đăng ký tài khoản</h4>
                 </div>
