@@ -374,43 +374,48 @@
 </div>
 @endsection
 
-@push('scripts')
+@endsection
+
+@section('scripts')
 <script>
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Gallery thumbnail click handler
-    $('.gallery-thumbnail').on('click', function() {
-        // Get image URL from clicked thumbnail
-        const newImageSrc = $(this).data('image');
-        
-        // Update main image
-        $('#main-product-image').attr('src', newImageSrc);
-        
-        // Update thumbnail borders
-        $('.gallery-thumbnail').css({
-            'border': '2px solid transparent',
-            'opacity': '0.7'
+    const thumbnails = document.querySelectorAll('.gallery-thumbnail');
+    const mainImage = document.getElementById('main-product-image');
+    
+    thumbnails.forEach(function(thumbnail) {
+        // Click event
+        thumbnail.addEventListener('click', function() {
+            // Get image URL from clicked thumbnail
+            const newImageSrc = this.getAttribute('data-image');
+            
+            // Update main image
+            mainImage.src = newImageSrc;
+            
+            // Reset all thumbnails
+            thumbnails.forEach(function(thumb) {
+                thumb.style.border = '2px solid transparent';
+                thumb.style.opacity = '0.7';
+            });
+            
+            // Highlight selected thumbnail
+            this.style.border = '2px solid #007bff';
+            this.style.opacity = '1';
         });
         
-        // Highlight selected thumbnail
-        $(this).css({
-            'border': '2px solid #007bff',
-            'opacity': '1'
+        // Hover effect
+        thumbnail.addEventListener('mouseenter', function() {
+            if (this.style.opacity !== '1') {
+                this.style.opacity = '0.9';
+            }
+        });
+        
+        thumbnail.addEventListener('mouseleave', function() {
+            if (this.style.opacity !== '1') {
+                this.style.opacity = '0.7';
+            }
         });
     });
-    
-    // Hover effect for thumbnails
-    $('.gallery-thumbnail').hover(
-        function() {
-            if ($(this).css('opacity') != '1') {
-                $(this).css('opacity', '0.9');
-            }
-        },
-        function() {
-            if ($(this).css('opacity') != '1') {
-                $(this).css('opacity', '0.7');
-            }
-        }
-    );
 });
 </script>
-@endpush
+@endsection
