@@ -62,11 +62,12 @@ class ProductController extends Controller
             'is_featured' => 'boolean',
             'is_new' => 'boolean',
             'is_preorder' => 'boolean',
+            'gallery_images.*' => 'nullable|image|max:2048',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
         
-        // Handle image upload
+        // Handle main image upload
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time() . '_' . $image->getClientOriginalName();
@@ -74,7 +75,20 @@ class ProductController extends Controller
             $validated['image'] = 'images/products/' . $imageName;
         }
 
-        Product::create($validated);
+        $product = Product::create($validated);
+
+        // Handle gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $galleryImage) {
+                $galleryImageName = time() . '_gallery_' . $index . '_' . $galleryImage->getClientOriginalName();
+                $galleryImage->move(public_path('images/products/gallery'), $galleryImageName);
+                
+                $product->images()->create([
+                    'image_path' => 'images/products/gallery/' . $galleryImageName,
+                    'order' => $index + 1
+                ]);
+            }
+        }
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Sản phẩm đã được tạo thành công!');
@@ -104,6 +118,7 @@ class ProductController extends Controller
             'is_featured' => 'boolean',
             'is_new' => 'boolean',
             'is_preorder' => 'boolean',
+            'gallery_images.*' => 'nullable|image|max:2048',
         ]);
 
         // Đặt giá trị checkbox về 0 nếu không được chọn
@@ -113,7 +128,7 @@ class ProductController extends Controller
 
         $validated['slug'] = Str::slug($validated['name']);
         
-        // Handle image upload
+        // Handle main image upload
         if ($request->hasFile('image')) {
             // Delete old image
             if ($product->image && file_exists(public_path($product->image))) {
@@ -127,6 +142,19 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
+
+        // Handle gallery images upload
+        if ($request->hasFile('gallery_images')) {
+            foreach ($request->file('gallery_images') as $index => $galleryImage) {
+                $galleryImageName = time() . '_gallery_' . $index . '_' . $galleryImage->getClientOriginalName();
+                $galleryImage->move(public_path('images/products/gallery'), $galleryImageName);
+                
+                $product->images()->create([
+                    'image_path' => 'images/products/gallery/' . $galleryImageName,
+                    'order' => $product->images()->count() + $index + 1
+                ]);
+            }
+        }
 
         return redirect()->route('admin.products.index')
             ->with('success', 'Sản phẩm đã được cập nhật thành công!');

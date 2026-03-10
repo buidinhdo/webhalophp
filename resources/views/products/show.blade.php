@@ -115,20 +115,34 @@
     <div class="row">
         <div class="col-md-6">
             @if($product->image)
-                <img src="{{ asset($product->image) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
+                <img id="main-product-image" src="{{ asset($product->image) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px; cursor: zoom-in;" alt="{{ $product->name }}">
             @else
-                <img src="https://via.placeholder.com/600x400?text={{ urlencode($product->name) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
+                <img id="main-product-image" src="https://via.placeholder.com/600x400?text={{ urlencode($product->name) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
             @endif
             
-            @if($product->images->count() > 0)
-            <div class="row mt-3">
-                @foreach($product->images as $image)
+            <div class="row mt-3 g-2">
+                <!-- Main image thumbnail -->
                 <div class="col-3">
-                    <img src="{{ asset('storage/' . $image->image_path) }}" class="img-fluid rounded" alt="{{ $product->name }}">
+                    <img src="{{ asset($product->image) }}" 
+                         class="img-fluid rounded gallery-thumbnail" 
+                         style="cursor: pointer; border: 2px solid #007bff; opacity: 1;"
+                         data-image="{{ asset($product->image) }}"
+                         alt="{{ $product->name }}">
                 </div>
-                @endforeach
+                
+                <!-- Gallery images -->
+                @if($product->images->count() > 0)
+                    @foreach($product->images as $image)
+                    <div class="col-3">
+                        <img src="{{ asset($image->image_path) }}" 
+                             class="img-fluid rounded gallery-thumbnail" 
+                             style="cursor: pointer; border: 2px solid transparent; opacity: 0.7; transition: all 0.3s;"
+                             data-image="{{ asset($image->image_path) }}"
+                             alt="{{ $product->name }}">
+                    </div>
+                    @endforeach
+                @endif
             </div>
-            @endif
         </div>
 
         <div class="col-md-6">
@@ -359,3 +373,44 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    // Gallery thumbnail click handler
+    $('.gallery-thumbnail').on('click', function() {
+        // Get image URL from clicked thumbnail
+        const newImageSrc = $(this).data('image');
+        
+        // Update main image
+        $('#main-product-image').attr('src', newImageSrc);
+        
+        // Update thumbnail borders
+        $('.gallery-thumbnail').css({
+            'border': '2px solid transparent',
+            'opacity': '0.7'
+        });
+        
+        // Highlight selected thumbnail
+        $(this).css({
+            'border': '2px solid #007bff',
+            'opacity': '1'
+        });
+    });
+    
+    // Hover effect for thumbnails
+    $('.gallery-thumbnail').hover(
+        function() {
+            if ($(this).css('opacity') != '1') {
+                $(this).css('opacity', '0.9');
+            }
+        },
+        function() {
+            if ($(this).css('opacity') != '1') {
+                $(this).css('opacity', '0.7');
+            }
+        }
+    );
+});
+</script>
+@endpush

@@ -16,8 +16,9 @@
     
     <style>
         .brand-link {
-            background: linear-gradient(135deg, #00d9ff, #00b8d4);
+            background: #343a40 !important;
             color: #fff !important;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .brand-link .brand-text {
             color: #fff !important;

@@ -102,17 +102,43 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Hình ảnh hiện tại</label>
+                        <label>Hình ảnh chính</label>
                         @if($product->image)
                             <div class="mb-2">
-                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="img-thumbnail" style="max-width: 200px;">
+                                <img src="{{ asset($product->image) }}" alt="{{ $product->name }}" class="img-thumbnail" style="max-width: 200px;" id="current-main-image">
                             </div>
                         @endif
-                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" id="main-image-input">
                         <small class="form-text text-muted">Để trống nếu không muốn đổi hình</small>
                         @error('image')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                        <div id="main-image-preview" class="mt-2" style="display: none;">
+                            <img src="" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ảnh phụ hiện tại</label>
+                        @if($product->images->count() > 0)
+                            <div class="row mb-2">
+                                @foreach($product->images as $image)
+                                <div class="col-6 mb-2 position-relative">
+                                    <img src="{{ asset($image->image_path) }}" class="img-thumbnail" style="width: 100%; height: 80px; object-fit: cover;">
+                                    <span class="badge badge-secondary" style="font-size: 10px;">{{ $image->order }}</span>
+                                </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-muted small">Chưa có ảnh phụ</p>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label>Thêm ảnh phụ mới <span class="badge badge-info">Nhiều ảnh</span></label>
+                        <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple id="gallery-images-input">
+                        <small class="form-text text-muted">Chọn nhiều ảnh cùng lúc (Ctrl+Click)</small>
+                        <div id="gallery-preview" class="row mt-2"></div>
                     </div>
 
                     <div class="form-group">
@@ -257,6 +283,42 @@ $(document).ready(function() {
     
     // Trigger on page load to sync radio button with selected category
     $('select[name="category_id"]').trigger('change');
+    
+    // Preview main image
+    $('#main-image-input').on('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#main-image-preview').show().find('img').attr('src', e.target.result);
+                $('#current-main-image').hide();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Preview gallery images
+    $('#gallery-images-input').on('change', function(e) {
+        $('#gallery-preview').empty();
+        const files = e.target.files;
+        
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const col = $('<div class="col-3 mb-2"></div>');
+                    const img = $('<img class="img-thumbnail" style="max-width: 100%; height: 80px; object-fit: cover;">');
+                    img.attr('src', e.target.result);
+                    col.append(img);
+                    $('#gallery-preview').append(col);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+    });
 });
 </script>
 @endpush

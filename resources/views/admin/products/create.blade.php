@@ -101,11 +101,21 @@
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label>Hình ảnh</label>
-                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*">
+                        <label>Hình ảnh chính <span class="text-danger">*</span></label>
+                        <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" id="main-image-input">
                         @error('image')
                             <span class="invalid-feedback">{{ $message }}</span>
                         @enderror
+                        <div id="main-image-preview" class="mt-2" style="display: none;">
+                            <img src="" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ảnh phụ (Gallery) <span class="badge badge-info">Nhiều ảnh</span></label>
+                        <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple id="gallery-images-input">
+                        <small class="form-text text-muted">Chọn nhiều ảnh cùng lúc (Ctrl+Click hoặc Shift+Click)</small>
+                        <div id="gallery-preview" class="row mt-2"></div>
                     </div>
 
                     <div class="form-group">
@@ -247,6 +257,41 @@ $(document).ready(function() {
     
     // Trigger on page load to sync radio button with selected category
     $('select[name="category_id"]').trigger('change');
+    
+    // Preview main image
+    $('#main-image-input').on('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#main-image-preview').show().find('img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    // Preview gallery images
+    $('#gallery-images-input').on('change', function(e) {
+        $('#gallery-preview').empty();
+        const files = e.target.files;
+        
+        if (files.length > 0) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const col = $('<div class="col-3 mb-2"></div>');
+                    const img = $('<img class="img-thumbnail" style="max-width: 100%; height: 80px; object-fit: cover;">');
+                    img.attr('src', e.target.result);
+                    col.append(img);
+                    $('#gallery-preview').append(col);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+    });
 });
 </script>
 @endpush
