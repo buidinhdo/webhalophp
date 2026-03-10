@@ -306,6 +306,120 @@
             width: calc(50% - 5px);
         }
     }
+    
+    /* Related Products Slider */
+    .related-products-container {
+        position: relative;
+        margin-top: 1rem;
+        padding: 0 40px;
+    }
+    
+    .related-products-slider {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        gap: 20px;
+        padding: 10px 0;
+        scrollbar-width: thin;
+        scrollbar-color: #007bff #f0f0f0;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .related-products-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .related-products-slider::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+    
+    .related-products-slider::-webkit-scrollbar-thumb {
+        background: #007bff;
+        border-radius: 10px;
+    }
+    
+    .related-products-slider::-webkit-scrollbar-thumb:hover {
+        background: #0056b3;
+    }
+    
+    .related-product-slide {
+        flex: 0 0 auto;
+        width: calc(25% - 15px);
+        min-width: 250px;
+    }
+    
+    .related-slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #007bff;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #007bff;
+        font-size: 18px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .related-slider-btn:hover:not(.disabled) {
+        background: #007bff;
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+    }
+    
+    .related-slider-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    
+    .related-slider-prev {
+        left: 0;
+    }
+    
+    .related-slider-next {
+        right: 0;
+    }
+    
+    @media (max-width: 992px) {
+        .related-product-slide {
+            width: calc(33.33% - 13.33px);
+            min-width: 200px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .related-product-slide {
+            width: calc(50% - 10px);
+            min-width: 180px;
+        }
+        
+        .related-slider-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+        }
+        
+        .related-products-container {
+            padding: 0 38px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .related-product-slide {
+            width: calc(100% - 0px);
+            min-width: 150px;
+        }
+    }
 </style>
 @endsection
 
@@ -581,38 +695,48 @@
     <div class="row mt-5">
         <div class="col-12">
             <h3 class="mb-4">Sản phẩm liên quan</h3>
-            <div class="row g-4">
-                @foreach($relatedProducts as $relatedProduct)
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="card product-card h-100">
-                        <div class="product-image-wrapper">
-                            @if($relatedProduct->image)
-                                <img src="{{ asset($relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
-                            @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($relatedProduct->name) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
-                            @endif
-                            <div class="quick-view-overlay" onclick="quickView({{ $relatedProduct->id }})">
-                                <div class="quick-view-icon">
-                                    <i class="fas fa-eye"></i>
+            <div class="related-products-container">
+                <button class="related-slider-btn related-slider-prev" id="relatedPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="related-products-slider" id="relatedSlider">
+                    @foreach($relatedProducts as $relatedProduct)
+                    <div class="related-product-slide">
+                        <div class="card product-card h-100">
+                            <div class="product-image-wrapper">
+                                @if($relatedProduct->image)
+                                    <img src="{{ asset($relatedProduct->image) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                                @else
+                                    <img src="https://via.placeholder.com/300x250?text={{ urlencode($relatedProduct->name) }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                                @endif
+                                <div class="quick-view-overlay" onclick="quickView({{ $relatedProduct->id }})">
+                                    <div class="quick-view-icon">
+                                        <i class="fas fa-eye"></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <a href="{{ route('products.show', $relatedProduct->slug) }}" class="product-title-link">
-                                <h5 class="card-title">{{ $relatedProduct->name }}</h5>
-                            </a>
-                            <p class="card-text">
-                                @if($relatedProduct->sale_price)
-                                    <span class="old-price">{{ number_format($relatedProduct->price) }}₫</span><br>
-                                    <span class="price">{{ number_format($relatedProduct->sale_price) }}₫</span>
-                                @else
-                                    <span class="price">{{ number_format($relatedProduct->price) }}₫</span>
-                                @endif
-                            </p>
+                            <div class="card-body">
+                                <a href="{{ route('products.show', $relatedProduct->slug) }}" class="product-title-link">
+                                    <h5 class="card-title">{{ $relatedProduct->name }}</h5>
+                                </a>
+                                <p class="card-text">
+                                    @if($relatedProduct->sale_price)
+                                        <span class="old-price">{{ number_format($relatedProduct->price) }}₫</span><br>
+                                        <span class="price">{{ number_format($relatedProduct->sale_price) }}₫</span>
+                                    @else
+                                        <span class="price">{{ number_format($relatedProduct->price) }}₫</span>
+                                    @endif
+                                </p>
+                            </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
+                
+                <button class="related-slider-btn related-slider-next" id="relatedNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
     </div>
@@ -670,6 +794,42 @@ document.addEventListener('DOMContentLoaded', function() {
     
     slider.addEventListener('scroll', updateSliderButtons);
     updateSliderButtons();
+    
+    // Related Products Slider Navigation
+    const relatedSlider = document.getElementById('relatedSlider');
+    const relatedPrevBtn = document.getElementById('relatedPrev');
+    const relatedNextBtn = document.getElementById('relatedNext');
+    
+    if (relatedSlider && relatedPrevBtn && relatedNextBtn) {
+        function updateRelatedSliderButtons() {
+            if (relatedSlider.scrollLeft <= 0) {
+                relatedPrevBtn.classList.add('disabled');
+            } else {
+                relatedPrevBtn.classList.remove('disabled');
+            }
+            
+            if (relatedSlider.scrollLeft >= relatedSlider.scrollWidth - relatedSlider.clientWidth - 1) {
+                relatedNextBtn.classList.add('disabled');
+            } else {
+                relatedNextBtn.classList.remove('disabled');
+            }
+        }
+        
+        relatedPrevBtn.addEventListener('click', function() {
+            if (!this.classList.contains('disabled')) {
+                relatedSlider.scrollBy({ left: -300, behavior: 'smooth' });
+            }
+        });
+        
+        relatedNextBtn.addEventListener('click', function() {
+            if (!this.classList.contains('disabled')) {
+                relatedSlider.scrollBy({ left: 300, behavior: 'smooth' });
+            }
+        });
+        
+        relatedSlider.addEventListener('scroll', updateRelatedSliderButtons);
+        updateRelatedSliderButtons();
+    }
     
     // Gallery thumbnail click handler
     const thumbnails = document.querySelectorAll('.gallery-thumbnail');
