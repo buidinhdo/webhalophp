@@ -103,6 +103,30 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        // Nếu chỉ cập nhật ảnh phụ
+        if ($request->has('update_gallery')) {
+            $request->validate([
+                'gallery_images.*' => 'nullable|image|max:2048',
+            ]);
+            
+            // Handle gallery images upload
+            if ($request->hasFile('gallery_images')) {
+                foreach ($request->file('gallery_images') as $index => $galleryImage) {
+                    $galleryImageName = time() . '_gallery_' . $index . '_' . $galleryImage->getClientOriginalName();
+                    $galleryImage->move(public_path('images/products/gallery'), $galleryImageName);
+                    
+                    $product->images()->create([
+                        'image_path' => 'images/products/gallery/' . $galleryImageName,
+                        'order' => $product->images()->count() + $index + 1
+                    ]);
+                }
+            }
+            
+            return redirect()->route('admin.products.edit', $product->id)
+                ->with('success', 'Ảnh phụ đã được cập nhật thành công!');
+        }
+        
+        // Cập nhật toàn bộ sản phẩm
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
