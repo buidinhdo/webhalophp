@@ -70,17 +70,17 @@ class ProductController extends Controller
             ->with(['category', 'images'])
             ->firstOrFail();
             
-        // Lấy sản phẩm cùng danh mục trước
+        // Lấy tất cả sản phẩm cùng danh mục (tối đa 20 sản phẩm)
         $relatedProducts = Product::where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->active()
             ->inRandomOrder()
-            ->take(4)
+            ->take(20)
             ->get();
             
-        // Nếu không đủ 4 sản phẩm, lấy thêm từ các danh mục khác
-        if ($relatedProducts->count() < 4) {
-            $needed = 4 - $relatedProducts->count();
+        // Nếu không đủ 8 sản phẩm, lấy thêm từ các danh mục khác
+        if ($relatedProducts->count() < 8) {
+            $needed = 8 - $relatedProducts->count();
             $excludeIds = $relatedProducts->pluck('id')->push($product->id)->toArray();
             
             $moreProducts = Product::active()
