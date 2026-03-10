@@ -264,16 +264,11 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
     
-    .slider-nav-btn:hover:not(.disabled) {
+    .slider-nav-btn:hover {
         background: #007bff;
         color: white;
         transform: translateY(-50%) scale(1.1);
         box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
-    }
-    
-    .slider-nav-btn.disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
     }
     
     .slider-prev {
@@ -370,16 +365,11 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
     
-    .related-slider-btn:hover:not(.disabled) {
+    .related-slider-btn:hover {
         background: #007bff;
         color: white;
         transform: translateY(-50%) scale(1.1);
         box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-    }
-    
-    .related-slider-btn.disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
     }
     
     .related-slider-prev {
@@ -766,34 +756,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevBtn = document.getElementById('sliderPrev');
     const nextBtn = document.getElementById('sliderNext');
     
-    function updateSliderButtons() {
-        if (slider.scrollLeft <= 0) {
-            prevBtn.classList.add('disabled');
-        } else {
-            prevBtn.classList.remove('disabled');
-        }
-        
-        if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1) {
-            nextBtn.classList.add('disabled');
-        } else {
-            nextBtn.classList.remove('disabled');
-        }
-    }
-    
     prevBtn.addEventListener('click', function() {
-        if (!this.classList.contains('disabled')) {
+        // Nếu đang ở đầu, nhảy về cuối
+        if (slider.scrollLeft <= 0) {
+            slider.scrollTo({ left: slider.scrollWidth, behavior: 'smooth' });
+        } else {
             slider.scrollBy({ left: -200, behavior: 'smooth' });
         }
     });
     
     nextBtn.addEventListener('click', function() {
-        if (!this.classList.contains('disabled')) {
+        // Nếu đang ở cuối, quay về đầu
+        if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1) {
+            slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
             slider.scrollBy({ left: 200, behavior: 'smooth' });
         }
     });
-    
-    slider.addEventListener('scroll', updateSliderButtons);
-    updateSliderButtons();
     
     // Related Products Slider Navigation
     const relatedSlider = document.getElementById('relatedSlider');
@@ -801,34 +780,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const relatedNextBtn = document.getElementById('relatedNext');
     
     if (relatedSlider && relatedPrevBtn && relatedNextBtn) {
-        function updateRelatedSliderButtons() {
-            if (relatedSlider.scrollLeft <= 0) {
-                relatedPrevBtn.classList.add('disabled');
-            } else {
-                relatedPrevBtn.classList.remove('disabled');
-            }
-            
-            if (relatedSlider.scrollLeft >= relatedSlider.scrollWidth - relatedSlider.clientWidth - 1) {
-                relatedNextBtn.classList.add('disabled');
-            } else {
-                relatedNextBtn.classList.remove('disabled');
-            }
-        }
-        
         relatedPrevBtn.addEventListener('click', function() {
-            if (!this.classList.contains('disabled')) {
+            // Nếu đang ở đầu, nhảy về cuối
+            if (relatedSlider.scrollLeft <= 0) {
+                relatedSlider.scrollTo({ left: relatedSlider.scrollWidth, behavior: 'smooth' });
+            } else {
                 relatedSlider.scrollBy({ left: -300, behavior: 'smooth' });
             }
         });
         
         relatedNextBtn.addEventListener('click', function() {
-            if (!this.classList.contains('disabled')) {
+            // Nếu đang ở cuối, quay về đầu
+            if (relatedSlider.scrollLeft >= relatedSlider.scrollWidth - relatedSlider.clientWidth - 1) {
+                relatedSlider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
                 relatedSlider.scrollBy({ left: 300, behavior: 'smooth' });
             }
         });
-        
-        relatedSlider.addEventListener('scroll', updateRelatedSliderButtons);
-        updateRelatedSliderButtons();
     }
     
     // Gallery thumbnail click handler
