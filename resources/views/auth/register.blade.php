@@ -4,12 +4,16 @@
 
 @section('styles')
 <style>
-    body {
+    .auth-page-wrapper {
         background: url('{{ asset('images/banners/banner15.webp') }}') center/cover no-repeat fixed;
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
     }
-    body::before {
-        content: '';
+    .auth-page-overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -19,10 +23,12 @@
         z-index: -1;
     }
     .auth-container {
-        min-height: calc(100vh - 200px);
+        min-height: 100vh;
         display: flex;
         align-items: center;
         padding: 40px 0;
+        position: relative;
+        z-index: 1;
     }
     .auth-card {
         background: #fff;
@@ -40,11 +46,10 @@
         padding: 2rem;
     }
     @media (max-width: 768px) {
-        body::before {
+        .auth-page-overlay {
             background: rgba(0, 0, 0, 0.45);
         }
         .auth-container {
-            min-height: auto;
             padding: 20px 0;
         }
     }
@@ -52,6 +57,8 @@
 @endsection
 
 @section('content')
+<div class="auth-page-wrapper"></div>
+<div class="auth-page-overlay"></div>
 <div class="container auth-container">
     <div class="row justify-content-center w-100">
         <div class="col-md-8 col-lg-7">
