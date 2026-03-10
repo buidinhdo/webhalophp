@@ -82,6 +82,120 @@
         font-size: 24px;
         color: #007bff;
     }
+    
+    /* Image Zoom Modal */
+    .image-zoom-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        overflow: hidden;
+    }
+    
+    .image-zoom-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .zoom-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        cursor: move;
+    }
+    
+    .zoom-container.zoomed {
+        cursor: grab;
+    }
+    
+    .zoom-container.dragging {
+        cursor: grabbing;
+    }
+    
+    .zoom-image {
+        max-width: 90%;
+        max-height: 90vh;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    
+    .zoom-controls {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 30px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .zoom-btn {
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        font-size: 18px;
+        color: #333;
+    }
+    
+    .zoom-btn:hover {
+        background: white;
+        transform: scale(1.1);
+    }
+    
+    .zoom-close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+        color: #333;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .zoom-close:hover {
+        background: white;
+        transform: rotate(90deg);
+    }
+    
+    .zoom-info {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        color: white;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 10px 20px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
 </style>
 @endsection
 
@@ -115,9 +229,18 @@
     <div class="row">
         <div class="col-md-6">
             @if($product->image)
-                <img id="main-product-image" src="{{ asset($product->image) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px; cursor: zoom-in;" alt="{{ $product->name }}">
+                <img id="main-product-image" 
+                     src="{{ asset($product->image) }}" 
+                     class="img-fluid rounded shadow zoomable-image" 
+                     style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px; cursor: zoom-in;" 
+                     alt="{{ $product->name }}"
+                     data-zoom-src="{{ asset($product->image) }}">
             @else
-                <img id="main-product-image" src="https://via.placeholder.com/600x400?text={{ urlencode($product->name) }}" class="img-fluid rounded shadow" style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" alt="{{ $product->name }}">
+                <img id="main-product-image" 
+                     src="https://via.placeholder.com/600x400?text={{ urlencode($product->name) }}" 
+                     class="img-fluid rounded shadow" 
+                     style="object-fit: contain; max-height: 500px; width: 100%; background: #fff; padding: 20px;" 
+                     alt="{{ $product->name }}">
             @endif
             
             <div class="row mt-3 g-2">
@@ -135,9 +258,10 @@
                     @foreach($product->images as $image)
                     <div class="col-3">
                         <img src="{{ asset($image->image_path) }}" 
-                             class="img-fluid rounded gallery-thumbnail" 
+                             class="img-fluid rounded gallery-thumbnail zoomable-image" 
                              style="cursor: pointer; border: 3px solid #e0e0e0; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
                              data-image="{{ asset($image->image_path) }}"
+                             data-zoom-src="{{ asset($image->image_path) }}"
                              alt="{{ $product->name }}">
                     </div>
                     @endforeach
@@ -372,6 +496,20 @@
     </div>
     @endif
 </div>
+
+<!-- Image Zoom Modal -->
+<div class="image-zoom-modal" id="imageZoomModal">
+    <button class="zoom-close" id="zoomClose">×</button>
+    <div class="zoom-info" id="zoomInfo">Click để zoom | Kéo để di chuyển | Scroll để zoom</div>
+    <div class="zoom-container" id="zoomContainer">
+        <img src="" alt="Zoomed Image" class="zoom-image" id="zoomImage">
+    </div>
+    <div class="zoom-controls">
+        <button class="zoom-btn" id="zoomOut" title="Thu nhỏ"><i class="fas fa-minus"></i></button>
+        <button class="zoom-btn" id="zoomReset" title="Đặt lại"><i class="fas fa-sync"></i></button>
+        <button class="zoom-btn" id="zoomIn" title="Phóng to"><i class="fas fa-plus"></i></button>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -383,12 +521,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     thumbnails.forEach(function(thumbnail) {
         // Click event
-        thumbnail.addEventListener('click', function() {
+        thumbnail.addEventListener('click', function(e) {
+            // Check if not right click (for zoom)
+            if (e.which !== 1 && e.button !== 0) return;
+            
             // Get image URL from clicked thumbnail
             const newImageSrc = this.getAttribute('data-image');
             
             // Update main image
             mainImage.src = newImageSrc;
+            mainImage.setAttribute('data-zoom-src', this.getAttribute('data-zoom-src'));
             
             // Reset all thumbnails
             thumbnails.forEach(function(thumb) {
@@ -407,6 +549,204 @@ document.addEventListener('DOMContentLoaded', function() {
         thumbnail.addEventListener('mouseleave', function() {
             this.style.transform = 'scale(1)';
         });
+    });
+    
+    // Image Zoom Modal Functionality
+    const modal = document.getElementById('imageZoomModal');
+    const zoomImage = document.getElementById('zoomImage');
+    const zoomContainer = document.getElementById('zoomContainer');
+    const zoomClose = document.getElementById('zoomClose');
+    const zoomIn = document.getElementById('zoomIn');
+    const zoomOut = document.getElementById('zoomOut');
+    const zoomReset = document.getElementById('zoomReset');
+    const zoomableImages = document.querySelectorAll('.zoomable-image');
+    
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    
+    // Open zoom modal
+    zoomableImages.forEach(function(img) {
+        img.addEventListener('click', function(e) {
+            if (e.target.classList.contains('gallery-thumbnail')) return; // Let thumbnail handler work first
+            
+            const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
+            zoomImage.src = zoomSrc;
+            modal.classList.add('active');
+            resetZoom();
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Double click to zoom
+        img.addEventListener('dblclick', function() {
+            const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
+            zoomImage.src = zoomSrc;
+            modal.classList.add('active');
+            resetZoom();
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    // Close modal
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(resetZoom, 300);
+    }
+    
+    zoomClose.addEventListener('click', closeModal);
+    
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal || e.target === zoomContainer) {
+            closeModal();
+        }
+    });
+    
+    // Zoom controls
+    zoomIn.addEventListener('click', function() {
+        scale += 0.3;
+        if (scale > 5) scale = 5;
+        updateTransform();
+    });
+    
+    zoomOut.addEventListener('click', function() {
+        scale -= 0.3;
+        if (scale < 0.5) scale = 0.5;
+        updateTransform();
+    });
+    
+    zoomReset.addEventListener('click', resetZoom);
+    
+    function resetZoom() {
+        scale = 1;
+        translateX = 0;
+        translateY = 0;
+        updateTransform();
+        zoomContainer.classList.remove('zoomed');
+    }
+    
+    function updateTransform() {
+        zoomImage.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        
+        if (scale > 1) {
+            zoomContainer.classList.add('zoomed');
+        } else {
+            zoomContainer.classList.remove('zoomed');
+        }
+    }
+    
+    // Mouse wheel zoom
+    zoomContainer.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        
+        if (e.deltaY < 0) {
+            scale += 0.1;
+            if (scale > 5) scale = 5;
+        } else {
+            scale -= 0.1;
+            if (scale < 0.5) scale = 0.5;
+        }
+        
+        updateTransform();
+    });
+    
+    // Pan functionality
+    zoomImage.addEventListener('mousedown', function(e) {
+        if (scale <= 1) return;
+        
+        isDragging = true;
+        startX = e.clientX - translateX;
+        startY = e.clientY - translateY;
+        zoomContainer.classList.add('dragging');
+    });
+    
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        
+        e.preventDefault();
+        translateX = e.clientX - startX;
+        translateY = e.clientY - startY;
+        updateTransform();
+    });
+    
+    document.addEventListener('mouseup', function() {
+        isDragging = false;
+        zoomContainer.classList.remove('dragging');
+    });
+    
+    // Touch support for mobile
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let lastTouchDistance = 0;
+    
+    zoomImage.addEventListener('touchstart', function(e) {
+        if (e.touches.length === 1 && scale > 1) {
+            isDragging = true;
+            touchStartX = e.touches[0].clientX - translateX;
+            touchStartY = e.touches[0].clientY - translateY;
+        } else if (e.touches.length === 2) {
+            // Pinch to zoom
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            lastTouchDistance = Math.hypot(
+                touch2.clientX - touch1.clientX,
+                touch2.clientY - touch1.clientY
+            );
+        }
+    });
+    
+    zoomImage.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        
+        if (e.touches.length === 1 && isDragging) {
+            translateX = e.touches[0].clientX - touchStartX;
+            translateY = e.touches[0].clientY - touchStartY;
+            updateTransform();
+        } else if (e.touches.length === 2) {
+            const touch1 = e.touches[0];
+            const touch2 = e.touches[1];
+            const distance = Math.hypot(
+                touch2.clientX - touch1.clientX,
+                touch2.clientY - touch1.clientY
+            );
+            
+            const delta = distance - lastTouchDistance;
+            scale += delta * 0.01;
+            if (scale < 0.5) scale = 0.5;
+            if (scale > 5) scale = 5;
+            
+            lastTouchDistance = distance;
+            updateTransform();
+        }
+    });
+    
+    zoomImage.addEventListener('touchend', function() {
+        isDragging = false;
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('active')) return;
+        
+        switch(e.key) {
+            case 'Escape':
+                closeModal();
+                break;
+            case '+':
+            case '=':
+                zoomIn.click();
+                break;
+            case '-':
+            case '_':
+                zoomOut.click();
+                break;
+            case '0':
+                zoomReset.click();
+                break;
+        }
     });
 });
 </script>
