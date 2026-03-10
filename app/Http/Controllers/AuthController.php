@@ -12,7 +12,12 @@ class AuthController extends Controller
     // Hiển thị form đăng ký
     public function showRegisterForm()
     {
-        return view('auth.register');
+        // Thêm headers để tránh cache form register
+        return response()
+            ->view('auth.register')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     // Xử lý đăng ký
@@ -49,7 +54,12 @@ class AuthController extends Controller
     // Hiển thị form đăng nhập
     public function showLoginForm()
     {
-        return view('auth.login');
+        // Thêm headers để tránh cache form login
+        return response()
+            ->view('auth.login')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     // Xử lý đăng nhập

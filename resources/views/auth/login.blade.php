@@ -178,6 +178,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const rememberCheckbox = document.getElementById('remember');
     const rememberBox = rememberCheckbox.closest('.form-check');
+    const form = document.querySelector('form');
     
     // Load saved remember preference from localStorage
     const savedRemember = localStorage.getItem('login_remember_preference');
@@ -211,11 +212,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial state
     updateRememberState();
     
-    // Show success message if remember me is working
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function() {
+    // Handle form submission with CSRF token refresh
+    form.addEventListener('submit', function(e) {
         if (rememberCheckbox.checked) {
             console.log('Remember me is enabled - user will stay logged in for 30 days');
+        }
+        
+        // Refresh CSRF token from meta tag to ensure it's current
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        const csrfInput = document.querySelector('input[name="_token"]');
+        if (csrfToken && csrfInput) {
+            csrfInput.value = csrfToken.getAttribute('content');
+        }
+    });
+    
+    // Auto-refresh page if loaded from cache (prevents stale CSRF token)
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            // Page was loaded from cache, reload it
+            window.location.reload();
         }
     });
 });

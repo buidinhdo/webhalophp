@@ -192,3 +192,29 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    
+    // Handle form submission with CSRF token refresh
+    form.addEventListener('submit', function(e) {
+        // Refresh CSRF token from meta tag to ensure it's current
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        const csrfInput = document.querySelector('input[name="_token"]');
+        if (csrfToken && csrfInput) {
+            csrfInput.value = csrfToken.getAttribute('content');
+        }
+    });
+    
+    // Auto-refresh page if loaded from cache (prevents stale CSRF token)
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            // Page was loaded from cache, reload it
+            window.location.reload();
+        }
+    });
+});
+</script>
+@endsection
