@@ -34,6 +34,26 @@
                     <h5 class="mb-0"><i class="fas fa-user me-2"></i>Thông tin cá nhân</h5>
                 </div>
                 <div class="card-body">
+                    <!-- Thông tin tài khoản (chỉ xem) -->
+                    <div class="mb-4 p-3 bg-light rounded">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <strong><i class="fas fa-user-tag me-2 text-primary"></i>Vai trò:</strong>
+                                @if($user->is_admin)
+                                    <span class="badge bg-danger">Admin</span>
+                                @else
+                                    <span class="badge bg-info">Khách hàng</span>
+                                @endif
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <strong><i class="fas fa-calendar-alt me-2 text-primary"></i>Ngày tạo:</strong>
+                                <span>{{ $user->created_at->format('d/m/Y H:i') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
                     <form action="{{ route('account.update') }}" method="POST">
                         @csrf
                         

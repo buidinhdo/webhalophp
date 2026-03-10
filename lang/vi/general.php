@@ -11,7 +11,7 @@ return [
     'login' => 'Đăng nhập',
     'register' => 'Đăng ký',
     'logout' => 'Đăng xuất',
-    'account' => 'Tài khoản',
+    'account' => 'Thông tin cá nhân',
     'cart' => 'Giỏ hàng',
     'search' => 'Tìm kiếm',
     'search_placeholder' => 'Tìm kiếm sản phẩm...',
