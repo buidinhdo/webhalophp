@@ -243,29 +243,40 @@
                      alt="{{ $product->name }}">
             @endif
             
-            <div class="row mt-3 g-2">
-                <!-- Main image thumbnail -->
-                <div class="col-3">
-                    <img src="{{ asset($product->image) }}" 
-                         class="img-fluid rounded gallery-thumbnail" 
-                         style="cursor: pointer; border: 3px solid #007bff; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
-                         data-image="{{ asset($product->image) }}"
-                         alt="{{ $product->name }}">
-                </div>
+            <!-- Gallery Slider -->
+            <div class="gallery-slider-container">
+                <button class="slider-nav-btn slider-prev" id="sliderPrev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
                 
-                <!-- Gallery images -->
-                @if($product->images->count() > 0)
-                    @foreach($product->images as $image)
-                    <div class="col-3">
-                        <img src="{{ asset($image->image_path) }}" 
-                             class="img-fluid rounded gallery-thumbnail zoomable-image" 
-                             style="cursor: pointer; border: 3px solid #e0e0e0; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
-                             data-image="{{ asset($image->image_path) }}"
-                             data-zoom-src="{{ asset($image->image_path) }}"
+                <div class="gallery-slider" id="gallerySlider">
+                    <!-- Main image thumbnail -->
+                    <div class="gallery-slide-item">
+                        <img src="{{ asset($product->image) }}" 
+                             class="img-fluid rounded gallery-thumbnail" 
+                             style="cursor: pointer; border: 3px solid #007bff; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
+                             data-image="{{ asset($product->image) }}"
                              alt="{{ $product->name }}">
                     </div>
-                    @endforeach
-                @endif
+                    
+                    <!-- Gallery images -->
+                    @if($product->images->count() > 0)
+                        @foreach($product->images as $image)
+                        <div class="gallery-slide-item">
+                            <img src="{{ asset($image->image_path) }}" 
+                                 class="img-fluid rounded gallery-thumbnail zoomable-image" 
+                                 style="cursor: pointer; border: 3px solid #e0e0e0; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
+                                 data-image="{{ asset($image->image_path) }}"
+                                 data-zoom-src="{{ asset($image->image_path) }}"
+                                 alt="{{ $product->name }}">
+                        </div>
+                        @endforeach
+                    @endif
+                </div>
+                
+                <button class="slider-nav-btn slider-next" id="sliderNext">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </div>
 
@@ -515,6 +526,40 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Gallery Slider Navigation
+    const slider = document.getElementById('gallerySlider');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    
+    function updateSliderButtons() {
+        if (slider.scrollLeft <= 0) {
+            prevBtn.classList.add('disabled');
+        } else {
+            prevBtn.classList.remove('disabled');
+        }
+        
+        if (slider.scrollLeft >= slider.scrollWidth - slider.clientWidth - 1) {
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
+        }
+    }
+    
+    prevBtn.addEventListener('click', function() {
+        if (!this.classList.contains('disabled')) {
+            slider.scrollBy({ left: -200, behavior: 'smooth' });
+        }
+    });
+    
+    nextBtn.addEventListener('click', function() {
+        if (!this.classList.contains('disabled')) {
+            slider.scrollBy({ left: 200, behavior: 'smooth' });
+        }
+    });
+    
+    slider.addEventListener('scroll', updateSliderButtons);
+    updateSliderButtons();
+    
     // Gallery thumbnail click handler
     const thumbnails = document.querySelectorAll('.gallery-thumbnail');
     const mainImage = document.getElementById('main-product-image');
