@@ -15,7 +15,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.65);
+        background: rgba(0, 0, 0, 0.35);
         z-index: -1;
     }
     .auth-container {
@@ -41,7 +41,7 @@
     }
     @media (max-width: 768px) {
         body::before {
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.45);
         }
         .auth-container {
             min-height: auto;
