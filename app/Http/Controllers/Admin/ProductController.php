@@ -63,6 +63,15 @@ class ProductController extends Controller
             'is_new' => 'boolean',
             'is_preorder' => 'boolean',
             'gallery_images.*' => 'nullable|image|max:2048',
+        ], [
+            'name.required' => 'Vui lòng nhập tên sản phẩm.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'price.required' => 'Vui lòng nhập giá sản phẩm.',
+            'stock.required' => 'Vui lòng nhập số lượng.',
+            'image.image' => 'Ảnh chính phải là file ảnh.',
+            'image.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+            'gallery_images.*.image' => 'File phải là ảnh (jpg, jpeg, png, bmp, gif, svg, webp).',
+            'gallery_images.*.max' => 'Kích thước ảnh không được vượt quá 2MB.',
         ]);
 
         $validated['slug'] = Str::slug($validated['name']);
@@ -107,6 +116,9 @@ class ProductController extends Controller
         if ($request->has('update_gallery')) {
             $request->validate([
                 'gallery_images.*' => 'nullable|image|max:2048',
+            ], [
+                'gallery_images.*.image' => 'File phải là ảnh (jpg, jpeg, png, bmp, gif, svg, webp).',
+                'gallery_images.*.max' => 'Kích thước ảnh không được vượt quá 2MB.',
             ]);
             
             // Handle gallery images upload
@@ -146,6 +158,15 @@ class ProductController extends Controller
             'is_new' => 'boolean',
             'is_preorder' => 'boolean',
             'gallery_images.*' => 'nullable|image|max:2048',
+        ], [
+            'name.required' => 'Vui lòng nhập tên sản phẩm.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'price.required' => 'Vui lòng nhập giá sản phẩm.',
+            'stock.required' => 'Vui lòng nhập số lượng.',
+            'image.image' => 'Ảnh chính phải là file ảnh.',
+            'image.max' => 'Kích thước ảnh không được vượt quá 2MB.',
+            'gallery_images.*.image' => 'File phải là ảnh (jpg, jpeg, png, bmp, gif, svg, webp).',
+            'gallery_images.*.max' => 'Kích thước ảnh không được vượt quá 2MB.',
         ]);
 
         // Đặt giá trị checkbox về 0 nếu không được chọn
