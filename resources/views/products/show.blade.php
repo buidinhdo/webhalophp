@@ -363,9 +363,10 @@
                     <!-- Main image thumbnail -->
                     <div class="gallery-slide-item">
                         <img src="{{ asset($product->image) }}" 
-                             class="img-fluid rounded gallery-thumbnail" 
+                             class="img-fluid rounded gallery-thumbnail zoomable-image" 
                              style="cursor: pointer; border: 3px solid #007bff; width: 100%; height: 80px; object-fit: cover; transition: all 0.3s;"
                              data-image="{{ asset($product->image) }}"
+                             data-zoom-src="{{ asset($product->image) }}"
                              alt="{{ $product->name }}">
                     </div>
                     
@@ -723,26 +724,30 @@ document.addEventListener('DOMContentLoaded', function() {
     let startX = 0;
     let startY = 0;
     
-    // Open zoom modal
+    // Open zoom modal when clicking main image
+    if (mainImage) {
+        mainImage.addEventListener('click', function(e) {
+            const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
+            zoomImage.src = zoomSrc;
+            modal.classList.add('active');
+            resetZoom();
+            document.body.style.overflow = 'hidden';
+        });
+    }
+    
+    // Open zoom modal when double-clicking gallery thumbnails
     zoomableImages.forEach(function(img) {
-        img.addEventListener('click', function(e) {
-            if (e.target.classList.contains('gallery-thumbnail')) return; // Let thumbnail handler work first
-            
-            const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
-            zoomImage.src = zoomSrc;
-            modal.classList.add('active');
-            resetZoom();
-            document.body.style.overflow = 'hidden';
-        });
-        
-        // Double click to zoom
-        img.addEventListener('dblclick', function() {
-            const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
-            zoomImage.src = zoomSrc;
-            modal.classList.add('active');
-            resetZoom();
-            document.body.style.overflow = 'hidden';
-        });
+        if (img.classList.contains('gallery-thumbnail')) {
+            // Double click gallery thumbnails to zoom
+            img.addEventListener('dblclick', function(e) {
+                e.preventDefault();
+                const zoomSrc = this.getAttribute('data-zoom-src') || this.src;
+                zoomImage.src = zoomSrc;
+                modal.classList.add('active');
+                resetZoom();
+                document.body.style.overflow = 'hidden';
+            });
+        }
     });
     
     // Close modal
