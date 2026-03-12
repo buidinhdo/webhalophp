@@ -101,6 +101,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/yeu-thich/check/{productId}', [WishlistController::class, 'check'])->name('wishlist.check');
 });
 
+// Notification routes (Auth required)
+Route::middleware('auth')->group(function () {
+    Route::get('/thong-bao', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/thong-bao/chua-doc', [App\Http\Controllers\NotificationController::class, 'getUnreadCount'])->name('notifications.unread');
+    Route::post('/thong-bao/{id}/doc', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/thong-bao/doc-tat-ca', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.readAll');
+    Route::delete('/thong-bao/{id}', [App\Http\Controllers\NotificationController::class, 'destroy'])->name('notifications.destroy');
+});
+
 // Authentication routes
 Route::get('/dang-nhap', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/dang-nhap', [AuthController::class, 'login']);

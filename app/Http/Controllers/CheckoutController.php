@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\MoMoPaymentService;
@@ -89,6 +90,18 @@ class CheckoutController extends Controller
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
                 'total' => $item['price'] * $item['quantity'],
+            ]);
+        }
+        
+        // Tạo thông báo cho người dùng (nếu đã đăng nhập)
+        if (Auth::check()) {
+            Notification::create([
+                'user_id' => Auth::id(),
+                'type' => 'order',
+                'title' => 'Đơn hàng mới',
+                'message' => 'Đơn hàng #' . $order->order_number . ' đã được tạo thành công với tổng giá trị ' . number_format($totalAmount, 0, ',', '.') . ' đ',
+                'link' => route('account.order-detail', $order->id),
+                'is_read' => false,
             ]);
         }
         

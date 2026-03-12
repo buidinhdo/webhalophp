@@ -716,6 +716,24 @@
                                 <span class="wishlist-count cart-badge" style="display: none;">0</span>
                             </a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Thông báo">
+                                <i class="fas fa-bell fa-lg"></i>
+                                <span class="notification-count cart-badge" id="notificationBadge" style="display: none;">0</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="width: 350px; max-height: 400px; overflow-y: auto;">
+                                <li class="dropdown-header d-flex justify-content-between align-items-center">
+                                    <span><strong>Thông báo</strong></span>
+                                    <a href="{{ route('notifications.index') }}" class="text-primary small">Xem tất cả</a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <div id="notificationList">
+                                    <li class="dropdown-item-text text-center text-muted py-3">
+                                        <i class="fas fa-bell-slash"></i> Không có thông báo mới
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
                     @endauth
                     @auth
                         <li class="nav-item dropdown">
@@ -1001,6 +1019,32 @@
                 })
                 .catch(error => console.log('Wishlist count load error:', error));
         });
+    </script>
+
+    <!-- Notification Script -->
+    <script>
+        // Load notification count on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotificationCount();
+            
+            // Refresh notification count every 30 seconds
+            setInterval(loadNotificationCount, 30000);
+        });
+
+        function loadNotificationCount() {
+            fetch('/thong-bao/chua-doc')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('notificationBadge');
+                    if (badge && data.count > 0) {
+                        badge.textContent = data.count;
+                        badge.style.display = 'inline-block';
+                    } else if (badge) {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(error => console.log('Notification count load error:', error));
+        }
     </script>
     @endauth
     
