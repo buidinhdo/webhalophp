@@ -79,10 +79,19 @@ class ProductController extends Controller
             }
         }
         
-        // Lọc theo năm phát hành
-        if ($request->has('release_year') && $request->release_year != '') {
-            $year = (int) $request->release_year;
-            $query->whereYear('release_date', $year);
+        // Lọc theo chế độ chơi
+        if ($request->has('game_mode') && $request->game_mode != '') {
+            $query->where('game_mode', $request->game_mode);
+        }
+        
+        // Lọc theo ngôn ngữ
+        if ($request->has('language') && $request->language != '') {
+            $query->where('language', $request->language);
+        }
+        
+        // Lọc theo độ tuổi
+        if ($request->has('age_rating') && $request->age_rating != '') {
+            $query->where('age_rating', $request->age_rating);
         }
         
         if ($request->has('sort')) {

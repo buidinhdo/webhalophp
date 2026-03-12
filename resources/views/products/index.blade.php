@@ -239,19 +239,40 @@
                             </select>
                         </div>
 
-                        <!-- Release Year Filter -->
+                        <!-- Game Mode Filter -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Năm phát hành</label>
-                            <select name="release_year" class="form-select">
+                            <label class="form-label fw-bold">Chế độ chơi</label>
+                            <select name="game_mode" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="2030" {{ request('release_year') == '2030' ? 'selected' : '' }}>2030</option>
-                                <option value="2029" {{ request('release_year') == '2029' ? 'selected' : '' }}>2029</option>
-                                <option value="2028" {{ request('release_year') == '2028' ? 'selected' : '' }}>2028</option>
-                                <option value="2027" {{ request('release_year') == '2027' ? 'selected' : '' }}>2027</option>
-                                <option value="2026" {{ request('release_year') == '2026' ? 'selected' : '' }}>2026</option>
-                                <option value="2025" {{ request('release_year') == '2025' ? 'selected' : '' }}>2025</option>
-                                <option value="2024" {{ request('release_year') == '2024' ? 'selected' : '' }}>2024</option>
-                                <option value="2023" {{ request('release_year') == '2023' ? 'selected' : '' }}>2023</option>
+                                <option value="Single Player" {{ request('game_mode') == 'Single Player' ? 'selected' : '' }}>🎮 Single Player</option>
+                                <option value="Multiplayer" {{ request('game_mode') == 'Multiplayer' ? 'selected' : '' }}>👥 Multiplayer</option>
+                                <option value="Co-op" {{ request('game_mode') == 'Co-op' ? 'selected' : '' }}>🤝 Co-op</option>
+                                <option value="Online" {{ request('game_mode') == 'Online' ? 'selected' : '' }}>🌐 Online/MMO</option>
+                            </select>
+                        </div>
+
+                        <!-- Language Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ngôn ngữ</label>
+                            <select name="language" class="form-select">
+                                <option value="">Tất cả</option>
+                                <option value="Vietnamese" {{ request('language') == 'Vietnamese' ? 'selected' : '' }}>🇻🇳 Tiếng Việt</option>
+                                <option value="English" {{ request('language') == 'English' ? 'selected' : '' }}>🇺🇸 English</option>
+                                <option value="Japanese" {{ request('language') == 'Japanese' ? 'selected' : '' }}>🇯🇵 Japanese</option>
+                                <option value="Multi-language" {{ request('language') == 'Multi-language' ? 'selected' : '' }}>🌏 Multi-language</option>
+                            </select>
+                        </div>
+
+                        <!-- Age Rating Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Độ tuổi phù hợp</label>
+                            <select name="age_rating" class="form-select">
+                                <option value="">Tất cả</option>
+                                <option value="E" {{ request('age_rating') == 'E' ? 'selected' : '' }}>E - Mọi lứa tuổi</option>
+                                <option value="E10+" {{ request('age_rating') == 'E10+' ? 'selected' : '' }}>E10+ - Từ 10 tuổi</option>
+                                <option value="T" {{ request('age_rating') == 'T' ? 'selected' : '' }}>T - Từ 13 tuổi</option>
+                                <option value="M" {{ request('age_rating') == 'M' ? 'selected' : '' }}>M - Từ 17 tuổi</option>
+                                <option value="AO" {{ request('age_rating') == 'AO' ? 'selected' : '' }}>AO - Chỉ người lớn (18+)</option>
                             </select>
                         </div>
 
