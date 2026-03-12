@@ -262,7 +262,7 @@ class HomeController extends Controller
             
         $posts = Post::where('is_published', true)
             ->latest('published_at')
-            ->take(3)
+            ->take(15)
             ->get();
             
         return view('home', compact(

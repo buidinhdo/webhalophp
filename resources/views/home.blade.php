@@ -247,6 +247,108 @@
         width: 25px;
         border-radius: 5px;
     }
+    
+    /* News Slider Styles */
+    .news-slider-container {
+        position: relative;
+        margin-top: 1rem;
+        padding: 0 45px;
+    }
+    
+    .news-slider {
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        gap: 20px;
+        padding: 10px 0;
+        scrollbar-width: thin;
+        scrollbar-color: #17a2b8 #f0f0f0;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .news-slider::-webkit-scrollbar {
+        height: 8px;
+    }
+    
+    .news-slider::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+    }
+    
+    .news-slider::-webkit-scrollbar-thumb {
+        background: #17a2b8;
+        border-radius: 10px;
+    }
+    
+    .news-slider::-webkit-scrollbar-thumb:hover {
+        background: #138496;
+    }
+    
+    .news-slide {
+        flex: 0 0 auto;
+        width: calc(33.33% - 13.33px);
+        min-width: 300px;
+    }
+    
+    .news-slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #17a2b8;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #17a2b8;
+        font-size: 18px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .news-slider-btn:hover {
+        background: #17a2b8;
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.4);
+    }
+    
+    .news-slider-prev {
+        left: 0;
+    }
+    
+    .news-slider-next {
+        right: 0;
+    }
+    
+    @media (max-width: 992px) {
+        .news-slide {
+            width: calc(50% - 10px);
+            min-width: 280px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .news-slide {
+            width: calc(100% - 0px);
+            min-width: 250px;
+        }
+        
+        .news-slider-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 16px;
+        }
+        
+        .news-slider-container {
+            padding: 0 40px;
+        }
+    }
 </style>
 @endsection
 
@@ -1160,26 +1262,36 @@
     <h2 class="section-title">
         <i class="far fa-newspaper text-info me-2"></i> Tin tức mới
     </h2>
-    <div class="row g-4">
-        @foreach($posts as $post)
-        <div class="col-md-4">
-            <div class="card product-card h-100 d-flex flex-column">
-                @if($post->image)
-                    <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
-                @else
-                    <img src="https://via.placeholder.com/400x200?text={{ urlencode($post->title) }}" class="card-img-top" alt="{{ $post->title }}">
-                @endif
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title">{{ Str::limit($post->title, 60) }}</h5>
-                    <p class="card-text text-muted small mb-2">
-                        <i class="far fa-calendar me-1"></i> {{ $post->published_at->format('d/m/Y') }}
-                    </p>
-                    <p class="card-text flex-grow-1">{{ Str::limit($post->excerpt, 100) }}</p>
-                    <a href="{{ route('news.show', $post->slug) }}" class="btn btn-outline-primary btn-sm mt-auto">Đọc thêm <i class="fas fa-arrow-right ms-1"></i></a>
+    <div class="news-slider-container">
+        <button class="news-slider-btn news-slider-prev" id="newsPrev">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        
+        <div class="news-slider" id="newsSlider">
+            @foreach($posts as $post)
+            <div class="news-slide">
+                <div class="card product-card h-100 d-flex flex-column">
+                    @if($post->image)
+                        <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
+                    @else
+                        <img src="https://via.placeholder.com/400x200?text={{ urlencode($post->title) }}" class="card-img-top" alt="{{ $post->title }}">
+                    @endif
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ Str::limit($post->title, 60) }}</h5>
+                        <p class="card-text text-muted small mb-2">
+                            <i class="far fa-calendar me-1"></i> {{ $post->published_at->format('d/m/Y') }}
+                        </p>
+                        <p class="card-text flex-grow-1">{{ Str::limit($post->excerpt, 100) }}</p>
+                        <a href="{{ route('news.show', $post->slug) }}" class="btn btn-outline-primary btn-sm mt-auto">Đọc thêm <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
+        
+        <button class="news-slider-btn news-slider-next" id="newsNext">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
 </section>
 @endif
@@ -1703,6 +1815,31 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // News Slider Navigation
+    const newsSlider = document.getElementById('newsSlider');
+    const newsPrevBtn = document.getElementById('newsPrev');
+    const newsNextBtn = document.getElementById('newsNext');
+    
+    if (newsSlider && newsPrevBtn && newsNextBtn) {
+        newsPrevBtn.addEventListener('click', function() {
+            // Nếu đang ở đầu, nhảy về cuối
+            if (newsSlider.scrollLeft <= 0) {
+                newsSlider.scrollTo({ left: newsSlider.scrollWidth, behavior: 'smooth' });
+            } else {
+                newsSlider.scrollBy({ left: -350, behavior: 'smooth' });
+            }
+        });
+        
+        newsNextBtn.addEventListener('click', function() {
+            // Nếu đang ở cuối, quay về đầu
+            if (newsSlider.scrollLeft >= newsSlider.scrollWidth - newsSlider.clientWidth - 1) {
+                newsSlider.scrollTo({ left: 0, behavior: 'smooth' });
+            } else {
+                newsSlider.scrollBy({ left: 350, behavior: 'smooth' });
+            }
+        });
+    }
 });
 
 function toggleWishlist(productId, button) {
