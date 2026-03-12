@@ -68,7 +68,7 @@
                                 <td>{{ $item->product_name }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ number_format($item->price) }}₫</td>
-                                <td>{{ number_format($item->subtotal) }}₫</td>
+                                <td>{{ number_format($item->total) }}₫</td>
                             </tr>
                             @endforeach
                         </tbody>
