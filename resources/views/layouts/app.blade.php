@@ -534,6 +534,7 @@
             justify-content: center;
             font-size: 11px;
             font-weight: 700;
+            z-index: 10;
         }
         
         /* Breadcrumb Styles */
