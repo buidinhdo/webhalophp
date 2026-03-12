@@ -72,9 +72,6 @@
                         <i class="far fa-calendar me-1"></i> {{ $post->published_at->format('d/m/Y') }}
                     </p>
                     <p class="card-text">{{ Str::limit($post->excerpt, 120) }}</p>
-                    <a href="{{ route('news.show', $post->slug) }}" class="btn btn-primary btn-sm mt-auto">
-                        Đọc thêm <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
                 </div>
             </div>
         </div>
