@@ -720,7 +720,6 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link position-relative dropdown-toggle" href="#" id="notificationDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Thông báo">
                                 <i class="fas fa-bell fa-lg"></i>
-                                <span class="notification-count cart-badge" id="notificationBadge" style="display: none;">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown" style="width: 350px; max-height: 400px; overflow-y: auto;">
                                 <li class="dropdown-header d-flex justify-content-between align-items-center">
@@ -1024,32 +1023,15 @@
 
     <!-- Notification Script -->
     <script>
-        // Load notification count and list on page load
+        // Load notification list on page load
         document.addEventListener('DOMContentLoaded', function() {
-            loadNotificationCount();
             loadNotifications();
             
-            // Refresh notification count and list every 30 seconds
+            // Refresh notification list every 30 seconds
             setInterval(function() {
-                loadNotificationCount();
                 loadNotifications();
             }, 30000);
         });
-
-        function loadNotificationCount() {
-            fetch('/thong-bao/chua-doc')
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.getElementById('notificationBadge');
-                    if (badge && data.count > 0) {
-                        badge.textContent = data.count;
-                        badge.style.display = 'inline-block';
-                    } else if (badge) {
-                        badge.style.display = 'none';
-                    }
-                })
-                .catch(error => console.log('Notification count load error:', error));
-        }
 
         function loadNotifications() {
             fetch('/thong-bao/moi-nhat')
@@ -1069,7 +1051,7 @@
 
                     let html = '';
                     notifications.forEach(notification => {
-                        const icon = notification.type === 'order' ? 'fa-shopping-cart' : 'fa-info-circle';
+                        const icon = notification.type === 'order' ? 'fa-box' : 'fa-info-circle';
                         const isUnread = !notification.is_read;
                         const bgClass = isUnread ? 'bg-light' : '';
                         const badgeHtml = isUnread ? '<span class="badge bg-primary ms-1">Mới</span>' : '';
