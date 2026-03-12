@@ -26,9 +26,8 @@ class Product extends Model
         'release_date',
         'platform',
         'genre',
-        'game_mode',
-        'language',
-        'age_rating',
+        'publisher',
+        'esrb_rating',
         'status'
     ];
     

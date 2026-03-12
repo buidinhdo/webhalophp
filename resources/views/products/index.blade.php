@@ -239,40 +239,37 @@
                             </select>
                         </div>
 
-                        <!-- Game Mode Filter -->
+                        <!-- ESRB Rating Filter -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Chế độ chơi</label>
-                            <select name="game_mode" class="form-select">
+                            <label class="form-label fw-bold">Phân loại ESRB</label>
+                            <select name="esrb_rating" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="Single Player" {{ request('game_mode') == 'Single Player' ? 'selected' : '' }}>🎮 Single Player</option>
-                                <option value="Multiplayer" {{ request('game_mode') == 'Multiplayer' ? 'selected' : '' }}>👥 Multiplayer</option>
-                                <option value="Co-op" {{ request('game_mode') == 'Co-op' ? 'selected' : '' }}>🤝 Co-op</option>
-                                <option value="Online" {{ request('game_mode') == 'Online' ? 'selected' : '' }}>🌐 Online/MMO</option>
+                                <option value="E" {{ request('esrb_rating') == 'E' ? 'selected' : '' }}>E - Everyone (Mọi lứa tuổi)</option>
+                                <option value="E10+" {{ request('esrb_rating') == 'E10+' ? 'selected' : '' }}>E10+ - Everyone 10+</option>
+                                <option value="T" {{ request('esrb_rating') == 'T' ? 'selected' : '' }}>T - Teen (13+)</option>
+                                <option value="M" {{ request('esrb_rating') == 'M' ? 'selected' : '' }}>M - Mature (17+)</option>
+                                <option value="AO" {{ request('esrb_rating') == 'AO' ? 'selected' : '' }}>AO - Adults Only (18+)</option>
+                                <option value="RP" {{ request('esrb_rating') == 'RP' ? 'selected' : '' }}>RP - Rating Pending</option>
                             </select>
                         </div>
 
-                        <!-- Language Filter -->
+                        <!-- Publisher Filter -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Ngôn ngữ</label>
-                            <select name="language" class="form-select">
+                            <label class="form-label fw-bold">Nhà phát hành</label>
+                            <select name="publisher" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="Vietnamese" {{ request('language') == 'Vietnamese' ? 'selected' : '' }}>🇻🇳 Tiếng Việt</option>
-                                <option value="English" {{ request('language') == 'English' ? 'selected' : '' }}>🇺🇸 English</option>
-                                <option value="Japanese" {{ request('language') == 'Japanese' ? 'selected' : '' }}>🇯🇵 Japanese</option>
-                                <option value="Multi-language" {{ request('language') == 'Multi-language' ? 'selected' : '' }}>🌏 Multi-language</option>
-                            </select>
-                        </div>
-
-                        <!-- Age Rating Filter -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Độ tuổi phù hợp</label>
-                            <select name="age_rating" class="form-select">
-                                <option value="">Tất cả</option>
-                                <option value="E" {{ request('age_rating') == 'E' ? 'selected' : '' }}>E - Mọi lứa tuổi</option>
-                                <option value="E10+" {{ request('age_rating') == 'E10+' ? 'selected' : '' }}>E10+ - Từ 10 tuổi</option>
-                                <option value="T" {{ request('age_rating') == 'T' ? 'selected' : '' }}>T - Từ 13 tuổi</option>
-                                <option value="M" {{ request('age_rating') == 'M' ? 'selected' : '' }}>M - Từ 17 tuổi</option>
-                                <option value="AO" {{ request('age_rating') == 'AO' ? 'selected' : '' }}>AO - Chỉ người lớn (18+)</option>
+                                <option value="Sony Interactive Entertainment" {{ request('publisher') == 'Sony Interactive Entertainment' ? 'selected' : '' }}>Sony Interactive</option>
+                                <option value="Nintendo" {{ request('publisher') == 'Nintendo' ? 'selected' : '' }}>Nintendo</option>
+                                <option value="Microsoft" {{ request('publisher') == 'Microsoft' ? 'selected' : '' }}>Microsoft (Xbox)</option>
+                                <option value="Bandai Namco" {{ request('publisher') == 'Bandai Namco' ? 'selected' : '' }}>Bandai Namco</option>
+                                <option value="Capcom" {{ request('publisher') == 'Capcom' ? 'selected' : '' }}>Capcom</option>
+                                <option value="Square Enix" {{ request('publisher') == 'Square Enix' ? 'selected' : '' }}>Square Enix</option>
+                                <option value="Ubisoft" {{ request('publisher') == 'Ubisoft' ? 'selected' : '' }}>Ubisoft</option>
+                                <option value="Electronic Arts" {{ request('publisher') == 'Electronic Arts' ? 'selected' : '' }}>Electronic Arts (EA)</option>
+                                <option value="Activision" {{ request('publisher') == 'Activision' ? 'selected' : '' }}>Activision</option>
+                                <option value="Rockstar Games" {{ request('publisher') == 'Rockstar Games' ? 'selected' : '' }}>Rockstar Games</option>
+                                <option value="FromSoftware" {{ request('publisher') == 'FromSoftware' ? 'selected' : '' }}>FromSoftware</option>
+                                <option value="Konami" {{ request('publisher') == 'Konami' ? 'selected' : '' }}>Konami</option>
                             </select>
                         </div>
 

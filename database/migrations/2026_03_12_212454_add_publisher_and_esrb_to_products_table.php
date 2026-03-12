@@ -12,9 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('game_mode')->nullable()->after('genre')->comment('Chế độ chơi: Single Player, Multiplayer, Co-op, Online');
-            $table->string('language')->nullable()->after('game_mode')->comment('Ngôn ngữ: Vietnamese, English, Japanese, Multi-language');
-            $table->string('age_rating')->nullable()->after('language')->comment('Độ tuổi: E, E10+, T, M, AO');
+            $table->string('publisher')->nullable()->after('genre')->comment('Nhà phát hành/sản xuất');
+            $table->string('esrb_rating')->nullable()->after('publisher')->comment('Phân loại ESRB: E, E10+, T, M, AO, RP');
         });
     }
 
@@ -24,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['game_mode', 'language', 'age_rating']);
+            $table->dropColumn(['publisher', 'esrb_rating']);
         });
     }
 };
