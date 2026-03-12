@@ -244,17 +244,14 @@
                             <label class="form-label fw-bold">Năm phát hành</label>
                             <select name="release_year" class="form-select">
                                 <option value="">Tất cả</option>
+                                <option value="2030" {{ request('release_year') == '2030' ? 'selected' : '' }}>2030</option>
+                                <option value="2029" {{ request('release_year') == '2029' ? 'selected' : '' }}>2029</option>
+                                <option value="2028" {{ request('release_year') == '2028' ? 'selected' : '' }}>2028</option>
                                 <option value="2027" {{ request('release_year') == '2027' ? 'selected' : '' }}>2027</option>
                                 <option value="2026" {{ request('release_year') == '2026' ? 'selected' : '' }}>2026</option>
                                 <option value="2025" {{ request('release_year') == '2025' ? 'selected' : '' }}>2025</option>
                                 <option value="2024" {{ request('release_year') == '2024' ? 'selected' : '' }}>2024</option>
                                 <option value="2023" {{ request('release_year') == '2023' ? 'selected' : '' }}>2023</option>
-                                <option value="2022" {{ request('release_year') == '2022' ? 'selected' : '' }}>2022</option>
-                                <option value="2021" {{ request('release_year') == '2021' ? 'selected' : '' }}>2021</option>
-                                <option value="2020" {{ request('release_year') == '2020' ? 'selected' : '' }}>2020</option>
-                                <option value="2019" {{ request('release_year') == '2019' ? 'selected' : '' }}>2019</option>
-                                <option value="2018" {{ request('release_year') == '2018' ? 'selected' : '' }}>2018</option>
-                                <option value="2017" {{ request('release_year') == '2017' ? 'selected' : '' }}>2017 trở về trước</option>
                             </select>
                         </div>
 
@@ -339,6 +336,12 @@
                             </p>
                             @endif
                             
+                            @if($product->release_date)
+                            <p class="text-muted small mb-2">
+                                <i class="far fa-calendar-alt"></i> Phát hành: {{ $product->release_date->format('d/m/Y') }}
+                            </p>
+                            @endif
+                            
                             @if(isset($product->avg_rating) && $product->avg_rating > 0)
                             <p class="mb-2">
                                 @php
@@ -362,12 +365,6 @@
                                 @if(isset($product->reviews_count))
                                     <span class="text-muted small">- {{ $product->reviews_count }} đánh giá</span>
                                 @endif
-                            </p>
-                            @endif
-                            
-                            @if($product->is_preorder && $product->release_date)
-                            <p class="text-muted small mb-2">
-                                <i class="far fa-calendar"></i> {{ $product->release_date->format('d/m/Y') }}
                             </p>
                             @endif
                             
