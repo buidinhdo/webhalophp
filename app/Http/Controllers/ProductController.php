@@ -38,11 +38,36 @@ class ProductController extends Controller
             });
         }
         
-        // Lọc theo đánh giá sao
+        // Lọc theo đánh giá sao (khoảng chính xác)
         if ($request->has('rating') && $request->rating != '') {
-            $minRating = (float) $request->rating;
-            $query->whereHas('reviews')
-                  ->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= ?', [$minRating]);
+            $rating = (int) $request->rating;
+            $query->whereHas('reviews');
+            
+            switch ($rating) {
+                case 5:
+                    // 5 sao: rating >= 4.5
+                    $query->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= 4.5');
+                    break;
+                case 4:
+                    // 4 sao: rating >= 3.5 và < 4.5
+                    $query->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= 3.5')
+                          ->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) < 4.5');
+                    break;
+                case 3:
+                    // 3 sao: rating >= 2.5 và < 3.5
+                    $query->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= 2.5')
+                          ->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) < 3.5');
+                    break;
+                case 2:
+                    // 2 sao: rating >= 1.5 và < 2.5
+                    $query->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= 1.5')
+                          ->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) < 2.5');
+                    break;
+                case 1:
+                    // 1 sao: rating < 1.5
+                    $query->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) < 1.5');
+                    break;
+            }
         }
         
         if ($request->has('sort')) {

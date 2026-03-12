@@ -189,16 +189,16 @@
                                     ⭐⭐⭐⭐⭐ 5 sao
                                 </option>
                                 <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>
-                                    ⭐⭐⭐⭐ 4 sao trở lên
+                                    ⭐⭐⭐⭐ 4 sao
                                 </option>
                                 <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>
-                                    ⭐⭐⭐ 3 sao trở lên
+                                    ⭐⭐⭐ 3 sao
                                 </option>
                                 <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>
-                                    ⭐⭐ 2 sao trở lên
+                                    ⭐⭐ 2 sao
                                 </option>
                                 <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>
-                                    ⭐ 1 sao trở lên
+                                    ⭐ 1 sao
                                 </option>
                             </select>
                         </div>
