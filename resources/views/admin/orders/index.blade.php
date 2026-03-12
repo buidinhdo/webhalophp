@@ -114,7 +114,7 @@
     
     @if($orders->hasPages())
     <div class="card-footer clearfix">
-        {{ $orders->links() }}
+        {{ $orders->links('vendor.pagination.custom') }}
     </div>
     @endif
 </div>
