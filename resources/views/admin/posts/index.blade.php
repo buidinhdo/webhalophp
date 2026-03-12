@@ -27,9 +27,9 @@
     </div>
     
     <div class="card-body border-bottom">
-        <form action="{{ route('admin.posts.index') }}" method="GET" class="row g-3">
+        <form action="{{ route('admin.posts.index') }}" method="GET" class="row g-3" id="searchForm">
             <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tiêu đề, nội dung..." value="{{ request('search') }}">
+                <input type="text" name="search" id="searchInput" class="form-control" placeholder="Tìm kiếm theo ID, tiêu đề, nội dung..." value="{{ request('search') }}">
             </div>
             <div class="col-md-3">
                 <select name="status" class="form-control">
@@ -131,5 +131,24 @@
         font-size: 0.75rem;
     }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cho phép nhấn Enter để tìm kiếm
+    const searchInput = document.getElementById('searchInput');
+    const searchForm = document.getElementById('searchForm');
+    
+    if (searchInput && searchForm) {
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchForm.submit();
+            }
+        });
+    }
+});
+</script>
 @endpush
 @endsection
