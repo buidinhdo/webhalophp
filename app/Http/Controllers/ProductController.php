@@ -79,6 +79,12 @@ class ProductController extends Controller
             }
         }
         
+        // Lọc theo năm phát hành
+        if ($request->has('release_year') && $request->release_year != '') {
+            $year = (int) $request->release_year;
+            $query->whereYear('release_date', $year);
+        }
+        
         if ($request->has('sort')) {
             switch ($request->sort) {
                 case 'price_asc':

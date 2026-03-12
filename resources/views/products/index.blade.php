@@ -239,6 +239,25 @@
                             </select>
                         </div>
 
+                        <!-- Release Year Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Năm phát hành</label>
+                            <select name="release_year" class="form-select">
+                                <option value="">Tất cả</option>
+                                <option value="2027" {{ request('release_year') == '2027' ? 'selected' : '' }}>2027</option>
+                                <option value="2026" {{ request('release_year') == '2026' ? 'selected' : '' }}>2026</option>
+                                <option value="2025" {{ request('release_year') == '2025' ? 'selected' : '' }}>2025</option>
+                                <option value="2024" {{ request('release_year') == '2024' ? 'selected' : '' }}>2024</option>
+                                <option value="2023" {{ request('release_year') == '2023' ? 'selected' : '' }}>2023</option>
+                                <option value="2022" {{ request('release_year') == '2022' ? 'selected' : '' }}>2022</option>
+                                <option value="2021" {{ request('release_year') == '2021' ? 'selected' : '' }}>2021</option>
+                                <option value="2020" {{ request('release_year') == '2020' ? 'selected' : '' }}>2020</option>
+                                <option value="2019" {{ request('release_year') == '2019' ? 'selected' : '' }}>2019</option>
+                                <option value="2018" {{ request('release_year') == '2018' ? 'selected' : '' }}>2018</option>
+                                <option value="2017" {{ request('release_year') == '2017' ? 'selected' : '' }}>2017 trở về trước</option>
+                            </select>
+                        </div>
+
                         <!-- Price Range Filter -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Khoảng giá</label>
