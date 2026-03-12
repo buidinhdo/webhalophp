@@ -326,8 +326,12 @@
                 @foreach($order->items as $item)
                 <tr>
                     <td style="text-align: center;">
-                        @if($item->product_image)
-                            <img src="{{ public_path($item->product_image) }}" alt="{{ $item->product_name }}" style="width: 50px; height: 50px; object-fit: cover;">
+                        @if($item->product_image && file_exists(public_path($item->product_image)))
+                            <img src="{{ public_path($item->product_image) }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                        @elseif($item->product && $item->product->image && file_exists(public_path($item->product->image)))
+                            <img src="{{ public_path($item->product->image) }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                        @else
+                            <div style="width: 60px; height: 60px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 10px; color: #999;">No Image</div>
                         @endif
                     </td>
                     <td>{{ $item->product_name }}</td>
