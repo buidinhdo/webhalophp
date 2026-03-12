@@ -1023,12 +1023,16 @@
 
     <!-- Notification Script -->
     <script>
-        // Load notification count on page load
+        // Load notification count and list on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadNotificationCount();
+            loadNotifications();
             
-            // Refresh notification count every 30 seconds
-            setInterval(loadNotificationCount, 30000);
+            // Refresh notification count and list every 30 seconds
+            setInterval(function() {
+                loadNotificationCount();
+                loadNotifications();
+            }, 30000);
         });
 
         function loadNotificationCount() {
@@ -1044,6 +1048,70 @@
                     }
                 })
                 .catch(error => console.log('Notification count load error:', error));
+        }
+
+        function loadNotifications() {
+            fetch('/thong-bao/moi-nhat')
+                .then(response => response.json())
+                .then(notifications => {
+                    const notificationList = document.getElementById('notificationList');
+                    if (!notificationList) return;
+
+                    if (notifications.length === 0) {
+                        notificationList.innerHTML = `
+                            <li class="dropdown-item-text text-center text-muted py-3">
+                                <i class="fas fa-bell-slash"></i> Không có thông báo mới
+                            </li>
+                        `;
+                        return;
+                    }
+
+                    let html = '';
+                    notifications.forEach(notification => {
+                        const icon = notification.type === 'order' ? 'fa-shopping-cart' : 'fa-info-circle';
+                        const isUnread = !notification.is_read;
+                        const bgClass = isUnread ? 'bg-light' : '';
+                        const badgeHtml = isUnread ? '<span class="badge bg-primary ms-1">Mới</span>' : '';
+                        const timeAgo = formatTimeAgo(notification.created_at);
+                        
+                        html += `
+                            <li>
+                                <a href="/thong-bao/${notification.id}/doc" class="dropdown-item ${bgClass}" onclick="markAsRead(${notification.id}, event)">
+                                    <div class="d-flex align-items-start">
+                                        <i class="fas ${icon} me-2 mt-1" style="color: #007bff;"></i>
+                                        <div class="flex-grow-1">
+                                            <strong>${notification.title}</strong> ${badgeHtml}
+                                            <p class="mb-0 small text-muted">${notification.message}</p>
+                                            <small class="text-muted">${timeAgo}</small>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                        `;
+                    });
+
+                    notificationList.innerHTML = html;
+                })
+                .catch(error => console.log('Notification load error:', error));
+        }
+
+        function formatTimeAgo(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const seconds = Math.floor((now - date) / 1000);
+
+            if (seconds < 60) return 'Vài giây trước';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' phút trước';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' giờ trước';
+            if (seconds < 604800) return Math.floor(seconds / 86400) + ' ngày trước';
+            
+            return date.toLocaleDateString('vi-VN');
+        }
+
+        function markAsRead(notificationId, event) {
+            // Let the link navigate normally - the controller will handle marking as read
+            // No need for AJAX here since we're doing a full page reload anyway
         }
     </script>
     @endauth

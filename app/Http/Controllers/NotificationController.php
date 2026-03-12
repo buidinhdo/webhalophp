@@ -31,6 +31,17 @@ class NotificationController extends Controller
         return response()->json(['count' => $count]);
     }
 
+    // Lấy danh sách thông báo mới nhất (AJAX)
+    public function getRecent()
+    {
+        $notifications = Notification::where('user_id', Auth::id())
+                                     ->latest()
+                                     ->limit(5)
+                                     ->get();
+        
+        return response()->json($notifications);
+    }
+
     // Đánh dấu một thông báo đã đọc
     public function markAsRead($id)
     {

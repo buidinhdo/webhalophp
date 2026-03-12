@@ -55,20 +55,14 @@
                                 <p class="mb-2">{{ $notification->message }}</p>
                                 <div class="d-flex gap-2">
                                     @if($notification->link)
-                                    <form action="{{ route('notifications.read', $notification->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-eye"></i> Xem chi tiết
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('notifications.read', $notification->id) }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> Xem chi tiết
+                                    </a>
                                     @endif
                                     @if(!$notification->is_read)
-                                    <form action="{{ route('notifications.read', $notification->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-secondary">
-                                            <i class="fas fa-check"></i> Đánh dấu đã đọc
-                                        </button>
-                                    </form>
+                                    <a href="{{ route('notifications.read', $notification->id) }}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-check"></i> Đánh dấu đã đọc
+                                    </a>
                                     @endif
                                     <form action="{{ route('notifications.destroy', $notification->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa thông báo này?')">
                                         @csrf
