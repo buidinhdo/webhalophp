@@ -21,7 +21,7 @@ class NewsController extends Controller
             });
         }
         
-        $posts = $query->latest('published_at')->paginate(12);
+        $posts = $query->latest('published_at')->paginate(9);
         
         return view('news.index', compact('posts'));
     }
