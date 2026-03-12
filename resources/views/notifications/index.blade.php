@@ -3,6 +3,21 @@
 @section('title', 'Thông báo - HaloShop')
 
 @section('content')
+<style>
+    .notification-link {
+        display: block;
+        transition: opacity 0.2s;
+    }
+    .notification-link:hover {
+        opacity: 0.8;
+        text-decoration: none !important;
+    }
+    .notification-link h6,
+    .notification-link p {
+        text-decoration: none !important;
+    }
+</style>
+
 <div class="container my-5">
     <div class="row">
         <div class="col-12">
@@ -43,6 +58,20 @@
                                 @endif
                             </div>
                             <div class="flex-grow-1">
+                                @if($notification->link)
+                                <a href="{{ route('notifications.read', $notification->id) }}" class="notification-link text-decoration-none text-dark">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">
+                                            @if(!$notification->is_read)
+                                                <span class="badge bg-primary me-2">Mới</span>
+                                            @endif
+                                            {{ $notification->title }}
+                                        </h6>
+                                        <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-2">{{ $notification->message }}</p>
+                                </a>
+                                @else
                                 <div class="d-flex justify-content-between">
                                     <h6 class="mb-1">
                                         @if(!$notification->is_read)
@@ -53,13 +82,9 @@
                                     <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                 </div>
                                 <p class="mb-2">{{ $notification->message }}</p>
+                                @endif
                                 <div class="d-flex gap-2">
-                                    @if($notification->link)
-                                    <a href="{{ route('notifications.read', $notification->id) }}" class="btn btn-sm btn-primary">
-                                        <i class="fas fa-eye"></i> Xem chi tiết
-                                    </a>
-                                    @endif
-                                    @if(!$notification->is_read)
+                                    @if(!$notification->is_read && !$notification->link)
                                     <a href="{{ route('notifications.read', $notification->id) }}" class="btn btn-sm btn-outline-secondary">
                                         <i class="fas fa-check"></i> Đánh dấu đã đọc
                                     </a>
