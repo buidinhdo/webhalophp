@@ -11,14 +11,10 @@ class NewsController extends Controller
     {
         $query = Post::where('is_published', true);
         
-        // Tìm kiếm
+        // Tìm kiếm theo tiêu đề
         if ($request->has('search') && $request->search) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%")
-                  ->orWhere('excerpt', 'like', "%{$search}%");
-            });
+            $query->where('title', 'like', "%{$search}%");
         }
         
         $posts = $query->latest('published_at')->paginate(9);

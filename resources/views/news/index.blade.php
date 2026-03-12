@@ -39,7 +39,7 @@
                 <div class="card-body">
                     <form action="{{ route('news.index') }}" method="GET" class="row g-3">
                         <div class="col-md-10">
-                            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm tin tức..." value="{{ request('search') }}">
+                            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm theo tiêu đề bài viết..." value="{{ request('search') }}">
                         </div>
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-primary w-100">
