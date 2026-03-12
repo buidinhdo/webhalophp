@@ -38,6 +38,20 @@ class ProductController extends Controller
             });
         }
         
+        // Lọc theo khoảng giá
+        if ($request->has('min_price') && $request->min_price != '') {
+            $query->where('price', '>=', $request->min_price);
+        }
+        
+        if ($request->has('max_price') && $request->max_price != '') {
+            $query->where('price', '<=', $request->max_price);
+        }
+        
+        // Lọc theo năm phát hành
+        if ($request->has('release_year') && $request->release_year != '') {
+            $query->whereYear('release_date', $request->release_year);
+        }
+        
         // Lọc theo đánh giá sao (khoảng chính xác)
         if ($request->has('rating') && $request->rating != '') {
             $rating = (int) $request->rating;

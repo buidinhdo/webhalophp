@@ -4,6 +4,42 @@
 
 @section('styles')
 <style>
+    /* Price Range Slider */
+    .price-range-container {
+        padding: 10px 0;
+    }
+    .price-range-slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #ddd;
+        outline: none;
+        -webkit-appearance: none;
+    }
+    .price-range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #007bff;
+        cursor: pointer;
+    }
+    .price-range-slider::-moz-range-thumb {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #007bff;
+        cursor: pointer;
+        border: none;
+    }
+    .price-display {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
+    }
     .product-image-wrapper {
         position: relative;
         overflow: hidden;
@@ -203,6 +239,42 @@
                             </select>
                         </div>
 
+                        <!-- Price Range Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Khoảng giá</label>
+                            <div class="price-range-container">
+                                <input type="hidden" name="min_price" id="minPriceInput" value="{{ request('min_price', 0) }}">
+                                <input type="hidden" name="max_price" id="maxPriceInput" value="{{ request('max_price', 40000000) }}">
+                                <div class="mb-2">
+                                    <label class="form-label small">Từ:</label>
+                                    <input type="range" class="price-range-slider" id="minPriceSlider" 
+                                           min="0" max="40000000" step="100000" 
+                                           value="{{ request('min_price', 0) }}">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Đến:</label>
+                                    <input type="range" class="price-range-slider" id="maxPriceSlider" 
+                                           min="0" max="40000000" step="100000" 
+                                           value="{{ request('max_price', 40000000) }}">
+                                </div>
+                                <div class="price-display">
+                                    <span id="minPriceDisplay">{{ number_format(request('min_price', 0)) }}₫</span>
+                                    <span id="maxPriceDisplay">{{ number_format(request('max_price', 40000000)) }}₫</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Release Year Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Năm phát hành</label>
+                            <select name="release_year" class="form-select">
+                                <option value="">Tất cả</option>
+                                @for($year = 2026; $year >= 1995; $year--)
+                                    <option value="{{ $year }}" {{ request('release_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                                @endfor
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-search"></i> Áp dụng
                         </button>
@@ -360,6 +432,42 @@
 
 @section('scripts')
 <script>
+// Price Range Slider
+document.addEventListener('DOMContentLoaded', function() {
+    const minSlider = document.getElementById('minPriceSlider');
+    const maxSlider = document.getElementById('maxPriceSlider');
+    const minInput = document.getElementById('minPriceInput');
+    const maxInput = document.getElementById('maxPriceInput');
+    const minDisplay = document.getElementById('minPriceDisplay');
+    const maxDisplay = document.getElementById('maxPriceDisplay');
+    
+    function formatPrice(price) {
+        return new Intl.NumberFormat('vi-VN').format(price) + '₫';
+    }
+    
+    function updatePriceDisplay() {
+        let minVal = parseInt(minSlider.value);
+        let maxVal = parseInt(maxSlider.value);
+        
+        // Ensure min is not greater than max
+        if (minVal > maxVal) {
+            minVal = maxVal;
+            minSlider.value = minVal;
+        }
+        
+        minInput.value = minVal;
+        maxInput.value = maxVal;
+        minDisplay.textContent = formatPrice(minVal);
+        maxDisplay.textContent = formatPrice(maxVal);
+    }
+    
+    minSlider.addEventListener('input', updatePriceDisplay);
+    maxSlider.addEventListener('input', updatePriceDisplay);
+    
+    // Initialize
+    updatePriceDisplay();
+});
+
 function toggleWishlist(productId, button) {
     fetch(`/yeu-thich/toggle/${productId}`, {
         method: 'POST',
