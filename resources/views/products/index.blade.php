@@ -269,9 +269,9 @@
                             <label class="form-label fw-bold">Năm phát hành</label>
                             <select name="release_year" class="form-select">
                                 <option value="">Tất cả</option>
-                                @for($year = 2026; $year >= 1995; $year--)
+                                @foreach($releaseYears as $year)
                                     <option value="{{ $year }}" {{ request('release_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                                @endfor
+                                @endforeach
                             </select>
                         </div>
 
