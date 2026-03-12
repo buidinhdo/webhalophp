@@ -16,13 +16,11 @@ class PostController extends Controller
         if ($request->has('search') && $request->search) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                // Tìm kiếm theo ID nếu là số
+                // Nếu tìm kiếm là số thì CHỈ tìm theo ID
                 if (is_numeric($search)) {
-                    $q->where('id', $search)
-                      ->orWhere('title', 'like', "%{$search}%")
-                      ->orWhere('content', 'like', "%{$search}%")
-                      ->orWhere('excerpt', 'like', "%{$search}%");
+                    $q->where('id', $search);
                 } else {
+                    // Nếu là text thì tìm trong tiêu đề, nội dung, tóm tắt
                     $q->where('title', 'like', "%{$search}%")
                       ->orWhere('content', 'like', "%{$search}%")
                       ->orWhere('excerpt', 'like', "%{$search}%");
