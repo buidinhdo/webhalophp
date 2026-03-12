@@ -120,14 +120,7 @@ class ProductController extends Controller
         $categories = Category::where('is_active', true)->orderBy('order')->get();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         
-        // Lấy danh sách các năm phát hành có trong database
-        $releaseYears = Product::whereNotNull('release_date')
-                               ->selectRaw('YEAR(release_date) as year')
-                               ->distinct()
-                               ->orderBy('year', 'desc')
-                               ->pluck('year');
-        
-        return view('products.index', compact('products', 'categories', 'genres', 'releaseYears'));
+        return view('products.index', compact('products', 'categories', 'genres'));
     }
     
     public function show($slug)
