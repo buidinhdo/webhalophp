@@ -271,45 +271,6 @@
                             <i class="fas fa-redo"></i> Đặt lại
                         </a>
                     </form>
-
-                    <!-- Categories -->
-                    @if($categories->count() > 0)
-                    <hr>
-                    <h6 class="fw-bold">Danh mục</h6>
-                    <div class="list-group">
-                        <a href="{{ route('products.index') }}" class="list-group-item list-group-item-action {{ !request('category') ? 'active' : '' }}">
-                            <i class="fas fa-th-large me-2"></i>Tất cả sản phẩm
-                        </a>
-                        @foreach($categories as $category)
-                        <a href="{{ route('categories.show', $category->slug) }}" class="list-group-item list-group-item-action">
-                            @if(str_contains(strtolower($category->name), 'playstation 1') || str_contains($category->slug, 'playstation-1') || str_contains($category->slug, 'ps1'))
-                                <i class="fab fa-playstation me-2" style="color: #003087;"></i>
-                            @elseif(str_contains(strtolower($category->name), 'playstation 2') || str_contains($category->slug, 'playstation-2'))
-                                <i class="fab fa-playstation me-2" style="color: #003087;"></i>
-                            @elseif(str_contains(strtolower($category->name), 'playstation 3') || str_contains($category->slug, 'playstation-3'))
-                                <i class="fab fa-playstation me-2" style="color: #0051a8;"></i>
-                            @elseif(str_contains(strtolower($category->name), 'playstation 4') || str_contains($category->slug, 'playstation-4'))
-                                <i class="fab fa-playstation me-2" style="color: #003087;"></i>
-                            @elseif(str_contains(strtolower($category->name), 'playstation 5') || str_contains($category->slug, 'playstation-5'))
-                                <i class="fab fa-playstation me-2" style="color: #0070cc;"></i>
-                            @elseif(str_contains(strtolower($category->name), 'gamecube') || str_contains($category->slug, 'nintendo-gamecube'))
-                                <img src="{{ asset('images/icons/gamecube.svg') }}" alt="GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
-                            @elseif(str_contains(strtolower($category->name), 'wii') || str_contains($category->slug, 'wii') || str_contains($category->slug, 'nintendo-wii'))
-                                <img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
-                            @elseif(str_contains(strtolower($category->name), 'super nintendo') || str_contains(strtolower($category->name), 'super nintedo') || str_contains($category->slug, 'super-nintendo') || str_contains($category->slug, 'super-nintedo') || str_contains($category->slug, 'snes'))
-                                <img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" class="me-2" style="width: 50px; height: 15px; vertical-align: middle;">
-                            @elseif(str_contains(strtolower($category->name), 'nintendo') || str_contains(strtolower($category->name), 'switch'))
-                                <img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">
-                            @elseif(str_contains(strtolower($category->name), 'xbox'))
-                                <i class="fab fa-xbox me-2" style="color: #107c10;"></i>
-                            @else
-                                <i class="fas fa-angle-right me-2"></i>
-                            @endif
-                            {{ $category->name }}
-                        </a>
-                        @endforeach
-                    </div>
-                    @endif
                 </div>
             </div>
         </div>
