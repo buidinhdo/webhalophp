@@ -32,6 +32,18 @@ class NewsController extends Controller
                     ->where('is_published', true)
                     ->firstOrFail();
                     
+        // Lấy bài viết trước (mới hơn)
+        $previousPost = Post::where('is_published', true)
+                            ->where('published_at', '>', $post->published_at)
+                            ->orderBy('published_at', 'asc')
+                            ->first();
+                            
+        // Lấy bài viết sau (cũ hơn)
+        $nextPost = Post::where('is_published', true)
+                        ->where('published_at', '<', $post->published_at)
+                        ->orderBy('published_at', 'desc')
+                        ->first();
+                    
         // Lấy tin tức liên quan
         $relatedPosts = Post::where('is_published', true)
                             ->where('id', '!=', $post->id)
@@ -39,6 +51,6 @@ class NewsController extends Controller
                             ->take(3)
                             ->get();
         
-        return view('news.show', compact('post', 'relatedPosts'));
+        return view('news.show', compact('post', 'relatedPosts', 'previousPost', 'nextPost'));
     }
 }

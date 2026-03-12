@@ -56,7 +56,7 @@
     <!-- Pagination -->
     @if($posts->hasPages())
     <div class="d-flex justify-content-center mt-5">
-        {{ $posts->links() }}
+        {{ $posts->links('vendor.pagination.custom') }}
     </div>
     @endif
     @else

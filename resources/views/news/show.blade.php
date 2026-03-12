@@ -31,10 +31,37 @@
                 </div>
             </article>
             
+            <!-- Navigation Bài viết trước/sau -->
             <div class="mt-4">
-                <a href="{{ route('news.index') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left me-2"></i> Quay lại danh sách
-                </a>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <a href="{{ route('news.index') }}" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-arrow-left me-2"></i> Danh sách
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        @if($previousPost)
+                        <a href="{{ route('news.show', $previousPost->slug) }}" class="btn btn-outline-primary w-100" title="{{ $previousPost->title }}">
+                            <i class="fas fa-chevron-left me-2"></i> Bài trước
+                        </a>
+                        @else
+                        <button class="btn btn-outline-secondary w-100" disabled>
+                            <i class="fas fa-chevron-left me-2"></i> Bài trước
+                        </button>
+                        @endif
+                    </div>
+                    <div class="col-md-4">
+                        @if($nextPost)
+                        <a href="{{ route('news.show', $nextPost->slug) }}" class="btn btn-outline-primary w-100" title="{{ $nextPost->title }}">
+                            Bài sau <i class="fas fa-chevron-right ms-2"></i>
+                        </a>
+                        @else
+                        <button class="btn btn-outline-secondary w-100" disabled>
+                            Bài sau <i class="fas fa-chevron-right ms-2"></i>
+                        </button>
+                        @endif
+                    </div>
+                </div>
             </div>
         </div>
         
