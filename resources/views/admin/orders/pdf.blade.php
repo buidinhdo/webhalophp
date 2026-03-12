@@ -350,7 +350,7 @@
                     <td>{{ $item->product_name }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ number_format($item->price, 0, ',', '.') }}₫</td>
-                    <td>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}₫</td>
+                    <td>{{ number_format($item->total, 0, ',', '.') }}₫</td>
                 </tr>
                 @endforeach
             </tbody>

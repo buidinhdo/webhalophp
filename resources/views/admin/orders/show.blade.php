@@ -88,7 +88,7 @@
                             <td>{{ $item->product_name }}</td>
                             <td class="text-center">{{ $item->quantity }}</td>
                             <td class="text-right">{{ number_format($item->price) }}₫</td>
-                            <td class="text-right"><strong>{{ number_format($item->price * $item->quantity) }}₫</strong></td>
+                            <td class="text-right"><strong>{{ number_format($item->total) }}₫</strong></td>
                         </tr>
                         @endforeach
                     </tbody>
