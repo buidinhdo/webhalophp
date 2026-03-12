@@ -325,13 +325,26 @@
             <tbody>
                 @foreach($order->items as $item)
                 <tr>
-                    <td style="text-align: center;">
-                        @if($item->product_image && file_exists(public_path($item->product_image)))
-                            <img src="{{ public_path($item->product_image) }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
-                        @elseif($item->product && $item->product->image && file_exists(public_path($item->product->image)))
-                            <img src="{{ public_path($item->product->image) }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                    <td style="text-align: center; padding: 8px;">
+                        @php
+                            $imagePath = null;
+                            if($item->product_image && file_exists(public_path($item->product_image))) {
+                                $imagePath = public_path($item->product_image);
+                            } elseif($item->product && $item->product->image && file_exists(public_path($item->product->image))) {
+                                $imagePath = public_path($item->product->image);
+                            }
+                            
+                            if($imagePath) {
+                                $imageData = base64_encode(file_get_contents($imagePath));
+                                $imageMimeType = mime_content_type($imagePath);
+                                $imageSrc = 'data:' . $imageMimeType . ';base64,' . $imageData;
+                            }
+                        @endphp
+                        
+                        @if(isset($imageSrc))
+                            <img src="{{ $imageSrc }}" alt="{{ $item->product_name }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
                         @else
-                            <div style="width: 60px; height: 60px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 10px; color: #999;">No Image</div>
+                            <div style="width: 60px; height: 60px; background: #f0f0f0; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 9px; color: #999; border: 1px solid #ddd;">No Image</div>
                         @endif
                     </td>
                     <td>{{ $item->product_name }}</td>
