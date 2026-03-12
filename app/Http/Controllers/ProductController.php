@@ -86,7 +86,18 @@ class ProductController extends Controller
         
         // Lọc theo nhà phát hành
         if ($request->has('publisher') && $request->publisher != '') {
-            $query->where('publisher', $request->publisher);
+            $publisher = $request->publisher;
+            
+            // Handle Microsoft variants
+            if ($publisher == 'Microsoft') {
+                $query->where(function($q) {
+                    $q->where('publisher', 'Microsoft')
+                      ->orWhere('publisher', 'Microsoft Game Studios')
+                      ->orWhere('publisher', 'Microsoft Studios');
+                });
+            } else {
+                $query->where('publisher', $publisher);
+            }
         }
         
         if ($request->has('sort')) {
