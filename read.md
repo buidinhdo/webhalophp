@@ -1,48 +1,64 @@
-# BÁO CÁO SẢN PHẨM ĐẦY ĐỦ THÔNG TIN ESRB & NHÀ PHÁT HÀNH
+# BẢNG SẢN PHẨM CÓ ĐẦY ĐỦ ESRB & NHÀ PHÁT HÀNH
 
-*Ngày tạo: 12/03/2026 21:37:16*
-
----
-
-## PS4 (5 sản phẩm)
-
-| STT | ID | Tên sản phẩm | ESRB | Nhà phát hành |
-|-----|----|--------------| -----|---------------|
-| 1 | 32 | Game AI: The Somnium Files – The nirvanA Initiative – PS4 | **M** | Spike Chunsoft |
-| 2 | 29 | Game Call Of Duty: Black Ops III – PS4 | **M** | Activision |
-| 3 | 30 | Game Devil May Cry 4 Special EDT – Asia – PS4 | **M** | Capcom |
-| 4 | 38 | Game Horizon Zero Dawn Complete Edition – PS4 | **T** | Sony Interactive Entertainment |
-| 5 | 31 | Game Metal Gear Solid V : Ground Zeroes + The Phantom Pain – Asia – PS4 | **M** | Kojima Productions / Konami |
-
-## PS5 (10 sản phẩm)
-
-| STT | ID | Tên sản phẩm | ESRB | Nhà phát hành |
-|-----|----|--------------| -----|---------------|
-| 1 | 2 | Game Code Vein II – PS5 | **T** | Bandai Namco |
-| 2 | 16 | Game Demon Slayer: Kimestu no Yaiba – Sweep the Board! – Nintendo Switch | **T** | Bandai Namco |
-| 3 | 135 | Game Grand Theft Auto VI – PS5 | **M** | Rockstar Games |
-| 4 | 39 | Game Macross – Shooting Insight – PS5 | **T** | Red Art Games |
-| 5 | 43 | Game Minecraft – PS5 | **E** | Nintendo |
-| 6 | 13 | Game My Hero Academia: All’s Justice – PS5 | **T** | Bandai Namco |
-| 7 | 41 | Game Nioh 3 – PS5 | **M** | Koei |
-| 8 | 40 | Game Street Fighter 6 Years 1-2 Fighters Edition – PS5 | **T** | Capcom |
-| 9 | 15 | Game The Last of Us: Part II Remastered – PS5 | **M** | Sony Interactive Entertainment |
-| 10 | 42 | Game Yakuza Kiwami 3 & Dark Ties – PS5 | **M** | Sega |
-
-## Nintendo Switch (4 sản phẩm)
-
-| STT | ID | Tên sản phẩm | ESRB | Nhà phát hành |
-|-----|----|--------------| -----|---------------|
-| 1 | 129 | Game Demon Slayer: Kimetsu no Yaiba – The Honikami Chronicles 2 – Nintendo Switch | **M** | Sega |
-| 2 | 128 | Game Dragon Quest VII Reimagined – Nintendo Switch | **E** | Square Enix |
-| 3 | 19 | Game Mobile Suit Gundam SEED Battle Destiny Remastered – Nintendo Switch | **E** | Bandai Namco |
-| 4 | 130 | Game Super Robot Wars Y - Nintendo Switch | **T** | Bandai Namco |
+*Ngày tạo: 12/03/2026 21:39:38*
 
 ---
 
-## THỐNG KÊ TỔNG HỢP
+## 📋 PS4 (5 sản phẩm)
 
-**Tổng số sản phẩm có đầy đủ thông tin: 19**
+| ID | Tên sản phẩm | ESRB | Nhà phát hành | Trạng thái |
+|----|--------------|------| --------------|-----------||
+| 29 | Game Call Of Duty: Black Ops III | **M** | ✅ Activision | Đầy đủ |
+| 30 | Game Devil May Cry 4 Special EDT – Asia | **M** | ✅ Capcom | Đầy đủ |
+| 31 | Game Metal Gear Solid V : Ground Zeroes + The Phantom Pain – Asia | **M** | ✅ Kojima Productions / Konami | Đầy đủ |
+| 32 | Game AI: The Somnium Files – The nirvanA Initiative | **M** | ✅ Spike Chunsoft | Đầy đủ |
+| 38 | Game Horizon Zero Dawn Complete Edition | **T** | ✅ Sony Interactive Entertainment | Đầy đủ |
+
+**Tổng kết PS4:**
+
+✅ Có đầy đủ: 5 game
+
+---
+
+## 📋 PS5 (10 sản phẩm)
+
+| ID | Tên sản phẩm | ESRB | Nhà phát hành | Trạng thái |
+|----|--------------|------| --------------|-----------||
+| 2 | Game Code Vein II | **T** | ✅ Bandai Namco | Đầy đủ |
+| 13 | Game My Hero Academia: All’s Justice | **T** | ✅ Bandai Namco | Đầy đủ |
+| 15 | Game The Last of Us: Part II Remastered | **M** | ✅ Sony Interactive Entertainment | Đầy đủ |
+| 16 | Game Demon Slayer: Kimestu no Yaiba – Sweep the Board! | **T** | ✅ Bandai Namco | Đầy đủ |
+| 39 | Game Macross – Shooting Insight | **T** | ✅ Red Art Games | Đầy đủ |
+| 40 | Game Street Fighter 6 Years 1-2 Fighters Edition | **T** | ✅ Capcom | Đầy đủ |
+| 41 | Game Nioh 3 | **M** | ✅ Koei | Đầy đủ |
+| 42 | Game Yakuza Kiwami 3 & Dark Ties | **M** | ✅ Sega | Đầy đủ |
+| 43 | Game Minecraft | **E** | ✅ Nintendo | Đầy đủ |
+| 135 | Game Grand Theft Auto VI | **M** | ✅ Rockstar Games | Đầy đủ |
+
+**Tổng kết PS5:**
+
+✅ Có đầy đủ: 10 game
+
+---
+
+## 📋 NINTENDO SWITCH (4 sản phẩm)
+
+| ID | Tên sản phẩm | ESRB | Nhà phát hành | Trạng thái |
+|----|--------------|------| --------------|-----------||
+| 19 | Game Mobile Suit Gundam SEED Battle Destiny Remastered | **E** | ✅ Bandai Namco | Đầy đủ |
+| 128 | Game Dragon Quest VII Reimagined | **E** | ✅ Square Enix | Đầy đủ |
+| 129 | Game Demon Slayer: Kimetsu no Yaiba – The Honikami Chronicles 2 | **M** | ✅ Sega | Đầy đủ |
+| 130 | Game Super Robot Wars Y - Nintendo Switch | **T** | ✅ Bandai Namco | Đầy đủ |
+
+**Tổng kết Nintendo Switch:**
+
+✅ Có đầy đủ: 4 game
+
+---
+
+## 📊 THỐNG KÊ TỔNG HỢP
+
+**Tổng số sản phẩm có đầy đủ thông tin từ PS4 đến Nintendo Switch: 19 sản phẩm**
 
 ### Phân bố ESRB Rating:
 
@@ -50,15 +66,15 @@
 - **T**: 7 sản phẩm
 - **E**: 3 sản phẩm
 
-### Top Nhà phát hành:
+### Top 10 Nhà phát hành:
 
-- **Bandai Namco**: 5 sản phẩm
-- **Sony Interactive Entertainment**: 2 sản phẩm
-- **Capcom**: 2 sản phẩm
-- **Sega**: 2 sản phẩm
-- **Activision**: 1 sản phẩm
-- **Kojima Productions / Konami**: 1 sản phẩm
-- **Spike Chunsoft**: 1 sản phẩm
-- **Red Art Games**: 1 sản phẩm
-- **Koei**: 1 sản phẩm
-- **Nintendo**: 1 sản phẩm
+1. **Bandai Namco**: 5 sản phẩm
+2. **Sony Interactive Entertainment**: 2 sản phẩm
+3. **Capcom**: 2 sản phẩm
+4. **Sega**: 2 sản phẩm
+5. **Activision**: 1 sản phẩm
+6. **Kojima Productions / Konami**: 1 sản phẩm
+7. **Spike Chunsoft**: 1 sản phẩm
+8. **Red Art Games**: 1 sản phẩm
+9. **Koei**: 1 sản phẩm
+10. **Nintendo**: 1 sản phẩm
