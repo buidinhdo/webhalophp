@@ -176,6 +176,30 @@
                                 <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá thấp đến cao</option>
                                 <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá cao đến thấp</option>
                                 <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Mới nhất</option>
+                                <option value="rating" {{ request('sort') == 'rating' ? 'selected' : '' }}>Đánh giá cao nhất</option>
+                            </select>
+                        </div>
+
+                        <!-- Rating Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Đánh giá</label>
+                            <select name="rating" class="form-select">
+                                <option value="">Tất cả</option>
+                                <option value="5" {{ request('rating') == '5' ? 'selected' : '' }}>
+                                    ⭐⭐⭐⭐⭐ 5 sao
+                                </option>
+                                <option value="4" {{ request('rating') == '4' ? 'selected' : '' }}>
+                                    ⭐⭐⭐⭐ 4 sao trở lên
+                                </option>
+                                <option value="3" {{ request('rating') == '3' ? 'selected' : '' }}>
+                                    ⭐⭐⭐ 3 sao trở lên
+                                </option>
+                                <option value="2" {{ request('rating') == '2' ? 'selected' : '' }}>
+                                    ⭐⭐ 2 sao trở lên
+                                </option>
+                                <option value="1" {{ request('rating') == '1' ? 'selected' : '' }}>
+                                    ⭐ 1 sao trở lên
+                                </option>
                             </select>
                         </div>
 
@@ -271,6 +295,32 @@
                             @if($product->platform)
                             <p class="text-muted small mb-2">
                                 <i class="fas fa-gamepad"></i> {{ $product->platform }}
+                            </p>
+                            @endif
+                            
+                            @if(isset($product->avg_rating) && $product->avg_rating > 0)
+                            <p class="mb-2">
+                                @php
+                                    $rating = round($product->avg_rating * 2) / 2; // Làm tròn đến 0.5
+                                    $fullStars = floor($rating);
+                                    $halfStar = ($rating - $fullStars) >= 0.5;
+                                    $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                @endphp
+                                <span class="text-warning">
+                                    @for($i = 0; $i < $fullStars; $i++)
+                                        <i class="fas fa-star"></i>
+                                    @endfor
+                                    @if($halfStar)
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @endif
+                                    @for($i = 0; $i < $emptyStars; $i++)
+                                        <i class="far fa-star"></i>
+                                    @endfor
+                                </span>
+                                <span class="text-muted small">({{ number_format($product->avg_rating, 1) }})</span>
+                                @if(isset($product->reviews_count))
+                                    <span class="text-muted small">- {{ $product->reviews_count }} đánh giá</span>
+                                @endif
                             </p>
                             @endif
                             

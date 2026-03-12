@@ -38,6 +38,13 @@ class ProductController extends Controller
             });
         }
         
+        // Lọc theo đánh giá sao
+        if ($request->has('rating') && $request->rating != '') {
+            $minRating = (float) $request->rating;
+            $query->whereHas('reviews')
+                  ->whereRaw('(SELECT AVG(rating) FROM reviews WHERE reviews.product_id = products.id) >= ?', [$minRating]);
+        }
+        
         if ($request->has('sort')) {
             switch ($request->sort) {
                 case 'price_asc':
@@ -45,6 +52,10 @@ class ProductController extends Controller
                     break;
                 case 'price_desc':
                     $query->orderBy('price', 'desc');
+                    break;
+                case 'rating':
+                    // Sắp xếp theo đánh giá trung bình cao nhất (sản phẩm chưa có đánh giá sẽ ở cuối)
+                    $query->orderByRaw('(SELECT COALESCE(AVG(rating), 0) FROM reviews WHERE reviews.product_id = products.id) DESC');
                     break;
                 case 'newest':
                     $query->latest();
@@ -57,6 +68,16 @@ class ProductController extends Controller
         }
         
         $products = $query->paginate(20);
+        
+        // Load thêm rating trung bình cho tất cả sản phẩm
+        $products->getCollection()->transform(function ($product) {
+            if (!isset($product->avg_rating)) {
+                $product->avg_rating = $product->reviews()->avg('rating');
+            }
+            $product->reviews_count = $product->reviews()->count();
+            return $product;
+        });
+        
         $categories = Category::where('is_active', true)->orderBy('order')->get();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
         
