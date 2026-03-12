@@ -264,17 +264,6 @@
                             </div>
                         </div>
 
-                        <!-- Release Year Filter -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Năm phát hành</label>
-                            <select name="release_year" class="form-select">
-                                <option value="">Tất cả</option>
-                                @for($year = date('Y'); $year >= 1995; $year--)
-                                    <option value="{{ $year }}" {{ request('release_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                                @endfor
-                            </select>
-                        </div>
-
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-search"></i> Áp dụng
                         </button>
