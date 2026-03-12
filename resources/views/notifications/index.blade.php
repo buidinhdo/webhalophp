@@ -49,7 +49,7 @@
                             <div class="flex-shrink-0 me-3">
                                 @if($notification->type == 'order')
                                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                                        <i class="fas fa-shopping-cart"></i>
+                                        <i class="fas fa-box"></i>
                                     </div>
                                 @else
                                     <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
