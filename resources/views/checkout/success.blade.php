@@ -73,6 +73,21 @@
                             @endforeach
                         </tbody>
                         <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Tạm tính:</strong></td>
+                                <td><strong>{{ number_format($order->subtotal) }}₫</strong></td>
+                            </tr>
+                            @if($order->coupon_discount > 0)
+                            <tr class="text-success">
+                                <td colspan="3" class="text-end">
+                                    <i class="fas fa-tag"></i> Giảm giá
+                                    @if($order->coupon_code)
+                                        ({{ $order->coupon_code }})
+                                    @endif:
+                                </td>
+                                <td class="text-success"><strong>-{{ number_format($order->coupon_discount) }}₫</strong></td>
+                            </tr>
+                            @endif
                             <tr class="table-primary">
                                 <td colspan="3" class="text-end"><h5>Tổng cộng:</h5></td>
                                 <td><h5 class="text-primary">{{ number_format($order->total_amount) }}₫</h5></td>
