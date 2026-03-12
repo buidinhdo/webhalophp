@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Notification;
+use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Services\MoMoPaymentService;
@@ -26,10 +27,32 @@ class CheckoutController extends Controller
             $subtotal += $item['price'] * $item['quantity'];
         }
         
+        // Xử lý coupon nếu có
+        $coupon = null;
+        $discount = 0;
+        if (session()->has('coupon_code')) {
+            $couponCode = session('coupon_code');
+            $coupon = Coupon::where('code', $couponCode)->first();
+            
+            if ($coupon) {
+                $validation = $coupon->isValid(Auth::id(), $subtotal);
+                if ($validation['valid']) {
+                    $discount = $coupon->calculateDiscount($subtotal);
+                } else {
+                    // Coupon không hợp lệ, xóa khỏi session
+                    session()->forget('coupon_code');
+                    session()->flash('error', $validation['message']);
+                    $coupon = null;
+                }
+            }
+        }
+        
+        $total = $subtotal - $discount;
+        
         // Lấy thông tin user nếu đã đăng nhập
         $user = Auth::user();
         
-        return view('checkout.index', compact('cart', 'subtotal', 'user'));
+        return view('checkout.index', compact('cart', 'subtotal', 'discount', 'coupon', 'total', 'user'));
     }
     
     public function process(Request $request)
@@ -60,6 +83,26 @@ class CheckoutController extends Controller
             $totalAmount += $item['price'] * $item['quantity'];
         }
         
+        // Xử lý coupon
+        $couponDiscount = 0;
+        $couponId = null;
+        $couponCode = null;
+        
+        if (session()->has('coupon_code')) {
+            $coupon = Coupon::where('code', session('coupon_code'))->first();
+            
+            if ($coupon) {
+                $validation = $coupon->isValid(Auth::id(), $totalAmount);
+                if ($validation['valid']) {
+                    $couponDiscount = $coupon->calculateDiscount($totalAmount);
+                    $couponId = $coupon->id;
+                    $couponCode = $coupon->code;
+                }
+            }
+        }
+        
+        $finalTotal = $totalAmount - $couponDiscount;
+        
         // Tạo đơn hàng
         $order = Order::create([
             'user_id' => Auth::id(), // null nếu chưa đăng nhập
@@ -71,12 +114,20 @@ class CheckoutController extends Controller
             'subtotal' => $totalAmount,
             'shipping_fee' => 0,
             'discount' => 0,
-            'total_amount' => $totalAmount,
+            'coupon_id' => $couponId,
+            'coupon_code' => $couponCode,
+            'coupon_discount' => $couponDiscount,
+            'total_amount' => $finalTotal,
             'payment_method' => $request->payment_method ?? 'cod',
             'payment_status' => 'pending',
             'order_status' => 'pending',
             'notes' => $request->notes,
         ]);
+        
+        // Tăng số lần sử dụng coupon
+        if ($couponId) {
+            $coupon->incrementUsage();
+        }
         
         // Tạo order items - lưu chi tiết từng sản phẩm
         foreach ($cart as $productId => $item) {
@@ -105,8 +156,8 @@ class CheckoutController extends Controller
             ]);
         }
         
-        // Xóa giỏ hàng
-        session()->forget('cart');
+        // Xóa giỏ hàng và coupon
+        session()->forget(['cart', 'coupon_code']);
         
         // Nếu thanh toán chuyển khoản, chuyển đến trang QR
         if ($request->payment_method === 'bank_transfer') {
@@ -239,4 +290,46 @@ class CheckoutController extends Controller
         
         return response()->json(['status' => 'success'], 200);
     }
+
+    // Áp dụng mã giảm giá
+    public function applyCoupon(Request $request)
+    {
+        $request->validate([
+            'coupon_code' => 'required|string',
+        ]);
+
+        $couponCode = strtoupper($request->coupon_code);
+        $coupon = Coupon::where('code', $couponCode)->first();
+
+        if (!$coupon) {
+            return redirect()->back()->with('coupon_error', 'Mã giảm giá không tồn tại!');
+        }
+
+        // Tính tổng giỏ hàng
+        $cart = session()->get('cart', []);
+        $subtotal = 0;
+        foreach ($cart as $item) {
+            $subtotal += $item['price'] * $item['quantity'];
+        }
+
+        // Kiểm tra tính hợp lệ
+        $validation = $coupon->isValid(Auth::id(), $subtotal);
+        
+        if (!$validation['valid']) {
+            return redirect()->back()->with('coupon_error', $validation['message']);
+        }
+
+        // Lưu mã vào session
+        session(['coupon_code' => $couponCode]);
+
+        return redirect()->back()->with('coupon_success', 'Áp dụng mã giảm giá thành công!');
+    }
+
+    // Xóa mã giảm giá
+    public function removeCoupon()
+    {
+        session()->forget('coupon_code');
+        return redirect()->back()->with('success', 'Đã xóa mã giảm giá!');
+    }
 }
+

@@ -104,6 +104,25 @@
                     <h5 class="mb-0">Tổng đơn hàng</h5>
                 </div>
                 <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Tạm tính:</span>
+                        <strong>{{ number_format($order->subtotal) }}₫</strong>
+                    </div>
+                    
+                    @if($order->coupon_discount > 0)
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>
+                            <i class="fas fa-tag me-1"></i>Giảm giá
+                            @if($order->coupon_code)
+                                ({{ $order->coupon_code }})
+                            @endif
+                        </span>
+                        <strong>-{{ number_format($order->coupon_discount) }}₫</strong>
+                    </div>
+                    @endif
+                    
+                    <hr>
+                    
                     <div class="d-flex justify-content-between mb-3">
                         <h5>Tổng cộng:</h5>
                         <h5 class="text-primary">{{ number_format($order->total_amount) }}₫</h5>

@@ -53,6 +53,8 @@ Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('ca
 // Thanh toán
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/thanh-toan/xu-ly', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::post('/thanh-toan/ap-dung-ma', [CheckoutController::class, 'applyCoupon'])->name('checkout.apply-coupon');
+Route::post('/thanh-toan/xoa-ma', [CheckoutController::class, 'removeCoupon'])->name('checkout.remove-coupon');
 Route::get('/thanh-toan/qr/{order}', [CheckoutController::class, 'paymentQR'])->name('checkout.payment-qr');
 Route::get('/thanh-toan/momo/{order}', [CheckoutController::class, 'paymentMoMo'])->name('checkout.payment-momo');
 Route::get('/thanh-toan/momo/callback', [CheckoutController::class, 'momoCallback'])->name('checkout.momo-callback');

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\CouponController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -69,4 +70,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
     Route::patch('reviews/{review}/update-status', [ReviewController::class, 'updateStatus'])->name('reviews.update-status');
     Route::patch('reviews/{review}/reply', [ReviewController::class, 'reply'])->name('reviews.reply');
+    
+    // Coupons Management
+    Route::resource('coupons', CouponController::class);
+    Route::post('coupons/{coupon}/toggle', [CouponController::class, 'toggleStatus'])->name('coupons.toggle');
 });

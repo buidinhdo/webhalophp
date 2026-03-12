@@ -19,6 +19,9 @@ class Order extends Model
         'subtotal',
         'shipping_fee',
         'discount',
+        'coupon_id',
+        'coupon_code',
+        'coupon_discount',
         'total_amount',
         'payment_method',
         'payment_status',
@@ -30,12 +33,18 @@ class Order extends Model
         'subtotal' => 'decimal:2',
         'shipping_fee' => 'decimal:2',
         'discount' => 'decimal:2',
+        'coupon_discount' => 'decimal:2',
         'total_amount' => 'decimal:2',
     ];
     
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    
+    public function coupon()
+    {
+        return $this->belongsTo(Coupon::class);
     }
     
     public function items()

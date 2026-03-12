@@ -120,11 +120,64 @@
                         <strong>{{ number_format($subtotal) }}₫</strong>
                     </div>
                     
+                    <!-- Mã giảm giá -->
+                    <div class="mb-3">
+                        @if(session('coupon_success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-1"></i>{{ session('coupon_success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        @endif
+                        
+                        @if(session('coupon_error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-1"></i>{{ session('coupon_error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                        @endif
+                        
+                        @if($coupon)
+                        <div class="card bg-light">
+                            <div class="card-body p-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="fas fa-ticket-alt text-success me-2"></i>
+                                        <strong>{{ $coupon->code }}</strong>
+                                        <p class="mb-0 small text-muted">{{ $coupon->description }}</p>
+                                    </div>
+                                    <form action="{{ route('checkout.remove-coupon') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <label class="form-label small">Mã giảm giá:</label>
+                        <form action="{{ route('checkout.apply-coupon') }}" method="POST" class="input-group">
+                            @csrf
+                            <input type="text" name="coupon_code" class="form-control" placeholder="Nhập mã giảm giá" required>
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fas fa-tag"></i> Áp dụng
+                            </button>
+                        </form>
+                        @endif
+                    </div>
+                    
+                    @if($discount > 0)
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span><i class="fas fa-tag me-1"></i>Giảm giá:</span>
+                        <strong>-{{ number_format($discount) }}₫</strong>
+                    </div>
+                    @endif
+                    
                     <hr>
                     
                     <div class="d-flex justify-content-between mb-3">
                         <h5>Tổng cộng:</h5>
-                        <h5 class="text-primary">{{ number_format($subtotal) }}₫</h5>
+                        <h5 class="text-primary">{{ number_format($total ?? $subtotal) }}₫</h5>
                     </div>
                     
                     <button type="submit" form="checkoutForm" class="btn btn-primary w-100 btn-lg">
