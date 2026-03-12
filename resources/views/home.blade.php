@@ -326,6 +326,31 @@
         right: 0;
     }
     
+    /* News Title Link Styles */
+    .news-title-link {
+        color: #212529;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .news-title-link:hover {
+        color: #17a2b8;
+        text-decoration: none;
+    }
+    
+    .news-slide .card {
+        overflow: hidden;
+    }
+    
+    .news-slide .card img {
+        transition: transform 0.3s ease;
+    }
+    
+    .news-slide .card:hover img {
+        transform: scale(1.05);
+    }
+    
     @media (max-width: 992px) {
         .news-slide {
             width: calc(50% - 10px);
@@ -1271,13 +1296,17 @@
             @foreach($posts as $post)
             <div class="news-slide">
                 <div class="card product-card h-100 d-flex flex-column">
-                    @if($post->image)
-                        <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
-                    @else
-                        <img src="https://via.placeholder.com/400x200?text={{ urlencode($post->title) }}" class="card-img-top" alt="{{ $post->title }}">
-                    @endif
+                    <a href="{{ route('news.show', $post->slug) }}">
+                        @if($post->image)
+                            <img src="{{ asset($post->image) }}" class="card-img-top" alt="{{ $post->title }}" style="height: 200px; object-fit: cover;">
+                        @else
+                            <img src="https://via.placeholder.com/400x200?text={{ urlencode($post->title) }}" class="card-img-top" alt="{{ $post->title }}">
+                        @endif
+                    </a>
                     <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">{{ Str::limit($post->title, 60) }}</h5>
+                        <a href="{{ route('news.show', $post->slug) }}" class="news-title-link">
+                            <h5 class="card-title">{{ Str::limit($post->title, 60) }}</h5>
+                        </a>
                         <p class="card-text text-muted small mb-2">
                             <i class="far fa-calendar me-1"></i> {{ $post->published_at->format('d/m/Y') }}
                         </p>
