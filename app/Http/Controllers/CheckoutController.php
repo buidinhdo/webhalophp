@@ -133,9 +133,10 @@ class CheckoutController extends Controller
         foreach ($cart as $productId => $item) {
             $product = Product::find($productId);
             
-            $itemPrice = floatval($item['price']);
-            $itemQuantity = intval($item['quantity']);
-            $itemTotal = $itemPrice * $itemQuantity;
+            // Ensure proper numeric conversion
+            $itemPrice = (float) $item['price'];
+            $itemQuantity = (int) $item['quantity'];
+            $itemTotal = round($itemPrice * $itemQuantity, 2);
             
             OrderItem::create([
                 'order_id' => $order->id,
