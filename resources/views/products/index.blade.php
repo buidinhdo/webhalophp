@@ -258,18 +258,9 @@
                             <label class="form-label fw-bold">Nhà phát hành</label>
                             <select name="publisher" class="form-select">
                                 <option value="">Tất cả</option>
-                                <option value="Sony Interactive Entertainment" {{ request('publisher') == 'Sony Interactive Entertainment' ? 'selected' : '' }}>Sony Interactive</option>
-                                <option value="Nintendo" {{ request('publisher') == 'Nintendo' ? 'selected' : '' }}>Nintendo</option>
-                                <option value="Microsoft" {{ in_array(request('publisher'), ['Microsoft', 'Microsoft Game Studios', 'Microsoft Studios']) ? 'selected' : '' }}>Microsoft</option>
-                                <option value="Rockstar Games" {{ request('publisher') == 'Rockstar Games' ? 'selected' : '' }}>Rockstar Games</option>
-                                <option value="Electronic Arts" {{ request('publisher') == 'Electronic Arts' ? 'selected' : '' }}>Electronic Arts</option>
-                                <option value="Bandai Namco" {{ request('publisher') == 'Bandai Namco' ? 'selected' : '' }}>Bandai Namco</option>
-                                <option value="Activision" {{ request('publisher') == 'Activision' ? 'selected' : '' }}>Activision</option>
-                                <option value="Ubisoft" {{ request('publisher') == 'Ubisoft' ? 'selected' : '' }}>Ubisoft</option>
-                                <option value="Capcom" {{ request('publisher') == 'Capcom' ? 'selected' : '' }}>Capcom</option>
-                                <option value="Square Enix" {{ request('publisher') == 'Square Enix' ? 'selected' : '' }}>Square Enix</option>
-                                <option value="Sega" {{ request('publisher') == 'Sega' ? 'selected' : '' }}>Sega</option>
-                                <option value="Konami" {{ request('publisher') == 'Konami' ? 'selected' : '' }}>Konami</option>
+                                @foreach($publishers as $publisherName)
+                                    <option value="{{ $publisherName }}" {{ request('publisher') == $publisherName ? 'selected' : '' }}>{{ $publisherName }}</option>
+                                @endforeach
                             </select>
                         </div>
 

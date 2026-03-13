@@ -73,7 +73,7 @@ class UpdateProductMeta extends Command
                     $publisher = 'Sony Interactive Entertainment';
                 } elseif (!$isGame && preg_match('/Nintendo|Switch|GameCube|Wii|Super Nintendo/i', $productName)) {
                     $publisher = 'Nintendo';
-                } elseif (!$isGame && preg_match('/Xbox|Microsoft/i', $productName)) {
+                } elseif (!$isGame && preg_match('/Xbox|Microsoft|\bbox\s+Elite/i', $productName)) {
                     $publisher = 'Microsoft';
                 }
             }
