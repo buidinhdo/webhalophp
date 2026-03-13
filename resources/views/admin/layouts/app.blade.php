@@ -279,6 +279,14 @@
                         </a>
                     </li>
 
+                    <!-- Website Score -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.website-score') }}" class="nav-link {{ request()->routeIs('admin.website-score') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-trophy"></i>
+                            <p>Điểm Website</p>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
