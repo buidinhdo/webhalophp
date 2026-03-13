@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
@@ -119,6 +120,12 @@ Route::post('/dang-nhap', [AuthController::class, 'login']);
 Route::get('/dang-ky', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/dang-ky', [AuthController::class, 'register']);
 Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
+
+// Quên mật khẩu
+Route::get('/quen-mat-khau', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
+Route::post('/quen-mat-khau', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
+Route::get('/dat-lai-mat-khau/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('/dat-lai-mat-khau', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 
 // Admin Routes
 require __DIR__.'/admin.php';

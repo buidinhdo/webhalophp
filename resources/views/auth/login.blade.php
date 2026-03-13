@@ -132,6 +132,12 @@
                             </div>
                         </div>
 
+                        <div class="mb-3 text-end">
+                            <a href="{{ route('password.request') }}" class="text-muted small">
+                                <i class="fas fa-key me-1"></i>Quên mật khẩu?
+                            </a>
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">
                                 <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
