@@ -135,8 +135,13 @@ class ProductController extends Controller
         
         $categories = Category::where('is_active', true)->orderBy('order')->get();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
+        $publishers = Product::whereNotNull('publisher')
+            ->where('publisher', '!=', '')
+            ->distinct()
+            ->orderBy('publisher')
+            ->pluck('publisher');
         
-        return view('products.index', compact('products', 'categories', 'genres'));
+        return view('products.index', compact('products', 'categories', 'genres', 'publishers'));
     }
     
     public function show($slug)
