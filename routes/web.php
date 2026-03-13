@@ -123,9 +123,7 @@ Route::post('/dang-xuat', [AuthController::class, 'logout'])->name('logout');
 
 // Quên mật khẩu
 Route::get('/quen-mat-khau', [ForgotPasswordController::class, 'showForgotForm'])->name('password.request');
-Route::post('/quen-mat-khau', [ForgotPasswordController::class, 'sendResetLink'])->name('password.email');
-Route::get('/dat-lai-mat-khau/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
-Route::post('/dat-lai-mat-khau', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
+Route::post('/quen-mat-khau', [ForgotPasswordController::class, 'resetPassword'])->name('password.reset');
 
 // Admin Routes
 require __DIR__.'/admin.php';

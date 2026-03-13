@@ -38,6 +38,10 @@
     .auth-card .card-body {
         padding: 2rem;
     }
+    .toggle-password {
+        cursor: pointer;
+        border-left: none;
+    }
     @media (max-width: 768px) {
         .auth-container { padding: 20px 0; }
     }
@@ -56,13 +60,6 @@
                 </div>
                 <div class="card-body p-4">
 
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-
                     @if($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             @foreach($errors->all() as $error)
@@ -72,17 +69,12 @@
                         </div>
                     @endif
 
-                    <p class="text-muted mb-4">
-                        <i class="fas fa-info-circle me-1"></i>
-                        Nhập email đã đăng ký. Chúng tôi sẽ gửi link đặt lại mật khẩu vào hộp thư của bạn.
-                    </p>
-
-                    <form method="POST" action="{{ route('password.email') }}">
+                    <form method="POST" action="{{ route('password.reset') }}">
                         @csrf
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label for="email" class="form-label">
-                                <i class="fas fa-envelope me-1"></i>Email
+                                <i class="fas fa-envelope me-1"></i>Email tài khoản
                             </label>
                             <input type="email"
                                    class="form-control @error('email') is-invalid @enderror"
@@ -91,15 +83,52 @@
                                    value="{{ old('email') }}"
                                    required
                                    autofocus
-                                   placeholder="Nhập email của bạn">
+                                   placeholder="Nhập email đã đăng ký">
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Mật khẩu mới
+                            </label>
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       id="password"
+                                       name="password"
+                                       required
+                                       placeholder="Nhập mật khẩu mới (ít nhất 6 ký tự)">
+                                <span class="input-group-text toggle-password" onclick="togglePassword('password', this)">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                                @error('password')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password_confirmation" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Xác nhận mật khẩu mới
+                            </label>
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control"
+                                       id="password_confirmation"
+                                       name="password_confirmation"
+                                       required
+                                       placeholder="Nhập lại mật khẩu mới">
+                                <span class="input-group-text toggle-password" onclick="togglePassword('password_confirmation', this)">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="fas fa-paper-plane me-2"></i>Gửi link đặt lại mật khẩu
+                                <i class="fas fa-save me-2"></i>Đặt lại mật khẩu
                             </button>
                         </div>
                     </form>
@@ -116,4 +145,20 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+function togglePassword(fieldId, icon) {
+    const input = document.getElementById(fieldId);
+    const iconEl = icon.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        iconEl.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        iconEl.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
 @endsection
