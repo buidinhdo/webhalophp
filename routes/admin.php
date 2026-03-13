@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\WebsiteScoreController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -74,4 +75,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Coupons Management
     Route::resource('coupons', CouponController::class);
     Route::post('coupons/{coupon}/toggle', [CouponController::class, 'toggleStatus'])->name('coupons.toggle');
+
+    // Website Score
+    Route::get('website-score', [WebsiteScoreController::class, 'index'])->name('website-score');
 });
