@@ -140,22 +140,98 @@
 </style>
 
 <script>
-// Auto scroll to bottom
-document.addEventListener('DOMContentLoaded', function() {
-    var chatMessages = document.querySelector('.direct-chat-messages');
-    if (chatMessages) {
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+var lastMessageId = {{ $messages->isNotEmpty() ? $messages->last()->id : 0 }};
+var chatBox   = document.querySelector('.direct-chat-messages');
+var pollUrl   = '{{ route('admin.chats.new-messages', $sessionId) }}';
+var replyUrl  = '{{ route('admin.chats.reply', $sessionId) }}';
+var csrfToken = '{{ csrf_token() }}';
+
+function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderMessage(msg) {
+    var product = msg.product
+        ? '<div class="mt-2 p-2 border rounded"><small class="d-block font-weight-bold">' + escHtml(msg.product.name) + '</small>'
+          + '<small>' + msg.product.price + ' ₫</small></div>'
+        : '';
+
+    if (msg.type === 'user') {
+        var avatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(msg.user_name || 'K');
+        return '<div class="direct-chat-msg right">'
+            + '<div class="direct-chat-infos clearfix">'
+            + '<span class="direct-chat-name float-right">' + escHtml(msg.user_name || 'Khách hàng') + '</span>'
+            + '<span class="direct-chat-timestamp float-left">' + msg.created_at + '</span></div>'
+            + '<img class="direct-chat-img" src="' + avatar + '" alt="User">'
+            + '<div class="direct-chat-text">' + escHtml(msg.message) + product + '</div></div>';
     }
-    
-    // Auto refresh every 15 seconds to show new messages from users
-    // Chỉ reload khi admin không đang gõ tin nhắn
-    setInterval(function() {
-        var textarea = document.querySelector('textarea[name="message"]');
-        var isTyping = textarea && (document.activeElement === textarea || textarea.value.trim() !== '');
-        if (!isTyping) {
-            location.reload();
+    if (msg.type === 'admin') {
+        var avatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(msg.user_name || 'A') + '&background=28a745&color=fff';
+        return '<div class="direct-chat-msg">'
+            + '<div class="direct-chat-infos clearfix">'
+            + '<span class="direct-chat-name float-left"><i class="fas fa-user-shield"></i> Admin (' + escHtml(msg.user_name || 'Quản trị viên') + ')</span>'
+            + '<span class="direct-chat-timestamp float-right">' + msg.created_at + '</span></div>'
+            + '<img class="direct-chat-img" src="' + avatar + '" alt="Admin">'
+            + '<div class="direct-chat-text bg-success text-white">' + escHtml(msg.message) + product + '</div></div>';
+    }
+    // bot
+    return '<div class="direct-chat-msg">'
+        + '<div class="direct-chat-infos clearfix">'
+        + '<span class="direct-chat-name float-left">HaloShop Bot</span>'
+        + '<span class="direct-chat-timestamp float-right">' + msg.created_at + '</span></div>'
+        + '<img class="direct-chat-img" src="{{ asset('images/logo/logohalo.png') }}" alt="Bot">'
+        + '<div class="direct-chat-text bg-light">' + escHtml(msg.message) + product + '</div></div>';
+}
+
+// Kéo tin nhắn mới bằng AJAX — không reload trang
+function pollNewMessages() {
+    fetch(pollUrl + '?after=' + lastMessageId, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.messages && data.messages.length > 0) {
+            data.messages.forEach(function(msg) {
+                chatBox.insertAdjacentHTML('beforeend', renderMessage(msg));
+                if (msg.id > lastMessageId) lastMessageId = msg.id;
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
-    }, 15000);
+    })
+    .catch(function() {});
+}
+
+// Gửi tin nhắn bằng AJAX — admin không bị mất nội dung đang gõ
+document.querySelector('.card-footer form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var textarea = this.querySelector('textarea[name="message"]');
+    var msg = textarea.value.trim();
+    if (!msg) return;
+
+    var btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+
+    fetch(replyUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: '_token=' + encodeURIComponent(csrfToken) + '&message=' + encodeURIComponent(msg),
+    })
+    .then(function() {
+        textarea.value = '';
+        pollNewMessages();
+        btn.disabled = false;
+    })
+    .catch(function() { btn.disabled = false; });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+    // Poll mỗi 10 giây, không bao giờ reload trang
+    setInterval(pollNewMessages, 10000);
 });
 </script>
 @endsection

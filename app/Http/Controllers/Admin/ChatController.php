@@ -71,14 +71,18 @@ class ChatController extends Controller
             'message.required' => 'Vui lòng nhập nội dung tin nhắn',
             'message.max' => 'Tin nhắn không được vượt quá 1000 ký tự',
         ]);
-        
+
         ChatMessage::create([
             'session_id' => $sessionId,
-            'type' => 'admin',
-            'message' => $request->message,
-            'user_id' => auth()->id(),
+            'type'       => 'admin',
+            'message'    => $request->message,
+            'user_id'    => auth()->id(),
         ]);
-        
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
         return redirect()->route('admin.chats.show', $sessionId)
             ->with('success', 'Đã gửi tin nhắn thành công!');
     }
@@ -97,7 +101,40 @@ class ChatController extends Controller
             ->where('is_read', false)
             ->distinct('session_id')
             ->count('session_id');
-        
+
         return response()->json(['count' => $count]);
+    }
+
+    public function getNewMessages(Request $request, $sessionId)
+    {
+        $afterId = (int) $request->query('after', 0);
+
+        $messages = ChatMessage::where('session_id', $sessionId)
+            ->where('id', '>', $afterId)
+            ->with(['product:id,name,price,image,slug', 'user:id,name,email'])
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        // Đánh dấu đã đọc
+        ChatMessage::where('session_id', $sessionId)
+            ->where('type', 'user')
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json([
+            'messages' => $messages->map(function ($msg) {
+                return [
+                    'id'         => $msg->id,
+                    'type'       => $msg->type,
+                    'message'    => $msg->message,
+                    'created_at' => $msg->created_at->format('H:i d/m/Y'),
+                    'user_name'  => $msg->user ? $msg->user->name : null,
+                    'product'    => $msg->product ? [
+                        'name'  => $msg->product->name,
+                        'price' => number_format($msg->product->price),
+                    ] : null,
+                ];
+            }),
+        ]);
     }
 }

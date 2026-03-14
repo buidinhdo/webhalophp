@@ -65,6 +65,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('chats', ChatController::class)->only(['index', 'show', 'destroy']);
     Route::post('chats/{sessionId}/reply', [ChatController::class, 'reply'])->name('chats.reply');
     Route::get('chats/unread/count', [ChatController::class, 'getUnreadCount'])->name('chats.unread-count');
+    Route::get('chats/{sessionId}/new-messages', [ChatController::class, 'getNewMessages'])->name('chats.new-messages');
     
     // Reviews Management
     Route::resource('reviews', ReviewController::class)->only(['index', 'show', 'destroy']);
