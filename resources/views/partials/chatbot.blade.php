@@ -400,13 +400,14 @@ function toggleChatbot() {
     if (container.style.display === 'none') {
         container.style.display = 'flex';
         document.getElementById('chat-input').focus();
-        
+
         // Lấy session từ server (sẽ reuse session cũ nếu user đã có)
         getOrCreateSessionId(function(sessionId) {
-            // Sau khi có session, load history và bắt đầu polling
-            loadChatHistory();
-            hideNotificationBadge();
-            startPolling();
+            // Sau khi có session, load history rồi mới bắt đầu polling
+            loadChatHistory(function() {
+                hideNotificationBadge();
+                startPolling();
+            });
         });
     } else {
         container.style.display = 'none';
@@ -491,10 +492,13 @@ function hideNotificationBadge() {
     }
 }
 
-function loadChatHistory() {
+function loadChatHistory(callback) {
     // Chỉ load nếu đã có session
-    if (!chatSessionId) return;
-    
+    if (!chatSessionId) {
+        if (callback) callback();
+        return;
+    }
+
     fetch('/chatbot/history?session_id=' + chatSessionId)
         .then(response => response.json())
         .then(data => {
@@ -511,7 +515,7 @@ function loadChatHistory() {
                         </div>
                     </div>
                 `;
-                
+
                 // Load lại tin nhắn của session hiện tại
                 if (data.messages.length > 0) {
                     data.messages.forEach(msg => {
@@ -524,11 +528,18 @@ function loadChatHistory() {
                         }
                         lastMessageId = msg.id;
                     });
-                    
+
                     const messagesDiv2 = document.getElementById('chatbot-messages');
                     messagesDiv2.scrollTop = messagesDiv2.scrollHeight;
                 }
+
+                // Gọi callback sau khi hoàn thành
+                if (callback) callback();
             }
+        })
+        .catch(error => {
+            console.error('Error loading history:', error);
+            if (callback) callback();
         });
 }
 
