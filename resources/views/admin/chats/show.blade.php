@@ -148,9 +148,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Auto refresh every 15 seconds to show new messages from users
-    // Tăng lên 15 giây để admin có thời gian đọc và trả lời
+    // Chỉ reload khi admin không đang gõ tin nhắn
     setInterval(function() {
-        location.reload();
+        var textarea = document.querySelector('textarea[name="message"]');
+        var isTyping = textarea && (document.activeElement === textarea || textarea.value.trim() !== '');
+        if (!isTyping) {
+            location.reload();
+        }
     }, 15000);
 });
 </script>
