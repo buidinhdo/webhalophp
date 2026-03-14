@@ -44,6 +44,33 @@
         position: relative;
         overflow: hidden;
     }
+    .card-img-top {
+        transition: opacity 0.4s ease;
+    }
+    .img-primary {
+        position: relative;
+        z-index: 1;
+        opacity: 1;
+    }
+    .img-secondary {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        background-color: #f8f9fa;
+        padding: 10px;
+    }
+    .product-card:hover .img-primary {
+        opacity: 0;
+    }
+    .product-card:hover .img-secondary {
+        opacity: 1;
+    }
     .quick-view-overlay {
         position: absolute;
         top: 0;
@@ -311,9 +338,12 @@
                     <div class="card product-card h-100">
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             
                             @auth

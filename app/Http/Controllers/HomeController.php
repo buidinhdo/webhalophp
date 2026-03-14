@@ -20,18 +20,18 @@ class HomeController extends Controller
             ->orderBy('id', 'asc')
             ->get();
             
-        $featuredProducts = Product::featured()
+        $featuredProducts = Product::with('images')->featured()
             ->active()
             ->latest()
             ->get();
-            
-        $newProducts = Product::new()
+
+        $newProducts = Product::with('images')->new()
             ->active()
             ->latest()
             ->limit(12)
             ->get();
-            
-        $preorderProducts = Product::preorder()
+
+        $preorderProducts = Product::with('images')->preorder()
             ->active()
             ->latest()
             ->get();
@@ -49,7 +49,7 @@ class HomeController extends Controller
         $snesCategory = Category::where('slug', 'super-nintendo')->orWhere('slug', 'snes')->orWhere('slug', 'super-nintedo')->first();
         
         // Fetch by category OR platform to include all related products (games + accessories)
-        $ps1Products = Product::where(function($query) use ($ps1Category) {
+        $ps1Products = Product::with('images')->where(function($query) use ($ps1Category) {
                 if ($ps1Category) {
                     $query->where('category_id', $ps1Category->id)
                           ->orWhereRaw('LOWER(platform) = ?', ['ps1'])
@@ -65,7 +65,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $ps2Products = Product::where(function($query) use ($ps2Category) {
+        $ps2Products = Product::with('images')->where(function($query) use ($ps2Category) {
                 if ($ps2Category) {
                     $query->where('category_id', $ps2Category->id)
                           ->orWhereRaw('LOWER(platform) = ?', ['ps2'])
@@ -79,7 +79,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $ps3Products = Product::where(function($query) use ($ps3Category) {
+        $ps3Products = Product::with('images')->where(function($query) use ($ps3Category) {
                 if ($ps3Category) {
                     $query->where('category_id', $ps3Category->id)
                           ->orWhereRaw('LOWER(platform) = ?', ['ps3'])
@@ -93,7 +93,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
         
-        $ps4Products = Product::where(function($query) use ($ps4Category) {
+        $ps4Products = Product::with('images')->where(function($query) use ($ps4Category) {
                 if ($ps4Category) {
                     $query->where('category_id', $ps4Category->id)
                           ->orWhereRaw('LOWER(platform) = ?', ['ps4']);
@@ -105,7 +105,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $ps5Products = Product::where(function($query) use ($ps5Category) {
+        $ps5Products = Product::with('images')->where(function($query) use ($ps5Category) {
                 if ($ps5Category) {
                     $query->where('category_id', $ps5Category->id)
                           ->orWhereRaw('LOWER(platform) = ?', ['ps5']);
@@ -117,7 +117,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $nintendoProducts = Product::where(function($query) use ($nintendoCategory) {
+        $nintendoProducts = Product::with('images')->where(function($query) use ($nintendoCategory) {
                 if ($nintendoCategory) {
                     $query->where('category_id', $nintendoCategory->id)
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%nintendo switch%'])
@@ -131,7 +131,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $xboxProducts = Product::where(function($query) use ($xboxCategory) {
+        $xboxProducts = Product::with('images')->where(function($query) use ($xboxCategory) {
                 if ($xboxCategory) {
                     $query->where('category_id', $xboxCategory->id)
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%xbox%']);
@@ -147,7 +147,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $gamecubeProducts = Product::where(function($query) use ($gamecubeCategory) {
+        $gamecubeProducts = Product::with('images')->where(function($query) use ($gamecubeCategory) {
                 if ($gamecubeCategory) {
                     $query->where('category_id', $gamecubeCategory->id)
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%gamecube%']);
@@ -159,7 +159,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $wiiProducts = Product::where(function($query) use ($wiiCategory) {
+        $wiiProducts = Product::with('images')->where(function($query) use ($wiiCategory) {
                 if ($wiiCategory) {
                     $query->where('category_id', $wiiCategory->id)
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%wii%']);
@@ -171,7 +171,7 @@ class HomeController extends Controller
             ->latest()
             ->get();
             
-        $snesProducts = Product::where(function($query) use ($snesCategory) {
+        $snesProducts = Product::with('images')->where(function($query) use ($snesCategory) {
                 if ($snesCategory) {
                     $query->where('category_id', $snesCategory->id)
                           ->orWhereRaw('LOWER(platform) LIKE ?', ['%super nintendo%'])

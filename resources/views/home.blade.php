@@ -15,6 +15,26 @@
         background-color: #f8f9fa;
         padding: 10px;
         width: 100%;
+        transition: opacity 0.4s ease;
+    }
+    .product-card .img-primary {
+        position: relative;
+        z-index: 1;
+        opacity: 1;
+    }
+    .product-card .img-secondary {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2;
+        pointer-events: none;
+    }
+    .product-card:hover .img-primary {
+        opacity: 0;
+    }
+    .product-card:hover .img-secondary {
+        opacity: 1;
     }
     .quick-view-overlay {
         position: absolute;
@@ -475,9 +495,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -549,9 +572,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -621,9 +647,12 @@
                         <span class="badge-preorder">PRE-ORDER</span>
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -686,9 +715,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -746,9 +778,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -806,9 +841,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -866,9 +904,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -926,9 +967,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -986,9 +1030,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -1046,9 +1093,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -1106,9 +1156,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -1166,9 +1219,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
@@ -1226,9 +1282,12 @@
                         @endif
                         <div class="product-image-wrapper">
                             @if($product->image)
-                                <img src="{{ asset($product->image) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="{{ asset($product->image) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
                             @else
-                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top" alt="{{ $product->name }}">
+                                <img src="https://via.placeholder.com/300x250?text={{ urlencode($product->name) }}" class="card-img-top img-primary" alt="{{ $product->name }}">
+                            @endif
+                            @if($product->images->isNotEmpty())
+                                <img src="{{ asset($product->images->first()->image_path) }}" class="card-img-top img-secondary" alt="{{ $product->name }}">
                             @endif
                             @auth
                             <button type="button" class="wishlist-btn" onclick="toggleWishlist({{ $product->id }}, this)" title="Thêm vào yêu thích">
