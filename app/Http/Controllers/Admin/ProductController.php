@@ -16,24 +16,24 @@ class ProductController extends Controller
     {
         $query = Product::with('category');
         
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where('name', 'like', "%{$search}%");
         }
-        
-        if ($request->has('category_id')) {
+
+        if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
-        
-        if ($request->has('status')) {
+
+        if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
-        
-        if ($request->has('genre')) {
+
+        if ($request->filled('genre')) {
             $query->where('genre', $request->genre);
         }
 
-        if ($request->has('publisher') && $request->publisher != '') {
+        if ($request->filled('publisher')) {
             $query->where('publisher', $request->publisher);
         }
 
