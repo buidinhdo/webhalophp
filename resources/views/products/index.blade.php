@@ -40,18 +40,6 @@
         font-size: 14px;
         color: #666;
     }
-    /* 4-col grid: ảnh nhỏ hơn, title gọn hơn */
-    .product-card img {
-        height: 200px;
-    }
-    .product-card .card-title {
-        font-size: 0.85rem;
-        min-height: 56px;
-        -webkit-line-clamp: 2;
-    }
-    .product-card .card-body {
-        padding: 0.65rem;
-    }
     .product-image-wrapper {
         position: relative;
         overflow: hidden;
@@ -346,7 +334,7 @@
             @if($products->count() > 0)
             <div class="row g-4">
                 @foreach($products as $product)
-                <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="col-md-4">
                     <div class="card product-card h-100">
                         <div class="product-image-wrapper">
                             @if($product->image)
