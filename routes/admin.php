@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\ReviewController;
 use App\Http\Controllers\Admin\GenreController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\PublisherController;
+use App\Http\Controllers\Admin\EsrbRatingController;
 
 // Admin Login Routes (không cần auth)
 Route::prefix('admin')->name('admin.')->group(function () {
@@ -75,4 +77,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Coupons Management
     Route::resource('coupons', CouponController::class);
     Route::post('coupons/{coupon}/toggle', [CouponController::class, 'toggleStatus'])->name('coupons.toggle');
+
+    // Publishers Management
+    Route::resource('publishers', PublisherController::class);
+    Route::patch('publishers/{publisher}/toggle', [PublisherController::class, 'toggle'])->name('publishers.toggle');
+
+    // ESRB Ratings Management
+    Route::resource('esrb-ratings', EsrbRatingController::class);
+    Route::patch('esrb-ratings/{esrbRating}/toggle', [EsrbRatingController::class, 'toggle'])->name('esrb-ratings.toggle');
 });

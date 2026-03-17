@@ -164,6 +164,56 @@
                         </ul>
                     </li>
 
+                    <!-- Publishers -->
+                    <li class="nav-item {{ request()->routeIs('admin.publishers.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admin.publishers.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-building"></i>
+                            <p>
+                                Nhà phát hành
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.publishers.index') }}" class="nav-link {{ request()->routeIs('admin.publishers.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.publishers.create') }}" class="nav-link {{ request()->routeIs('admin.publishers.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm mới</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- ESRB Ratings -->
+                    <li class="nav-item {{ request()->routeIs('admin.esrb-ratings.*') ? 'menu-open' : '' }}">
+                        <a href="#" class="nav-link {{ request()->routeIs('admin.esrb-ratings.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-shield-alt"></i>
+                            <p>
+                                Phân loại ESRB
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.esrb-ratings.index') }}" class="nav-link {{ request()->routeIs('admin.esrb-ratings.index') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Danh sách</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admin.esrb-ratings.create') }}" class="nav-link {{ request()->routeIs('admin.esrb-ratings.create') ? 'active' : '' }}">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Thêm mới</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <!-- Banners -->
                     <li class="nav-item {{ request()->routeIs('admin.banners.*') ? 'menu-open' : '' }}">
                         <a href="#" class="nav-link {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}">
