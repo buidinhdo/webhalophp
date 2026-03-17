@@ -42,7 +42,8 @@ class ProductController extends Controller
     {
         $categories = Category::where('is_active', true)->get();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        return view('admin.products.create', compact('categories', 'genres'));
+        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
+        return view('admin.products.create', compact('categories', 'genres', 'publishers'));
     }
 
     public function store(Request $request)
@@ -109,7 +110,8 @@ class ProductController extends Controller
     {
         $categories = Category::where('is_active', true)->get();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        return view('admin.products.edit', compact('product', 'categories', 'genres'));
+        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
+        return view('admin.products.edit', compact('product', 'categories', 'genres', 'publishers'));
     }
 
     public function update(Request $request, Product $product)

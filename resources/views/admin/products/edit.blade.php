@@ -96,7 +96,12 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Nhà phát hành</label>
-                                <input type="text" name="publisher" class="form-control" value="{{ old('publisher', $product->publisher) }}" placeholder="VD: Sony, Nintendo, Koei Tecmo...">
+                                <select name="publisher" class="form-control">
+                                    <option value="">-- Chọn nhà phát hành --</option>
+                                    @foreach($publishers as $pub)
+                                        <option value="{{ $pub }}" {{ old('publisher', $product->publisher) == $pub ? 'selected' : '' }}>{{ $pub }}</option>
+                                    @endforeach
+                                </select>
                                 <small class="form-text text-muted">Để trống nếu không có thông tin.</small>
                             </div>
                         </div>
