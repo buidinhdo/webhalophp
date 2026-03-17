@@ -93,6 +93,28 @@
                                 <small class="form-text text-muted">Chỉ chọn thể loại nếu sản phẩm là <strong>game</strong>. Để trống nếu là máy game hoặc phụ kiện.</small>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Nhà phát hành</label>
+                                <input type="text" name="publisher" class="form-control" value="{{ old('publisher', $product->publisher) }}" placeholder="VD: Sony, Nintendo, Koei Tecmo...">
+                                <small class="form-text text-muted">Để trống nếu không có thông tin.</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Phân loại ESRB</label>
+                                <select name="esrb_rating" class="form-control">
+                                    <option value="">-- Chọn phân loại --</option>
+                                    <option value="E" {{ old('esrb_rating', $product->esrb_rating) == 'E' ? 'selected' : '' }}>E - Everyone (Mọi lứa tuổi)</option>
+                                    <option value="E10+" {{ old('esrb_rating', $product->esrb_rating) == 'E10+' ? 'selected' : '' }}>E10+ - Everyone 10+</option>
+                                    <option value="T" {{ old('esrb_rating', $product->esrb_rating) == 'T' ? 'selected' : '' }}>T - Teen (13+)</option>
+                                    <option value="M" {{ old('esrb_rating', $product->esrb_rating) == 'M' ? 'selected' : '' }}>M - Mature (17+)</option>
+                                    <option value="AO" {{ old('esrb_rating', $product->esrb_rating) == 'AO' ? 'selected' : '' }}>AO - Adults Only (18+)</option>
+                                    <option value="RP" {{ old('esrb_rating', $product->esrb_rating) == 'RP' ? 'selected' : '' }}>RP - Rating Pending</option>
+                                </select>
+                                <small class="form-text text-muted">Chỉ chọn nếu sản phẩm là <strong>game</strong>. Để trống nếu là máy hoặc phụ kiện.</small>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row">
