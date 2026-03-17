@@ -30,12 +30,17 @@ class ProductController extends Controller
         if ($request->has('genre')) {
             $query->where('genre', $request->genre);
         }
-        
+
+        if ($request->has('publisher') && $request->publisher != '') {
+            $query->where('publisher', $request->publisher);
+        }
+
         $products = $query->latest()->paginate(20);
         $categories = Category::all();
         $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        
-        return view('admin.products.index', compact('products', 'categories', 'genres'));
+        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
+
+        return view('admin.products.index', compact('products', 'categories', 'genres', 'publishers'));
     }
 
     public function create()

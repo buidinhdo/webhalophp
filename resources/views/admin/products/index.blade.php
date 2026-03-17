@@ -22,7 +22,7 @@
     <!-- Filter Form -->
     <div class="card-body border-bottom">
         <form action="{{ route('admin.products.index') }}" method="GET" class="row g-3">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <input type="text" name="search" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('search') }}">
             </div>
             <div class="col-md-2">
@@ -46,6 +46,16 @@
                 </select>
             </div>
             <div class="col-md-2">
+                <select name="publisher" class="form-control">
+                    <option value="">-- Nhà phát hành --</option>
+                    @foreach($publishers as $pub)
+                        <option value="{{ $pub }}" {{ request('publisher') == $pub ? 'selected' : '' }}>
+                            {{ $pub }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
                 <select name="status" class="form-control">
                     <option value="">-- Trạng thái --</option>
                     <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Đang bán</option>
@@ -53,7 +63,7 @@
                     <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Hết hàng</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-search"></i> Lọc
                 </button>
