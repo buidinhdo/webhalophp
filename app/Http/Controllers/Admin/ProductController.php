@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Publisher;
+use App\Models\EsrbRating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -35,20 +37,26 @@ class ProductController extends Controller
             $query->where('publisher', $request->publisher);
         }
 
-        $products = $query->latest()->paginate(20);
-        $categories = Category::all();
-        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
+        if ($request->filled('esrb_rating')) {
+            $query->where('esrb_rating', $request->esrb_rating);
+        }
 
-        return view('admin.products.index', compact('products', 'categories', 'genres', 'publishers'));
+        $products    = $query->latest()->paginate(20);
+        $categories  = Category::all();
+        $genres      = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
+        $publishers  = Publisher::active()->orderBy('name')->pluck('name');
+        $esrbRatings = EsrbRating::active()->orderBy('order')->get(['code', 'name']);
+
+        return view('admin.products.index', compact('products', 'categories', 'genres', 'publishers', 'esrbRatings'));
     }
 
     public function create()
     {
-        $categories = Category::where('is_active', true)->get();
-        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
-        return view('admin.products.create', compact('categories', 'genres', 'publishers'));
+        $categories  = Category::where('is_active', true)->get();
+        $genres      = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
+        $publishers  = Publisher::active()->orderBy('name')->pluck('name');
+        $esrbRatings = EsrbRating::active()->orderBy('order')->get(['code', 'name']);
+        return view('admin.products.create', compact('categories', 'genres', 'publishers', 'esrbRatings'));
     }
 
     public function store(Request $request)
@@ -113,10 +121,11 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = Category::where('is_active', true)->get();
-        $genres = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
-        $publishers = Product::whereNotNull('publisher')->where('publisher', '!=', '')->distinct()->orderBy('publisher')->pluck('publisher');
-        return view('admin.products.edit', compact('product', 'categories', 'genres', 'publishers'));
+        $categories  = Category::where('is_active', true)->get();
+        $genres      = \App\Models\Genre::active()->orderBy('order')->orderBy('name')->pluck('name');
+        $publishers  = Publisher::active()->orderBy('name')->pluck('name');
+        $esrbRatings = EsrbRating::active()->orderBy('order')->get(['code', 'name']);
+        return view('admin.products.edit', compact('product', 'categories', 'genres', 'publishers', 'esrbRatings'));
     }
 
     public function update(Request $request, Product $product)

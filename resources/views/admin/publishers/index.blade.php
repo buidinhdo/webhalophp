@@ -84,8 +84,15 @@
 
     @if($publishers->hasPages())
     <div class="card-footer clearfix">
-        {{ $publishers->links() }}
+        {{ $publishers->links('pagination::bootstrap-4') }}
     </div>
     @endif
 </div>
 @endsection
+
+@push('styles')
+<style>
+    .pagination { margin: 0; }
+    .pagination .page-link { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
+</style>
+@endpush

@@ -21,53 +21,65 @@
     
     <!-- Filter Form -->
     <div class="card-body border-bottom">
-        <form action="{{ route('admin.products.index') }}" method="GET" class="row g-3">
-            <div class="col-md-2">
-                <input type="text" name="search" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('search') }}">
+        <form action="{{ route('admin.products.index') }}" method="GET">
+            <div class="row g-2 mb-2">
+                <div class="col-md-2">
+                    <input type="text" name="search" class="form-control" placeholder="Tìm kiếm sản phẩm..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-2">
+                    <select name="category_id" class="form-control">
+                        <option value="">-- Danh mục --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="genre" class="form-control">
+                        <option value="">-- Thể loại --</option>
+                        @foreach($genres as $genre)
+                            <option value="{{ $genre }}" {{ request('genre') == $genre ? 'selected' : '' }}>
+                                {{ $genre }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="publisher" class="form-control">
+                        <option value="">-- Nhà phát hành --</option>
+                        @foreach($publishers as $pub)
+                            <option value="{{ $pub }}" {{ request('publisher') == $pub ? 'selected' : '' }}>
+                                {{ $pub }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="esrb_rating" class="form-control">
+                        <option value="">-- ESRB --</option>
+                        @foreach($esrbRatings as $rating)
+                            <option value="{{ $rating->code }}" {{ request('esrb_rating') == $rating->code ? 'selected' : '' }}>
+                                {{ $rating->code }} - {{ $rating->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="status" class="form-control">
+                        <option value="">-- Trạng thái --</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Đang bán</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Ngừng bán</option>
+                        <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Hết hàng</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-md-2">
-                <select name="category_id" class="form-control">
-                    <option value="">-- Danh mục --</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select name="genre" class="form-control">
-                    <option value="">-- Thể loại --</option>
-                    @foreach($genres as $genre)
-                        <option value="{{ $genre }}" {{ request('genre') == $genre ? 'selected' : '' }}>
-                            {{ $genre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select name="publisher" class="form-control">
-                    <option value="">-- Nhà phát hành --</option>
-                    @foreach($publishers as $pub)
-                        <option value="{{ $pub }}" {{ request('publisher') == $pub ? 'selected' : '' }}>
-                            {{ $pub }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <select name="status" class="form-control">
-                    <option value="">-- Trạng thái --</option>
-                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Đang bán</option>
-                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Ngừng bán</option>
-                    <option value="out_of_stock" {{ request('status') == 'out_of_stock' ? 'selected' : '' }}>Hết hàng</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary">
+            <div>
+                <button type="submit" class="btn btn-primary btn-sm">
                     <i class="fas fa-search"></i> Lọc
                 </button>
-                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary btn-sm">
                     <i class="fas fa-redo"></i> Reset
                 </a>
             </div>
