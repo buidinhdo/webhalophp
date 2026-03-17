@@ -16,7 +16,8 @@ class CategoryController extends Controller
         $products = $category->products()
             ->active()
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
             
         return view('categories.show', compact('category', 'products'));
     }

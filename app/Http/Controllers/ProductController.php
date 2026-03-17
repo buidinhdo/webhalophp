@@ -122,7 +122,7 @@ class ProductController extends Controller
             $query->latest();
         }
         
-        $products = $query->with('images')->paginate(20);
+        $products = $query->with('images')->paginate(20)->withQueryString();
         
         // Load thêm rating trung bình cho tất cả sản phẩm
         $products->getCollection()->transform(function ($product) {
