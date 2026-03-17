@@ -461,11 +461,6 @@
             opacity: 0.9;
         }
         
-        .product-card img {
-            height: 250px;
-            object-fit: cover;
-        }
-        
         .btn-primary {
             background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border: none;
