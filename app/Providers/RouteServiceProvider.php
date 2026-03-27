@@ -37,4 +37,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
     }
+
+    /**
+     * Determine if routes should be cached.
+     */
+    public function shouldCache(): bool
+    {
+        return config('app.env') !== 'local';
+    }
 }
