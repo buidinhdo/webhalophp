@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -30,6 +32,27 @@ class ContactController extends Controller
             'status' => 'replied',
             'replied_at' => now(),
         ]);
+
+        $targetUserId = $contact->user_id;
+
+        if (!$targetUserId) {
+            $targetUserId = User::where('email', $contact->email)->value('id');
+
+            if ($targetUserId) {
+                $contact->update(['user_id' => $targetUserId]);
+            }
+        }
+
+        if ($targetUserId) {
+            Notification::create([
+                'user_id' => $targetUserId,
+                'type' => 'contact',
+                'title' => 'Phản hồi liên hệ mới',
+                'message' => 'Admin đã phản hồi liên hệ: "' . $contact->subject . '".',
+                'link' => route('account.contact-detail', $contact->id, false),
+                'is_read' => false,
+            ]);
+        }
 
         return redirect()->route('admin.contacts.show', $contact)
             ->with('success', 'Đã gửi phản hồi thành công!');

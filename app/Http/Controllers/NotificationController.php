@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Contact;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
@@ -49,6 +50,38 @@ class NotificationController extends Controller
                                     ->findOrFail($id);
         
         $notification->markAsRead();
+
+        if ($notification->type === 'contact') {
+            $link = (string) $notification->link;
+            $isGenericNotificationLink = empty($link) || str_contains($link, '/thong-bao');
+
+            if ($isGenericNotificationLink) {
+                $user = Auth::user();
+                $subject = null;
+
+                if (preg_match('/"([^"]+)"/', (string) $notification->message, $matches)) {
+                    $subject = $matches[1];
+                }
+
+                $contactQuery = Contact::where(function ($query) use ($user) {
+                    $query->where('user_id', $user->id)
+                        ->orWhere(function ($subQuery) use ($user) {
+                            $subQuery->whereNull('user_id')
+                                ->where('email', $user->email);
+                        });
+                })->whereNotNull('admin_reply');
+
+                if ($subject) {
+                    $contactQuery->where('subject', $subject);
+                }
+
+                $contact = $contactQuery->latest('replied_at')->first();
+
+                if ($contact) {
+                    return redirect()->route('account.contact-detail', $contact->id);
+                }
+            }
+        }
         
         if ($notification->link) {
             return redirect($notification->link);

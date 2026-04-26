@@ -738,6 +738,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="{{ route('account.profile') }}"><i class="fas fa-user me-2"></i>{{ __('general.account') }}</a></li>
                                 <li><a class="dropdown-item" href="{{ route('account.orders') }}"><i class="fas fa-box me-2"></i>{{ app()->getLocale() == 'vi' ? 'Đơn hàng' : 'Orders' }}</a></li>
+                                <li><a class="dropdown-item" href="{{ route('account.contacts') }}"><i class="fas fa-envelope me-2"></i>{{ app()->getLocale() == 'vi' ? 'Liên hệ của tôi' : 'My contacts' }}</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
@@ -1046,7 +1047,10 @@
 
                     let html = '';
                     notifications.forEach(notification => {
-                        const icon = notification.type === 'order' ? 'fa-box' : 'fa-info-circle';
+                        const icon = notification.type === 'order'
+                            ? 'fa-box'
+                            : (notification.type === 'contact' ? 'fa-envelope-open-text' : 'fa-info-circle');
+                        const iconColor = notification.type === 'contact' ? '#212529' : '#007bff';
                         const isUnread = !notification.is_read;
                         const bgClass = isUnread ? 'bg-light' : '';
                         const badgeHtml = isUnread ? '<span class="badge bg-primary ms-1">Mới</span>' : '';
@@ -1056,7 +1060,7 @@
                             <li>
                                 <a href="/thong-bao/${notification.id}/doc" class="dropdown-item ${bgClass}" onclick="markAsRead(${notification.id}, event)">
                                     <div class="d-flex align-items-start">
-                                        <i class="fas ${icon} me-2 mt-1" style="color: #007bff;"></i>
+                                        <i class="fas ${icon} me-2 mt-1" style="color: ${iconColor};"></i>
                                         <div class="flex-grow-1">
                                             <strong>${notification.title}</strong> ${badgeHtml}
                                             <p class="mb-0 small text-muted">${notification.message}</p>

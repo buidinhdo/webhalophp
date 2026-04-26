@@ -45,11 +45,13 @@ Route::post('/san-pham/{productId}/danh-gia', [ReviewController::class, 'store']
 // Danh mục
 Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
-// Giỏ hàng
-Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index');
-Route::post('/gio-hang/them/{id}', [CartController::class, 'add'])->name('cart.add');
-Route::patch('/gio-hang/cap-nhat/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('cart.remove');
+// Giỏ hàng (yêu cầu đăng nhập)
+Route::middleware('auth')->group(function () {
+    Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/gio-hang/them/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::patch('/gio-hang/cap-nhat/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('cart.remove');
+});
 
 // Thanh toán
 Route::get('/thanh-toan', [CheckoutController::class, 'index'])->name('checkout.index');
@@ -95,6 +97,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/tai-khoan/doi-mat-khau', [AccountController::class, 'changePassword'])->name('account.change-password');
     Route::get('/don-hang', [AccountController::class, 'orders'])->name('account.orders');
     Route::get('/don-hang/{id}', [AccountController::class, 'orderDetail'])->name('account.order-detail');
+    Route::get('/lien-he-cua-toi', [AccountController::class, 'contacts'])->name('account.contacts');
+    Route::get('/lien-he-cua-toi/{id}', [AccountController::class, 'contactDetail'])->name('account.contact-detail');
     
     // Wishlist routes
     Route::get('/yeu-thich', [WishlistController::class, 'index'])->name('wishlist.index');

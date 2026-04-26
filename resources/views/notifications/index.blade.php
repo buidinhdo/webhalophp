@@ -51,6 +51,10 @@
                                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                         <i class="fas fa-box"></i>
                                     </div>
+                                @elseif($notification->type == 'contact')
+                                    <div class="bg-light text-dark border rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                        <i class="fas fa-envelope-open-text"></i>
+                                    </div>
                                 @else
                                     <div class="bg-info text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                         <i class="fas fa-info"></i>

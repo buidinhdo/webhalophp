@@ -17,6 +17,9 @@
                 <a href="{{ route('account.orders') }}" class="list-group-item list-group-item-action">
                     <i class="fas fa-box me-2"></i> Đơn hàng của tôi
                 </a>
+                <a href="{{ route('account.contacts') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-envelope me-2"></i> Liên hệ của tôi
+                </a>
             </div>
         </div>
         

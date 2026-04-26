@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Contact;
 use App\Models\Order;
 
 class AccountController extends Controller
@@ -87,5 +88,39 @@ class AccountController extends Controller
             ->firstOrFail();
 
         return view('account.order-detail', compact('order'));
+    }
+
+    // Danh sách liên hệ của tôi
+    public function contacts()
+    {
+        $user = Auth::user();
+
+        $contacts = Contact::where('user_id', $user->id)
+            ->orWhere(function ($query) use ($user) {
+                $query->whereNull('user_id')
+                    ->where('email', $user->email);
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('account.contacts', compact('contacts'));
+    }
+
+    // Chi tiết liên hệ và phản hồi admin
+    public function contactDetail($id)
+    {
+        $user = Auth::user();
+
+        $contact = Contact::where('id', $id)
+            ->where(function ($query) use ($user) {
+                $query->where('user_id', $user->id)
+                    ->orWhere(function ($subQuery) use ($user) {
+                        $subQuery->whereNull('user_id')
+                            ->where('email', $user->email);
+                    });
+            })
+            ->firstOrFail();
+
+        return view('account.contact-detail', compact('contact'));
     }
 }
