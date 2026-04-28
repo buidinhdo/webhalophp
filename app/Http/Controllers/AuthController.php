@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Http\Controllers\CartController;
 
 class AuthController extends Controller
 {
@@ -79,6 +80,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $user = Auth::user();
+            $request->session()->regenerate();
             
             // Lưu email vào cookie nếu chọn ghi nhớ
             if ($remember) {
@@ -89,11 +91,30 @@ class AuthController extends Controller
             
             // Nếu là admin, redirect về dashboard
             if ($user->is_admin) {
-                $request->session()->regenerate();
                 return redirect()->route('admin.dashboard')->with('success', 'Chào mừng Admin!');
             }
-            
-            $request->session()->regenerate();
+
+            $pendingCartAdd = $request->session()->pull('pending_cart_add');
+            if (is_array($pendingCartAdd) && !empty($pendingCartAdd['product_id'])) {
+                try {
+                    app(CartController::class)->addProductToCart(
+                        (int) $pendingCartAdd['product_id'],
+                        max(1, (int) ($pendingCartAdd['quantity'] ?? 1))
+                    );
+
+                    $redirectTo = route('cart.index');
+                    if (!empty($pendingCartAdd['redirect_to']) && str_starts_with($pendingCartAdd['redirect_to'], url('/'))) {
+                        $redirectTo = $pendingCartAdd['redirect_to'];
+                    }
+
+                    return redirect($redirectTo)
+                        ->with('success', 'Đăng nhập thành công! Sản phẩm đã được thêm vào giỏ hàng.');
+                } catch (\Throwable $e) {
+                    return redirect()->route('cart.index')
+                        ->with('warning', 'Đăng nhập thành công nhưng sản phẩm không còn tồn tại.');
+                }
+            }
+
             return redirect()->intended(route('home'))->with('success', 'Đăng nhập thành công!');
         }
 

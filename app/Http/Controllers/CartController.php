@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 
 class CartController extends Controller
@@ -21,24 +22,42 @@ class CartController extends Controller
     
     public function add(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-        $cart = session()->get('cart', []);
+        $quantity = max(1, (int) $request->input('quantity', 1));
+
+        if (!Auth::check()) {
+            session()->put('pending_cart_add', [
+                'product_id' => (int) $id,
+                'quantity' => $quantity,
+                'redirect_to' => url()->previous(),
+            ]);
+
+            return redirect()->guest(route('login'))
+                ->with('warning', 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.');
+        }
+
+        $this->addProductToCart((int) $id, $quantity);
         
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
+    }
+
+    public function addProductToCart(int $productId, int $quantity = 1): void
+    {
+        $product = Product::findOrFail($productId);
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] += $quantity;
         } else {
-            $cart[$id] = [
+            $cart[$productId] = [
                 'name' => $product->name,
                 'price' => $product->display_price,
                 'image' => $product->image,
-                'quantity' => $request->quantity ?? 1,
-                'slug' => $product->slug
+                'quantity' => $quantity,
+                'slug' => $product->slug,
             ];
         }
-        
+
         session()->put('cart', $cart);
-        
-        return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
     }
     
     public function update(Request $request, $id)

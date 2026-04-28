@@ -45,10 +45,12 @@ Route::post('/san-pham/{productId}/danh-gia', [ReviewController::class, 'store']
 // Danh mục
 Route::get('/danh-muc/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
+// Thêm giỏ hàng: cho phép guest bấm nút, nếu chưa đăng nhập sẽ được yêu cầu đăng nhập
+Route::post('/gio-hang/them/{id}', [CartController::class, 'add'])->name('cart.add');
+
 // Giỏ hàng (yêu cầu đăng nhập)
 Route::middleware('auth')->group(function () {
     Route::get('/gio-hang', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/gio-hang/them/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::patch('/gio-hang/cap-nhat/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/gio-hang/xoa/{id}', [CartController::class, 'remove'])->name('cart.remove');
 });
