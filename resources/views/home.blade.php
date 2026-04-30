@@ -1331,6 +1331,7 @@
         <div class="row align-items-center">
             <div class="col-md-8">
                 <h2 class="mb-3">POKEMON COLLECTION</h2>
+                <p class="mb-4">Bộ sưu tập Pokemon đặc sắc - vui chơi mọi lúc mọi nơi</p>
                 <a href="{{ route('products.index', ['platform' => 'iPhone']) }}" class="btn btn-light px-4">
                     Xem thêm <i class="fas fa-arrow-right ms-2"></i>
                 </a>
