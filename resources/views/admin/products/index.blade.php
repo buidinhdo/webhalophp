@@ -158,7 +158,7 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <a href="{{ route('admin.products.edit', ['product' => $product->id, 'page' => request()->get('page', 1)]) }}" class="btn btn-sm btn-info" title="Sửa">
+                            <a href="{{ route('admin.products.edit', array_merge(['product' => $product->id], request()->query())) }}" class="btn btn-sm btn-info" title="Sửa">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa?')">
@@ -185,7 +185,7 @@
     @if($products->hasPages())
     <div class="card-footer">
         <div class="d-flex justify-content-center">
-            {{ $products->links('pagination::bootstrap-4') }}
+            {{ $products->appends(request()->query())->links('pagination::bootstrap-4') }}
         </div>
     </div>
     @endif

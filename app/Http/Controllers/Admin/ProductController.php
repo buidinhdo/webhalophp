@@ -12,6 +12,21 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    private function getFilterParams(Request $request): array
+    {
+        $params = [
+            'search' => $request->input('filter_search', $request->query('search')),
+            'category_id' => $request->input('filter_category_id', $request->query('category_id')),
+            'status' => $request->input('filter_status', $request->query('status')),
+            'genre' => $request->input('filter_genre', $request->query('genre')),
+            'publisher' => $request->input('filter_publisher', $request->query('publisher')),
+            'esrb_rating' => $request->input('filter_esrb_rating', $request->query('esrb_rating')),
+            'page' => $request->input('page', $request->query('page', 1)),
+        ];
+
+        return array_filter($params, fn($value) => $value !== null && $value !== '');
+    }
+
     public function index(Request $request)
     {
         $query = Product::with('category');
@@ -150,13 +165,13 @@ class ProductController extends Controller
                         'order' => $product->images()->count() + $index + 1
                     ]);
                 }
-                
-                $page = $request->input('page', 1);
-                return redirect()->route('admin.products.edit', ['product' => $product->id, 'page' => $page])
+
+                $filterParams = $this->getFilterParams($request);
+                return redirect()->route('admin.products.edit', array_merge(['product' => $product->id], $filterParams))
                     ->with('success', 'Ảnh phụ đã được cập nhật thành công!');
             } else {
-                $page = $request->input('page', 1);
-                return redirect()->route('admin.products.edit', ['product' => $product->id, 'page' => $page])
+                $filterParams = $this->getFilterParams($request);
+                return redirect()->route('admin.products.edit', array_merge(['product' => $product->id], $filterParams))
                     ->with('error', 'Vui lòng chọn ảnh trước khi cập nhật!');
             }
         }
@@ -226,8 +241,8 @@ class ProductController extends Controller
             }
         }
 
-        $page = $request->input('page', 1);
-        return redirect()->route('admin.products.index', ['page' => $page])
+        $filterParams = $this->getFilterParams($request);
+        return redirect()->route('admin.products.index', $filterParams)
             ->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
 

@@ -47,6 +47,12 @@
         @csrf
         @method('PUT')
         <input type="hidden" name="page" value="{{ request()->get('page', 1) }}">
+        <input type="hidden" name="filter_search" value="{{ request()->get('search') }}">
+        <input type="hidden" name="filter_category_id" value="{{ request()->get('category_id') }}">
+        <input type="hidden" name="filter_status" value="{{ request()->get('status') }}">
+        <input type="hidden" name="filter_genre" value="{{ request()->get('genre') }}">
+        <input type="hidden" name="filter_publisher" value="{{ request()->get('publisher') }}">
+        <input type="hidden" name="filter_esrb_rating" value="{{ request()->get('esrb_rating') }}">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-8">
@@ -291,7 +297,7 @@
             <button type="submit" class="btn btn-info" name="update_gallery" value="1">
                 <i class="fas fa-images"></i> Cập nhật ảnh phụ
             </button>
-            <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">
+            <a href="{{ route('admin.products.index', request()->query()) }}" class="btn btn-secondary">
                 <i class="fas fa-times"></i> Hủy
             </a>
         </div>
