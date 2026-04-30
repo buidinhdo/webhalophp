@@ -616,7 +616,7 @@
 @endif
 
 <!-- Nintendo Switch Section -->
-<div class="category-banner" style="background: url('{{ asset('images/banners/banner8.jpg') }}') center/cover no-repeat;">
+<div class="category-banner" style="background: url('{{ asset('images/banners/nintendo_switch_lite_pokemon_dialga_palkia_edition_console_2_.jpg') }}') center/cover no-repeat;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
@@ -1326,12 +1326,11 @@
 @endif
 
 <!-- Apple Section -->
-<div class="category-banner" style="background: url('{{ asset('images/banners/banner9.jpg') }}') center/cover no-repeat;">
+<div class="category-banner category-banner--image-only" style="background: url('{{ asset('images/banners/pokemonslide.jpg') }}') center/cover no-repeat;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-8">
-                <h2 class="mb-3"><i class="fab fa-apple me-3"></i>APPLE ECOSYSTEM</h2>
-                <p class="mb-4">iPhone 17, iPad Pro M5, MacBook - Hệ sinh thái Apple đẳng cấp, chính hãng VN/A</p>
+                <h2 class="mb-3">POKEMON COLLECTION</h2>
                 <a href="{{ route('products.index', ['platform' => 'iPhone']) }}" class="btn btn-light px-4">
                     Xem thêm <i class="fas fa-arrow-right ms-2"></i>
                 </a>

@@ -438,6 +438,13 @@
             position: relative;
             overflow: hidden;
         }
+
+        .category-banner--image-only {
+            min-height: 220px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+        }
         
         .category-banner::before {
             content: '';
