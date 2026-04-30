@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\OrderStockService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
@@ -64,16 +66,28 @@ class OrderController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        // Cập nhật thông tin đơn hàng
-        $order->update([
-            'customer_name' => $validated['customer_name'],
-            'customer_email' => $validated['customer_email'],
-            'customer_phone' => $validated['customer_phone'],
-            'customer_address' => $validated['customer_address'],
-            'order_status' => $validated['order_status'],
-            'payment_status' => $validated['payment_status'],
-            'notes' => $validated['notes'] ?? null,
-        ]);
+        $stockService = app(OrderStockService::class);
+
+        try {
+            DB::transaction(function () use ($order, $validated, $stockService) {
+                // Cập nhật thông tin đơn hàng
+                $order->update([
+                    'customer_name' => $validated['customer_name'],
+                    'customer_email' => $validated['customer_email'],
+                    'customer_phone' => $validated['customer_phone'],
+                    'customer_address' => $validated['customer_address'],
+                    'order_status' => $validated['order_status'],
+                    'payment_status' => $validated['payment_status'],
+                    'notes' => $validated['notes'] ?? null,
+                ]);
+
+                if ($validated['payment_status'] === 'paid') {
+                    $stockService->deductStock($order, true);
+                }
+            });
+        } catch (\RuntimeException $exception) {
+            return redirect()->back()->with('error', $exception->getMessage());
+        }
 
         return redirect()->route('admin.orders.show', $order->id)
             ->with('success', 'Đơn hàng đã được cập nhật!');

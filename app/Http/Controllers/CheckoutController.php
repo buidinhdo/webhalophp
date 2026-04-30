@@ -9,8 +9,10 @@ use App\Models\Product;
 use App\Models\Notification;
 use App\Models\Coupon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\MoMoPaymentService;
+use App\Services\OrderStockService;
 
 class CheckoutController extends Controller
 {
@@ -20,6 +22,17 @@ class CheckoutController extends Controller
         
         if (empty($cart)) {
             return redirect()->route('cart.index')->with('error', 'Giỏ hàng của bạn đang trống!');
+        }
+
+        foreach ($cart as $productId => $item) {
+            $product = Product::find($productId);
+            $itemQuantity = (int) $item['quantity'];
+
+            if (!$product || $product->stock < $itemQuantity) {
+                $productName = $product ? $product->name : ('ID ' . $productId);
+                return redirect()->route('cart.index')
+                    ->with('error', 'Sản phẩm "' . $productName . '" không đủ tồn kho.');
+            }
         }
         
         $subtotal = 0;
@@ -103,50 +116,73 @@ class CheckoutController extends Controller
         
         $finalTotal = $totalAmount - $couponDiscount;
         
-        // Tạo đơn hàng
-        $order = Order::create([
-            'user_id' => Auth::id(), // null nếu chưa đăng nhập
-            'order_number' => 'ORD-' . date('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT),
-            'customer_name' => $request->name,
-            'customer_email' => $request->email,
-            'customer_phone' => $request->phone,
-            'customer_address' => $request->address,
-            'subtotal' => $totalAmount,
-            'shipping_fee' => 0,
-            'discount' => 0,
-            'coupon_id' => $couponId,
-            'coupon_code' => $couponCode,
-            'coupon_discount' => $couponDiscount,
-            'total_amount' => $finalTotal,
-            'payment_method' => $request->payment_method ?? 'cod',
-            'payment_status' => 'pending',
-            'order_status' => 'pending',
-            'notes' => $request->notes,
-        ]);
-        
-        // Tăng số lần sử dụng coupon
-        if ($couponId) {
-            $coupon->incrementUsage();
-        }
-        
-        // Tạo order items - lưu chi tiết từng sản phẩm
-        foreach ($cart as $productId => $item) {
-            $product = Product::find($productId);
-            
-            // Ensure proper numeric conversion
-            $itemPrice = (float) $item['price'];
-            $itemQuantity = (int) $item['quantity'];
-            $itemTotal = round($itemPrice * $itemQuantity, 2);
-            
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $productId,
-                'product_name' => $item['name'],
-                'product_image' => $product ? $product->image : null,
-                'quantity' => $itemQuantity,
-                'price' => $itemPrice,
-                'total' => $itemTotal,
-            ]);
+        $stockService = app(OrderStockService::class);
+
+        try {
+            $order = DB::transaction(function () use (
+                $request,
+                $cart,
+                $totalAmount,
+                $finalTotal,
+                $couponId,
+                $couponCode,
+                $couponDiscount,
+                $coupon,
+                $stockService
+            ) {
+                // Tạo đơn hàng
+                $order = Order::create([
+                    'user_id' => Auth::id(), // null nếu chưa đăng nhập
+                    'order_number' => 'ORD-' . date('Ymd') . '-' . str_pad(Order::count() + 1, 4, '0', STR_PAD_LEFT),
+                    'customer_name' => $request->name,
+                    'customer_email' => $request->email,
+                    'customer_phone' => $request->phone,
+                    'customer_address' => $request->address,
+                    'subtotal' => $totalAmount,
+                    'shipping_fee' => 0,
+                    'discount' => 0,
+                    'coupon_id' => $couponId,
+                    'coupon_code' => $couponCode,
+                    'coupon_discount' => $couponDiscount,
+                    'total_amount' => $finalTotal,
+                    'payment_method' => $request->payment_method ?? 'cod',
+                    'payment_status' => 'pending',
+                    'order_status' => 'pending',
+                    'notes' => $request->notes,
+                ]);
+
+                // Tăng số lần sử dụng coupon
+                if ($couponId && $coupon) {
+                    $coupon->incrementUsage();
+                }
+
+                // Tạo order items - lưu chi tiết từng sản phẩm
+                foreach ($cart as $productId => $item) {
+                    $product = Product::find($productId);
+
+                    // Ensure proper numeric conversion
+                    $itemPrice = (float) $item['price'];
+                    $itemQuantity = (int) $item['quantity'];
+                    $itemTotal = round($itemPrice * $itemQuantity, 2);
+
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $productId,
+                        'product_name' => $item['name'],
+                        'product_image' => $product ? $product->image : null,
+                        'quantity' => $itemQuantity,
+                        'price' => $itemPrice,
+                        'total' => $itemTotal,
+                    ]);
+                }
+
+                $stockService->deductStock($order, true);
+
+                return $order;
+            });
+        } catch (\RuntimeException $exception) {
+            return redirect()->route('cart.index')
+                ->with('error', $exception->getMessage());
         }
         
         // Tạo thông báo cho người dùng (nếu đã đăng nhập)
@@ -231,6 +267,9 @@ class CheckoutController extends Controller
                 'payment_status' => 'paid',
                 'order_status' => 'processing',
             ]);
+
+            $stockService = app(OrderStockService::class);
+            $stockService->deductStock($order);
             
             Log::info('MoMo Payment Success', [
                 'order_id' => $order->id,
@@ -286,6 +325,9 @@ class CheckoutController extends Controller
                 'payment_status' => 'paid',
                 'order_status' => 'processing',
             ]);
+
+            $stockService = app(OrderStockService::class);
+            $stockService->deductStock($order);
             
             Log::info('MoMo IPN Payment Success', [
                 'order_id' => $order->id,

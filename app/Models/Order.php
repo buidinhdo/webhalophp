@@ -25,6 +25,7 @@ class Order extends Model
         'total_amount',
         'payment_method',
         'payment_status',
+        'stock_deducted',
         'order_status',
         'notes'
     ];
@@ -35,6 +36,7 @@ class Order extends Model
         'discount' => 'decimal:2',
         'coupon_discount' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'stock_deducted' => 'boolean',
     ];
     
     public function user()
