@@ -317,7 +317,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">
-                            <i class="fas fa-search"></i> Áp dụng
+                            <i class="fas fa-search"></i> Tìm kiếm
                         </button>
                         <a href="{{ route('products.index') }}" class="btn btn-outline-secondary w-100 mt-2">
                             <i class="fas fa-redo"></i> Đặt lại
@@ -368,12 +368,6 @@
                             <a href="{{ route('products.show', $product->slug) }}" class="product-title-link">
                                 <h5 class="card-title">{{ $product->name }}</h5>
                             </a>
-                            
-                            @if($product->platform)
-                            <p class="text-muted small mb-2">
-                                <i class="fas fa-gamepad"></i> {{ $product->platform }}
-                            </p>
-                            @endif
                             
                             @if($product->release_date)
                             <p class="text-muted small mb-2">

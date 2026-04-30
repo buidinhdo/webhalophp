@@ -506,8 +506,24 @@
             @endif
             
             @if($product->platform)
+            @php
+                $platformKey = strtolower(trim($product->platform));
+                $platformIcon = match ($platformKey) {
+                    'ps1', 'playstation 1' => '<i class="fab fa-playstation me-2" style="color: #003087;"></i>',
+                    'ps2', 'playstation 2' => '<i class="fab fa-playstation me-2" style="color: #003087;"></i>',
+                    'ps3', 'playstation 3' => '<i class="fab fa-playstation me-2" style="color: #0051a8;"></i>',
+                    'ps4', 'playstation 4' => '<i class="fab fa-playstation me-2" style="color: #003087;"></i>',
+                    'ps5', 'playstation 5' => '<i class="fab fa-playstation me-2" style="color: #0070cc;"></i>',
+                    'nintendo switch' => '<img src="' . asset('images/icons/nintendo-switch.svg') . '" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">',
+                    'xbox' => '<i class="fab fa-xbox me-2" style="color: #107c10;"></i>',
+                    'gamecube', 'nintendo gamecube' => '<img src="' . asset('images/icons/gamecube.svg') . '" alt="Nintendo GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">',
+                    'wii', 'nintendo wii' => '<img src="' . asset('images/icons/wii.svg') . '" alt="Nintendo Wii" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">',
+                    'super nintendo' => '<img src="' . asset('images/icons/super-nintendo.svg') . '" alt="Super Nintendo" class="me-2" style="width: 50px; height: 15px; vertical-align: middle;">',
+                    default => '<i class="fas fa-gamepad me-2"></i>',
+                };
+            @endphp
             <p class="text-muted mt-3">
-                <i class="fas fa-gamepad"></i> <strong>Nền tảng:</strong> {{ $product->platform }}
+                {!! $platformIcon !!}<strong>Nền tảng:</strong> {{ $product->platform }}
             </p>
             @endif
             

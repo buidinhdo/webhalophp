@@ -896,6 +896,45 @@
     
     <!-- Quick View JS -->
     <script>
+        function getPlatformIcon(platform) {
+            if (!platform) {
+                return '';
+            }
+
+            const key = platform.trim().toLowerCase();
+            switch (key) {
+                case 'ps1':
+                case 'playstation 1':
+                    return '<i class="fab fa-playstation me-2" style="color: #003087;"></i>';
+                case 'ps2':
+                case 'playstation 2':
+                    return '<i class="fab fa-playstation me-2" style="color: #003087;"></i>';
+                case 'ps3':
+                case 'playstation 3':
+                    return '<i class="fab fa-playstation me-2" style="color: #0051a8;"></i>';
+                case 'ps4':
+                case 'playstation 4':
+                    return '<i class="fab fa-playstation me-2" style="color: #003087;"></i>';
+                case 'ps5':
+                case 'playstation 5':
+                    return '<i class="fab fa-playstation me-2" style="color: #0070cc;"></i>';
+                case 'nintendo switch':
+                    return '<img src="{{ asset('images/icons/nintendo-switch.svg') }}" alt="Nintendo Switch" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">';
+                case 'xbox':
+                    return '<i class="fab fa-xbox me-2" style="color: #107c10;"></i>';
+                case 'gamecube':
+                case 'nintendo gamecube':
+                    return '<img src="{{ asset('images/icons/gamecube.svg') }}" alt="Nintendo GameCube" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">';
+                case 'wii':
+                case 'nintendo wii':
+                    return '<img src="{{ asset('images/icons/wii.svg') }}" alt="Nintendo Wii" class="me-2" style="width: 20px; height: 20px; vertical-align: middle;">';
+                case 'super nintendo':
+                    return '<img src="{{ asset('images/icons/super-nintendo.svg') }}" alt="Super Nintendo" class="me-2" style="width: 50px; height: 15px; vertical-align: middle;">';
+                default:
+                    return '<i class="fas fa-gamepad me-2"></i>';
+            }
+        }
+
         function quickView(productId) {
             const modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
             const content = document.getElementById('quickViewContent');
@@ -927,7 +966,7 @@
                                     ${product.is_new ? '<span class="badge bg-success me-1">MỚI</span>' : ''}
                                     ${product.is_preorder ? '<span class="badge bg-warning">ĐẶT TRƯỚC</span>' : ''}
                                     
-                                    ${product.platform ? `<p class="text-muted mt-3"><i class="fas fa-gamepad"></i> <strong>Nền tảng:</strong> ${product.platform}</p>` : ''}
+                                    ${product.platform ? `<p class="text-muted mt-3">${getPlatformIcon(product.platform)}<strong>Nền tảng:</strong> ${product.platform}</p>` : ''}
                                     ${product.sku ? `<p class="text-muted"><strong>SKU:</strong> ${product.sku}</p>` : ''}
                                     
                                     <div class="my-4">

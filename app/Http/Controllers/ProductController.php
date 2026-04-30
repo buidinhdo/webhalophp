@@ -19,11 +19,37 @@ class ProductController extends Controller
         }
         
         if ($request->has('platform') && $request->platform != '') {
-            $query->whereRaw('LOWER(platform) = ?', [strtolower($request->platform)]);
+            $platformKey = strtolower(trim($request->platform));
+            $platformMap = [
+                'ps1' => ['ps1', 'playstation 1'],
+                'ps2' => ['ps2', 'playstation 2'],
+                'ps3' => ['ps3', 'playstation 3'],
+                'ps4' => ['ps4', 'playstation 4'],
+                'ps5' => ['ps5', 'playstation 5'],
+                'nintendo switch' => ['nintendo switch'],
+                'xbox' => ['xbox'],
+                'gamecube' => ['gamecube', 'nintendo gamecube'],
+                'nintendo gamecube' => ['gamecube', 'nintendo gamecube'],
+                'wii' => ['wii', 'nintendo wii'],
+                'nintendo wii' => ['wii', 'nintendo wii'],
+                'super nintendo' => ['super nintendo', 'snes', 'super-nintendo'],
+            ];
+
+            $platformValues = $platformMap[$platformKey] ?? [$platformKey];
+
+            $query->where(function ($q) use ($platformValues) {
+                foreach ($platformValues as $value) {
+                    $q->orWhereRaw('LOWER(platform) = ?', [$value]);
+                }
+            });
         }
         
         if ($request->has('genre') && $request->genre != '') {
-            $query->where('genre', $request->genre);
+            $genre = strtolower(trim($request->genre));
+            $query->where(function ($q) use ($genre) {
+                $q->whereRaw('LOWER(TRIM(genre)) = ?', [$genre])
+                  ->orWhereRaw('LOWER(TRIM(genre)) LIKE ?', ["%{$genre}%"]);
+            });
         }
         
         if ($request->has('search') && $request->search != '') {
@@ -81,22 +107,30 @@ class ProductController extends Controller
         
         // Lọc theo ESRB rating
         if ($request->has('esrb_rating') && $request->esrb_rating != '') {
-            $query->where('esrb_rating', $request->esrb_rating);
+            $esrbRating = strtolower(trim($request->esrb_rating));
+            $esrbNormalized = str_replace(' ', '', $esrbRating);
+            $query->where(function ($q) use ($esrbRating, $esrbNormalized) {
+                $q->whereRaw('LOWER(TRIM(esrb_rating)) = ?', [$esrbRating])
+                  ->orWhereRaw("LOWER(REPLACE(TRIM(esrb_rating), ' ', '')) = ?", [$esrbNormalized]);
+            });
         }
         
         // Lọc theo nhà phát hành
         if ($request->has('publisher') && $request->publisher != '') {
-            $publisher = $request->publisher;
-            
+            $publisher = strtolower(trim($request->publisher));
+
             // Handle Microsoft variants
-            if ($publisher == 'Microsoft') {
+            if ($publisher === 'microsoft') {
                 $query->where(function($q) {
-                    $q->where('publisher', 'Microsoft')
-                      ->orWhere('publisher', 'Microsoft Game Studios')
-                      ->orWhere('publisher', 'Microsoft Studios');
+                    $q->orWhereRaw('LOWER(TRIM(publisher)) = ?', ['microsoft'])
+                      ->orWhereRaw('LOWER(TRIM(publisher)) = ?', ['microsoft game studios'])
+                      ->orWhereRaw('LOWER(TRIM(publisher)) = ?', ['microsoft studios']);
                 });
             } else {
-                $query->where('publisher', $publisher);
+                $query->where(function ($q) use ($publisher) {
+                    $q->whereRaw('LOWER(TRIM(publisher)) = ?', [$publisher])
+                      ->orWhereRaw('LOWER(TRIM(publisher)) LIKE ?', ["%{$publisher}%"]);
+                });
             }
         }
         
