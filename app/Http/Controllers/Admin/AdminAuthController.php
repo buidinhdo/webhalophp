@@ -64,6 +64,6 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('admin.login')->with('success', 'Đăng xuất thành công!');
+        return redirect()->route('login')->with('success', 'Đăng xuất thành công!');
     }
 }
