@@ -97,6 +97,7 @@ class CheckoutController extends Controller
         }
         
         // Xử lý coupon
+        $coupon = null;
         $couponDiscount = 0;
         $couponId = null;
         $couponCode = null;
