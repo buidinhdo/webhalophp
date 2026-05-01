@@ -31,11 +31,27 @@ class CartController extends Controller
                 'redirect_to' => url()->previous(),
             ]);
 
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.',
+                    'redirect' => route('login'),
+                ], 401);
+            }
+
             return redirect()->guest(route('login'))
                 ->with('warning', 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng.');
         }
 
         $this->addProductToCart((int) $id, $quantity);
+
+        if ($request->expectsJson()) {
+            $cart = session()->get('cart', []);
+
+            return response()->json([
+                'message' => 'Đã thêm sản phẩm vào giỏ hàng!',
+                'cart_count' => count($cart),
+            ]);
+        }
         
         return redirect()->back()->with('success', 'Đã thêm sản phẩm vào giỏ hàng!');
     }

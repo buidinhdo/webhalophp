@@ -7,6 +7,8 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Category;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\Wishlist;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
@@ -221,33 +223,39 @@ class DashboardController extends Controller
     {
         $days = $request->input('days', 7);
         $chartData = $this->getRevenueChartData($days);
-        
-        $filename = 'doanh_thu_' . $days . '_ngay_' . date('Y-m-d') . '.csv';
-        
-        header('Content-Type: text/csv; charset=utf-8');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-        
-        $output = fopen('php://output', 'w');
-        
-        // UTF-8 BOM for Excel
-        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
-        
-        // Header
-        fputcsv($output, ['Ngày', 'Doanh thu (VNĐ)', 'Số đơn hàng', 'Số khách hàng', 'Thay đổi (%)']);
-        
-        // Data
+
+        $filename = 'doanh_thu_' . $days . '_ngay_' . date('Y-m-d') . '.xlsx';
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Doanh thu');
+
+        $sheet->fromArray([
+            ['Ngày', 'Doanh thu (VNĐ)', 'Số đơn hàng', 'Số khách hàng', 'Thay đổi (%)']
+        ], null, 'A1');
+
+        $row = 2;
         foreach ($chartData['labels'] as $index => $label) {
-            fputcsv($output, [
-                $label,
-                number_format($chartData['revenues'][$index], 0, ',', '.'),
-                $chartData['orderCounts'][$index],
-                $chartData['customerCounts'][$index],
-                $chartData['percentChanges'][$index] . '%'
-            ]);
+            $sheet->setCellValue('A' . $row, $label);
+            $sheet->setCellValue('B' . $row, number_format($chartData['revenues'][$index], 0, ',', '.'));
+            $sheet->setCellValue('C' . $row, $chartData['orderCounts'][$index]);
+            $sheet->setCellValue('D' . $row, $chartData['customerCounts'][$index]);
+            $sheet->setCellValue('E' . $row, $chartData['percentChanges'][$index] . '%');
+            $row++;
         }
-        
-        fclose($output);
-        exit;
+
+        $sheet->getColumnDimension('A')->setWidth(14);
+        $sheet->getColumnDimension('B')->setWidth(20);
+        $sheet->getColumnDimension('C')->setWidth(14);
+        $sheet->getColumnDimension('D')->setWidth(16);
+        $sheet->getColumnDimension('E')->setWidth(14);
+
+        return response()->streamDownload(function () use ($spreadsheet) {
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('php://output');
+        }, $filename, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
     }
     
 

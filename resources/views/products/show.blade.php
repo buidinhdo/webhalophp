@@ -415,19 +415,7 @@
 
 @section('content')
 <div class="container my-5">
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
+    <div id="product-alerts"></div>
 
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -566,7 +554,7 @@
             </div>
             @endif
             
-            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+            <form id="addToCartForm" action="{{ route('cart.add', $product->id) }}" method="POST">
                 @csrf
                 <div class="row align-items-center mb-3">
                     <div class="col-md-4">
@@ -767,6 +755,85 @@
 @section('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const alertsContainer = document.getElementById('product-alerts');
+    const addToCartForm = document.getElementById('addToCartForm');
+
+    function showPageAlert(message, type = 'success') {
+        if (!alertsContainer) return;
+
+        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+        alertsContainer.innerHTML = `
+            <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                <i class="${type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'}"></i> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+    }
+
+    function updateCartBadge(count) {
+        const cartLink = document.querySelector('a[href="{{ route('cart.index') }}"]');
+        if (!cartLink) return;
+
+        let badge = cartLink.querySelector('.cart-badge');
+        if (!badge && count > 0) {
+            badge = document.createElement('span');
+            badge.className = 'cart-badge';
+            cartLink.appendChild(badge);
+        }
+
+        if (badge) {
+            if (count > 0) {
+                badge.textContent = count;
+                badge.style.display = 'inline-block';
+            } else {
+                badge.remove();
+            }
+        }
+    }
+
+    if (addToCartForm) {
+        addToCartForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitButton = addToCartForm.querySelector('button[type="submit"]');
+            if (submitButton) submitButton.disabled = true;
+
+            try {
+                const formData = new FormData(addToCartForm);
+                const response = await fetch(addToCartForm.action, {
+                    method: 'POST',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': formData.get('_token')
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (response.status === 401 && data.redirect) {
+                        window.location.href = data.redirect;
+                        return;
+                    }
+
+                    throw new Error(data.message || 'Có lỗi xảy ra, vui lòng thử lại!');
+                }
+
+                showPageAlert(data.message || 'Đã thêm sản phẩm vào giỏ hàng!', 'success');
+
+                if (typeof data.cart_count === 'number') {
+                    updateCartBadge(data.cart_count);
+                }
+            } catch (error) {
+                showPageAlert(error.message || 'Có lỗi xảy ra, vui lòng thử lại!', 'error');
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+            }
+        });
+    }
+
     // Gallery Slider Navigation
     const slider = document.getElementById('gallerySlider');
     const prevBtn = document.getElementById('sliderPrev');

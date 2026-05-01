@@ -268,7 +268,7 @@
                     </div>
                     <!-- Export Button -->
                     <button type="button" class="btn btn-sm btn-success ml-2" id="exportBtn">
-                        <i class="fas fa-download"></i> Export CSV
+                        <i class="fas fa-download"></i> Export XLSX
                     </button>
                 </div>
             </div>
@@ -585,7 +585,7 @@ $(function() {
         });
     });
     
-    // Export CSV Button
+    // Export XLSX Button
     $('#exportBtn').on('click', function() {
         window.location.href = '{{ route("admin.dashboard.export-revenue") }}?days=' + currentDays;
     });
